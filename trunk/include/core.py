@@ -141,10 +141,11 @@ class Client(VT):
             child.join()
             exit()
         server.stop(self.conf['bitrate'], self.conf['framerate'])
-        self.files, size = gstreamer.reference()
+        self.videodata, size = gstreamer.reference()
+        self.packetdata = sniffer.parsePkts()
         self.__loadYUVs(size)
-        qosm = QoSmeter(self.conf['qos'], sniffer.parsePkts()).run()
-        vqm = VQmeter(self.conf['vq'], self.files).run()
+        qosm = QoSmeter(self.conf['qos'], self.packetdata).run()
+        vqm = VQmeter(self.conf['vq'], (self.videodata, self.packetdata)).run()
         self.__saveMeasures(qosm + vqm)
         vtLog.info("Client stopped!")
         return qosm + vqm, self.conf['tempdir'] + self.conf['num']
@@ -161,8 +162,8 @@ class Client(VT):
     def __loadYUVs(self, size):
         vtLog.info("Loading YUVs...")
         from yuvvideo import YUVvideo
-        for x in self.files.keys():
-            self.files[x][1] = YUVvideo(self.files[x][1], size)
+        for x in self.videodata.keys():
+            self.videodata[x][1] = YUVvideo(self.videodata[x][1], size)
             vtLog.info("+++")
     
     def __saveMeasures(self, measures):

@@ -286,17 +286,17 @@ class VTframe(wx.Frame, VT):
                     ! mix.sink_0 \
                 video1. \
                     ! queue ! videoparse framerate=' + self.fps + '/1 name=parser1 \
-                    ! textoverlay font-desc="Sans 24" text="Original" valignment=top halignment=left shaded-background=true \
+                    ! textoverlay text="Original" valignment=top halignment=left shaded-background=true \
                     ! ffmpegcolorspace ! videoscale \
                     ! mix.sink_1 \
                 video2. \
                     ! queue ! videoparse framerate=' + self.fps + '/1 name=parser2 \
-                    ! textoverlay font-desc="Sans 24" text="Coded" valignment=top halignment=left shaded-background=true \
+                    ! textoverlay text="Coded" valignment=top halignment=left shaded-background=true \
                     ! ffmpegcolorspace ! videoscale \
                     ! mix.sink_2 \
                 video3. \
                     ! queue ! videoparse framerate=' + self.fps + '/1 name=parser3 \
-                    ! textoverlay font-desc="Sans 24" text="Received" valignment=top halignment=left shaded-background=true \
+                    ! textoverlay text="Received" valignment=top halignment=left shaded-background=true \
                     ! ffmpegcolorspace ! videoscale \
                     ! mix.sink_3')
             self.play_video.SetLabel('Stop')
