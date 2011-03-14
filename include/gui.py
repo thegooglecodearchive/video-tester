@@ -80,6 +80,7 @@ class VTframe(wx.Frame, VT):
         self.ypsnr = wx.CheckBox(self.options_tab, -1, "Y-PSNR")
         self.upsnr = wx.CheckBox(self.options_tab, -1, "U-PSNR")
         self.vpsnr = wx.CheckBox(self.options_tab, -1, "V-PSNR")
+        self.ssim = wx.CheckBox(self.options_tab, -1, "SSIM")
         self.sizer_5_staticbox = wx.StaticBox(self.options_tab, -1, "Video quality measures:")
         self.log_tab = wx.Panel(self.tabs, -1)
         self.log = wx.TextCtrl(self.log_tab, -1, "Log messages:\n----------------\n", style=wx.TE_MULTILINE|wx.TE_READONLY)
@@ -203,6 +204,7 @@ class VTframe(wx.Frame, VT):
         grid_sizer_4.Add(self.ypsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.upsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.vpsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+        grid_sizer_4.Add(self.ssim, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         sizer_5.Add(grid_sizer_4, 1, wx.EXPAND, 0)
         sizer_1.Add(sizer_5, 1, wx.EXPAND, 0)
         self.options_tab.SetSizer(sizer_1)
@@ -406,6 +408,8 @@ class VTframe(wx.Frame, VT):
             vq.append('upsnr')
         if self.vpsnr.GetValue():
             vq.append('vpsnr')
+        if self.ssim.GetValue():
+            vq.append('ssim')
         conf['vq'] = vq
         return conf
     
