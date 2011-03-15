@@ -19,15 +19,19 @@ class Gstreamer:
         self.uri = 'rtsp://' + self.conf['ip'] + ':' + self.conf['rtspport'] + '/' + self.conf['video'] + '.' + self.conf['codec']
         if self.conf['codec'] == "h263":
             self.encoder = "ffenc_h263"
+            self.depay = "rtph263depay"
             self.bitrate = self.conf['bitrate'] + '000'
         elif self.conf['codec'] == "h264":
             self.encoder = "x264enc"
+            self.depay = "rtph264depay"
             self.bitrate = self.conf['bitrate']
         elif self.conf['codec'] == "mpeg4":
             self.encoder = "ffenc_mpeg4"
+            self.depay = "rtpmp4vdepay"
             self.bitrate = self.conf['bitrate'] + '000'
         elif self.conf['codec'] == "theora":
             self.encoder = "theoraenc"
+            self.depay = "rtptheoradepay"
             self.bitrate = self.conf['bitrate']
     
     def __events(self, bus, msg):
@@ -59,7 +63,7 @@ class Gstreamer:
     
     def receiver(self):
         vtLog.info("Starting GStreamer receiver...")
-        self.pipeline = parse_launch('rtspsrc name=source ! tee name=t ! queue ! filesink name=sink1 t. ! queue \
+        self.pipeline = parse_launch('rtspsrc name=source ! tee name=t ! queue ! ' + self.depay + ' ! filesink name=sink1 t. ! queue \
                 ! decodebin ! videorate skip-to-first=True ! video/x-raw-yuv,framerate=' + self.conf['framerate'] + '/1 ! filesink name=sink2')
         source = self.pipeline.get_by_name('source')
         sink1 = self.pipeline.get_by_name('sink1')
