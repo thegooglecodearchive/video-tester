@@ -143,7 +143,7 @@ class Client(VT):
         server.stop(self.conf['bitrate'], self.conf['framerate'])
         self.videodata, size = gstreamer.reference()
         self.packetdata = sniffer.parsePkts()
-        self.__loadYUVs(size)
+        self.__loadData(size, self.conf['codec'])
         qosm = QoSmeter(self.conf['qos'], self.packetdata).run()
         vqm = VQmeter(self.conf['vq'], (self.videodata, self.packetdata)).run()
         self.__saveMeasures(qosm + vqm)
@@ -159,10 +159,12 @@ class Client(VT):
             send(IP(dst=self.conf['ip'])/ICMP(seq=i), verbose=False)
             sleep(0.5)
     
-    def __loadYUVs(self, size):
-        vtLog.info("Loading YUVs...")
-        from video import YUVvideo
+    def __loadData(self, size, codec):
+        vtLog.info("Loading videos...")
+        from video import YUVvideo, CodedVideo
         for x in self.videodata.keys():
+            if x != 'original':
+                self.videodata[x][0] = CodedVideo(self.videodata[x][0], codec)
             self.videodata[x][1] = YUVvideo(self.videodata[x][1], size)
             vtLog.info("+++")
     
