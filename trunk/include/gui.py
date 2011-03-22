@@ -77,6 +77,8 @@ class VTframe(wx.Frame, VT):
         self.plr = wx.CheckBox(self.options_tab, -1, "Packet Loss Rate")
         self.pld = wx.CheckBox(self.options_tab, -1, "Packet Loss Distribution")
         self.sizer_4_staticbox = wx.StaticBox(self.options_tab, -1, "QoS measures:")
+        self.seye = wx.CheckBox(self.options_tab, -1, "StreamEye")
+        self.refseye = wx.CheckBox(self.options_tab, -1, "refStreamEye")
         self.ypsnr = wx.CheckBox(self.options_tab, -1, "Y-PSNR")
         self.upsnr = wx.CheckBox(self.options_tab, -1, "U-PSNR")
         self.vpsnr = wx.CheckBox(self.options_tab, -1, "V-PSNR")
@@ -201,6 +203,8 @@ class VTframe(wx.Frame, VT):
         grid_sizer_3.Add(self.pld, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         sizer_4.Add(grid_sizer_3, 1, wx.EXPAND, 0)
         sizer_1.Add(sizer_4, 1, wx.EXPAND, 0)
+        grid_sizer_4.Add(self.seye, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+        grid_sizer_4.Add(self.refseye, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.ypsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.upsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.vpsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
@@ -357,9 +361,9 @@ class VTframe(wx.Frame, VT):
                 axes.set_xlabel(measure['units'][0])
                 axes.set_ylabel(measure['units'][1])
             elif measure['type'] == 'videoframes':
-                axes.bar(measure['axes'][0], measure['axes'][1]['B'], width=measure['width'], color='g')
-                axes.bar(measure['axes'][0], measure['axes'][1]['P'], width=measure['width'], color='b')
-                axes.bar(measure['axes'][0], measure['axes'][1]['I'], width=measure['width'], color='r')
+                axes.bar(measure['axes'][0], measure['axes'][1]['B'], width=1, color='g')
+                axes.bar(measure['axes'][0], measure['axes'][1]['P'], width=1, color='b')
+                axes.bar(measure['axes'][0], measure['axes'][1]['I'], width=1, color='r')
                 axes.set_xlabel(measure['units'][0])
                 axes.set_ylabel(measure['units'][1])
         self.results_tab.Show()
@@ -408,6 +412,10 @@ class VTframe(wx.Frame, VT):
             qos.append('pld')
         conf['qos'] = qos
         vq = []
+        if self.seye.GetValue():
+            vq.append('streameye')
+        if self.refseye.GetValue():
+            vq.append('refstreameye')
         if self.ypsnr.GetValue():
             vq.append('ypsnr')
         if self.upsnr.GetValue():

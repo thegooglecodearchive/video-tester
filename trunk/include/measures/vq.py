@@ -10,6 +10,10 @@ class VQmeter(Meter):
     def __init__(self, selected, data):
         Meter.__init__(self)
         vtLog.info("Starting VQmeter...")
+        if 'streameye' in selected:
+            self.measures.append(StreamEye(data))
+        if 'refstreameye' in selected:
+            self.measures.append(RefStreamEye(data))
         if 'ypsnr' in selected:
             self.measures.append(PSNR(data))
         if 'upsnr' in selected:
@@ -23,11 +27,45 @@ class VQmeasure(Measure):
     def __init__(self, (videodata, packetdata)):
         Measure.__init__(self)
         self.packetdata = packetdata
+        self.coded = videodata['received'][0]
+        self.codedref = videodata['coded'][0]
         self.yuv = videodata['received'][1]
         self.yuvref = videodata['original'][1]
     
     def getQoSm(self, measure):
         return QoSmeter(measure, self.packetdata).run()
+
+class StreamEye(VQmeasure):
+    def __init__(self, data, video=''):
+        VQmeasure.__init__(self, data)
+        if video == 'ref':
+            self.v = self.codedref
+        elif video == '':
+            self.v = self.coded
+        self.measure['name'] = video + 'StreamEye'
+        self.measure['units'] = ['frame', 'bytes']
+        self.measure['type'] = 'videoframes'
+    
+    def calculate(self):
+        x = range(len(self.v.frames['lengths']))
+        Iframes = [0 for i in x]
+        Pframes = [0 for i in x]
+        Bframes = [0 for i in x]
+        for i in x:
+            type = self.v.frames['types'][i]
+            if type == 'I':
+                Iframes[i] = self.v.frames['lengths'][i]
+            elif type == 'P':
+                Pframes[i] = self.v.frames['lengths'][i]
+            elif type == 'B':
+                Bframes[i] = self.v.frames['lengths'][i]
+        y = {'I':Iframes, 'P':Pframes, 'B':Bframes}
+        self.measure['axes'] = [x, y]
+        return self.measure
+
+class RefStreamEye(StreamEye):
+    def __init__(self, data):
+        StreamEye.__init__(self, data, 'ref')
 
 class PSNR(VQmeasure):
     def __init__(self, data, component='Y'):
