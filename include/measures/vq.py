@@ -16,8 +16,8 @@ class VQmeter(Meter):
             self.measures.append(UPSNR(data))
         if 'vpsnr' in selected:
             self.measures.append(VPSNR(data))
-##        if 'ssim' in selected:
-##            self.measures.append(SSIM(data))
+        if 'ssim' in selected:
+            self.measures.append(SSIM(data))
 
 class VQmeasure(Measure):
     def __init__(self, (videodata, packetdata)):
