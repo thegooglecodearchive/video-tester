@@ -23,9 +23,9 @@ class YUVvideo:
         v = y + yblock + uvblock
         count = 1
         while y < len(raw):
-            self.video['Y'].append(frombuffer(raw[y:y+yblock], dtype=uint8).reshape(width, height))
+            self.video['Y'].append(frombuffer(raw[y:y+yblock], dtype=uint8).reshape(height, width))
             y += frame
-            self.video['U'].append(frombuffer(raw[u:u+uvblock], dtype=uint8).reshape(width/2, height/2))
+            self.video['U'].append(frombuffer(raw[u:u+uvblock], dtype=uint8).reshape(height/2, width/2))
             u += frame
-            self.video['V'].append(frombuffer(raw[v:v+uvblock], dtype=uint8).reshape(width/2, height/2))
+            self.video['V'].append(frombuffer(raw[v:v+uvblock], dtype=uint8).reshape(height/2, width/2))
             v += frame
