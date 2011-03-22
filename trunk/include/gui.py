@@ -356,6 +356,12 @@ class VTframe(wx.Frame, VT):
                 axes.plot(measure['axes'][0], [measure['min'][1] for i in measure['axes'][0]], 'r')
                 axes.set_xlabel(measure['units'][0])
                 axes.set_ylabel(measure['units'][1])
+            elif measure['type'] == 'videoframes':
+                axes.bar(measure['axes'][0], measure['axes'][1]['B'], width=measure['width'], color='g')
+                axes.bar(measure['axes'][0], measure['axes'][1]['P'], width=measure['width'], color='b')
+                axes.bar(measure['axes'][0], measure['axes'][1]['I'], width=measure['width'], color='r')
+                axes.set_xlabel(measure['units'][0])
+                axes.set_ylabel(measure['units'][1])
         self.results_tab.Show()
     
     def configureVideos(self):

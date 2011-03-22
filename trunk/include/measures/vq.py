@@ -4,6 +4,7 @@ from measures import Meter, Measure
 from qos import QoSmeter
 from include.config import vtLog
 import math
+import cv
 
 class VQmeter(Meter):
     def __init__(self, selected, data):
@@ -68,31 +69,106 @@ class SSIM(VQmeasure):
         self.measure['units'] = ['frame', 'SSIM index']
         self.measure['type'] = 'plot'
     
+    def __array2cv(self, a):
+        dtype2depth = {
+            'uint8':   cv.IPL_DEPTH_8U,
+            'int8':    cv.IPL_DEPTH_8S,
+            'uint16':  cv.IPL_DEPTH_16U,
+            'int16':   cv.IPL_DEPTH_16S,
+            'int32':   cv.IPL_DEPTH_32S,
+            'float32': cv.IPL_DEPTH_32F,
+            'float64': cv.IPL_DEPTH_64F,
+        }
+        try:
+            nChannels = a.shape[2]
+        except:
+            nChannels = 1
+        cv_im = cv.CreateImageHeader((a.shape[1],a.shape[0]), dtype2depth[str(a.dtype)], nChannels)
+        cv.SetData(cv_im, a.tostring(), a.dtype.itemsize*nChannels*a.shape[1])
+        return cv_im
+    
+    def __SSIM(self, frame1, frame2):
+        """
+            The equivalent of Zhou Wang's SSIM matlab code using OpenCV.
+            from http://www.cns.nyu.edu/~zwang/files/research/ssim/index.html
+            The measure is described in :
+            "Image quality assessment: From error measurement to structural similarity"
+            C++ code by Rabah Mehdi. http://mehdi.rabah.free.fr/SSIM
+            
+            C++ to Python translation and adaptation by Iñaki Úcar
+        """
+        C1 = 6.5025
+        C2 = 58.5225
+        img1_temp = self.__array2cv(frame1)
+        img2_temp = self.__array2cv(frame2)
+        nChan = img1_temp.nChannels
+        d = cv.IPL_DEPTH_32F
+        size = img1_temp.width, img1_temp.height
+        img1 = cv.CreateImage(size, d, nChan)
+        img2 = cv.CreateImage(size, d, nChan)
+        cv.Convert(img1_temp, img1)
+        cv.Convert(img2_temp, img2)
+        img1_sq = cv.CreateImage(size, d, nChan)
+        img2_sq = cv.CreateImage(size, d, nChan)
+        img1_img2 = cv.CreateImage(size, d, nChan)
+        cv.Pow(img1, img1_sq, 2)
+        cv.Pow(img2, img2_sq, 2)
+        cv.Mul(img1, img2, img1_img2, 1)
+        mu1 = cv.CreateImage(size, d, nChan)
+        mu2 = cv.CreateImage(size, d, nChan)
+        mu1_sq = cv.CreateImage(size, d, nChan)
+        mu2_sq = cv.CreateImage(size, d, nChan)
+        mu1_mu2 = cv.CreateImage(size, d, nChan)
+        sigma1_sq = cv.CreateImage(size, d, nChan)
+        sigma2_sq = cv.CreateImage(size, d, nChan)
+        sigma12 = cv.CreateImage(size, d, nChan)
+        temp1 = cv.CreateImage(size, d, nChan)
+        temp2 = cv.CreateImage(size, d, nChan)
+        temp3 = cv.CreateImage(size, d, nChan)
+        ssim_map = cv.CreateImage(size, d, nChan)
+        #/*************************** END INITS **********************************/
+        #// PRELIMINARY COMPUTING
+        cv.Smooth(img1, mu1, cv.CV_GAUSSIAN, 11, 11, 1.5)
+        cv.Smooth(img2, mu2, cv.CV_GAUSSIAN, 11, 11, 1.5)
+        cv.Pow(mu1, mu1_sq, 2)
+        cv.Pow(mu2, mu2_sq, 2)
+        cv.Mul(mu1, mu2, mu1_mu2, 1)
+        cv.Smooth(img1_sq, sigma1_sq, cv.CV_GAUSSIAN, 11, 11, 1.5)
+        cv.AddWeighted(sigma1_sq, 1, mu1_sq, -1, 0, sigma1_sq)
+        cv.Smooth(img2_sq, sigma2_sq, cv.CV_GAUSSIAN, 11, 11, 1.5)
+        cv.AddWeighted(sigma2_sq, 1, mu2_sq, -1, 0, sigma2_sq)
+        cv.Smooth(img1_img2, sigma12, cv.CV_GAUSSIAN, 11, 11, 1.5)
+        cv.AddWeighted(sigma12, 1, mu1_mu2, -1, 0, sigma12)
+        #//////////////////////////////////////////////////////////////////////////
+        #// FORMULA
+        #// (2*mu1_mu2 + C1)
+        cv.Scale(mu1_mu2, temp1, 2)
+        cv.AddS(temp1, C1, temp1)
+        #// (2*sigma12 + C2)
+        cv.Scale(sigma12, temp2, 2)
+        cv.AddS(temp2, C2, temp2)
+        #// ((2*mu1_mu2 + C1).*(2*sigma12 + C2))
+        cv.Mul(temp1, temp2, temp3, 1)
+        #// (mu1_sq + mu2_sq + C1)
+        cv.Add(mu1_sq, mu2_sq, temp1)
+        cv.AddS(temp1, C1, temp1)
+        #// (sigma1_sq + sigma2_sq + C2)
+        cv.Add(sigma1_sq, sigma2_sq, temp2)
+        cv.AddS(temp2, C2, temp2)
+        #// ((mu1_sq + mu2_sq + C1).*(sigma1_sq + sigma2_sq + C2))
+        cv.Mul(temp1, temp2, temp1, 1)
+        #// ((2*mu1_mu2 + C1).*(2*sigma12 + C2))./((mu1_sq + mu2_sq + C1).*(sigma1_sq + sigma2_sq + C2))
+        cv.Div(temp3, temp1, ssim_map, 1)
+        index_scalar = cv.Avg(ssim_map)
+        #// through observation, there is approximately 
+        #// 1% error max with the original matlab program
+        return index_scalar[0]
+    
     def calculate(self):
-        L = 255
-        c1 = (0.01 * L)**2
-        c2 = (0.03 * L)**2
-        window = 11
-        step = 11
-        width = self.yuv.video['Y'][0].shape[0]
-        height = self.yuv.video['Y'][0].shape[1]
         fin = min(self.yuv.frames, self.yuvref.frames)
         x = range(0, fin)
         y = []
-        for k in x:
-            ssim = []
-            for i in range(window, width, step):
-                for j in range(window, height, step):
-                    M1 = self.yuv.video['Y'][k][i-window:i, j-window:j].astype(int)
-                    M2 = self.yuvref.video['Y'][k][i-window:i, j-window:j].astype(int)
-                    mu1 = M1.mean()
-                    mu2 = M2.mean()
-                    var1 = ((M1 - mu1)**2).mean()
-                    var2 = ((M2 - mu2)**2).mean()
-                    ssim.append(((2*mu1*mu2 + c1) * (2*math.sqrt(var1)*math.sqrt(var2) + c2) / ((mu1**2 + mu2**2 + c1) * (var1 + var2 + c2))))
-            sum = 0
-            for i in ssim:
-                sum = sum + i
-            y.append(sum / len(ssim))
+        for i in x:
+            y.append(self.__SSIM(self.yuv.video['Y'][i], self.yuvref.video['Y'][i]))
         self.graph(x, y)
         return self.measure

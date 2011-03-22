@@ -161,7 +161,7 @@ class Client(VT):
     
     def __loadYUVs(self, size):
         vtLog.info("Loading YUVs...")
-        from yuvvideo import YUVvideo
+        from video import YUVvideo
         for x in self.videodata.keys():
             self.videodata[x][1] = YUVvideo(self.videodata[x][1], size)
             vtLog.info("+++")
