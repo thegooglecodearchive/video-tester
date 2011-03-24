@@ -2,8 +2,8 @@
 
 from measures import Meter, Measure
 from qos import QoSmeter
+from bs import BSmeter
 from include.config import vtLog
-from numpy import *
 import math
 import cv
 
@@ -11,14 +11,6 @@ class VQmeter(Meter):
     def __init__(self, selected, data):
         Meter.__init__(self)
         vtLog.info("Starting VQmeter...")
-        if 'streameye' in selected:
-            self.measures.append(StreamEye(data))
-        if 'refstreameye' in selected:
-            self.measures.append(RefStreamEye(data))
-        if 'gop' in selected:
-            self.measures.append(GOP(data))
-        if 'iflr' in selected:
-            self.measures.append(IFrameLossRate(data))
         if 'ypsnr' in selected:
             self.measures.append(PSNR(data))
         if 'upsnr' in selected:
@@ -29,105 +21,18 @@ class VQmeter(Meter):
             self.measures.append(SSIM(data))
 
 class VQmeasure(Measure):
-    def __init__(self, (videodata, packetdata)):
+    def __init__(self, (rawdata, codecdata, packetdata)):
         Measure.__init__(self)
         self.packetdata = packetdata
-        self.coded = videodata['received'][0]
-        self.codedref = videodata['coded'][0]
-        self.yuv = videodata['received'][1]
-        self.yuvref = videodata['original'][1]
+        self.codecdata = codecdata
+        self.yuv = rawdata['received']
+        self.yuvref = rawdata['original']
     
     def getQoSm(self, measure):
         return QoSmeter(measure, self.packetdata).run()
-
-class StreamEye(VQmeasure):
-    def __init__(self, data, video=''):
-        VQmeasure.__init__(self, data)
-        if video == 'ref':
-            self.v = self.codedref
-        elif video == '':
-            self.v = self.coded
-        self.measure['name'] = video + 'StreamEye'
-        self.measure['units'] = ['frame', 'bytes']
-        self.measure['type'] = 'videoframes'
     
-    def calculate(self):
-        x = range(len(self.v.frames['lengths']))
-        Iframes = [0 for i in x]
-        Pframes = [0 for i in x]
-        Bframes = [0 for i in x]
-        for i in x:
-            type = self.v.frames['types'][i]
-            if type == 'I':
-                Iframes[i] = self.v.frames['lengths'][i]
-            elif type == 'P':
-                Pframes[i] = self.v.frames['lengths'][i]
-            elif type == 'B':
-                Bframes[i] = self.v.frames['lengths'][i]
-        y = {'I':Iframes, 'P':Pframes, 'B':Bframes}
-        self.measure['axes'] = [x, y]
-        return self.measure
-
-class RefStreamEye(StreamEye):
-    def __init__(self, data):
-        StreamEye.__init__(self, data, 'ref')
-
-class GOP(VQmeasure):
-    def __init__(self, data):
-        VQmeasure.__init__(self, data)
-        self.measure['name'] = 'GOP'
-        self.measure['units'] = 'GOP size'
-        self.measure['type'] = 'value'
-    
-    def calculate(self):
-        gops = []
-        gop = 0
-        for i in range(len(self.coded.frames['types'])):
-            gop += 1
-            if self.coded.frames['types'][i] == 'I':
-                if i != 0:
-                    gops.append(gop)
-                gop = 0
-        gops.append(gop)
-        gops = array(gops, dtype=float)
-        loss = []
-        lim1 = mean(gops) - std(gops)/2
-        lim2 = mean(gops) + std(gops)/2
-        for i in range(len(gops)):
-            if (gops[i] < lim1) or (gops[i] > lim2):
-                loss.append(i)
-        gops = delete(gops, loss)
-        self.measure['value'] = int(round(mean(gops)))
-        return self.measure
-
-class IFrameLossRate(VQmeasure):
-    def __init__(self, data):
-        VQmeasure.__init__(self, data)
-        self.measure['name'] = 'IFLR'
-        self.measure['units'] = 'rate'
-        self.measure['type'] = 'value'
-    
-    def calculate(self):
-        count = 0
-        gops = []
-        gop = 0
-        for i in range(len(self.coded.frames['types'])):
-            gop += 1
-            if self.coded.frames['types'][i] == 'I':
-                count += 1
-                if i != 0:
-                    gops.append(gop)
-                gop = 0
-        gops.append(gop)
-        gops = array(gops, dtype=float)
-        loss = []
-        lim = mean(gops) + std(gops)
-        for i in range(len(gops)):
-            if gops[i] > lim:
-                loss.append(i)
-        rate = float(len(loss)) / float(count + len(loss))
-        self.measure['value'] = rate
-        return self.measure
+    def getBSm(self, measure):
+        return BSmeter(measure, self.codecdata).run()
 
 class PSNR(VQmeasure):
     def __init__(self, data, component='Y'):
