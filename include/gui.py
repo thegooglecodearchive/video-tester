@@ -76,11 +76,12 @@ class VTframe(wx.Frame, VT):
         self.bandwidth = wx.CheckBox(self.options_tab, -1, "Bandwidth")
         self.plr = wx.CheckBox(self.options_tab, -1, "Packet Loss Rate")
         self.pld = wx.CheckBox(self.options_tab, -1, "Packet Loss Distribution")
-        self.sizer_4_staticbox = wx.StaticBox(self.options_tab, -1, "QoS measures:")
-        self.seye = wx.CheckBox(self.options_tab, -1, "StreamEye")
-        self.refseye = wx.CheckBox(self.options_tab, -1, "refStreamEye")
-        self.gop = wx.CheckBox(self.options_tab, -1, "GOP")
-        self.iflr = wx.CheckBox(self.options_tab, -1, "IFLR")
+        self.sizer_15_staticbox = wx.StaticBox(self.options_tab, -1, "QoS measures:")
+        self.seye = wx.CheckBox(self.options_tab, -1, "Stream Eye")
+        self.refseye = wx.CheckBox(self.options_tab, -1, "refStream Eye")
+        self.gop = wx.CheckBox(self.options_tab, -1, "GOP size")
+        self.iflr = wx.CheckBox(self.options_tab, -1, "I Frame Loss Rate")
+        self.sizer_16_staticbox = wx.StaticBox(self.options_tab, -1, "BitStream measures:")
         self.ypsnr = wx.CheckBox(self.options_tab, -1, "Y-PSNR")
         self.upsnr = wx.CheckBox(self.options_tab, -1, "U-PSNR")
         self.vpsnr = wx.CheckBox(self.options_tab, -1, "V-PSNR")
@@ -154,9 +155,15 @@ class VTframe(wx.Frame, VT):
         self.sizer_5_staticbox.Lower()
         sizer_5 = wx.StaticBoxSizer(self.sizer_5_staticbox, wx.HORIZONTAL)
         grid_sizer_4 = wx.GridSizer(4, 3, 0, 0)
-        self.sizer_4_staticbox.Lower()
-        sizer_4 = wx.StaticBoxSizer(self.sizer_4_staticbox, wx.HORIZONTAL)
+        
+        sizer_14 = wx.BoxSizer(wx.VERTICAL)
+        self.sizer_16_staticbox.Lower()
+        sizer_16 = wx.StaticBoxSizer(self.sizer_16_staticbox, wx.HORIZONTAL)
+        grid_sizer_6 = wx.GridSizer(2, 2, 0, 0)
+        self.sizer_15_staticbox.Lower()
+        sizer_15 = wx.StaticBoxSizer(self.sizer_15_staticbox, wx.HORIZONTAL)
         grid_sizer_3 = wx.GridSizer(4, 2, 0, 0)
+        
         self.sizer_3_staticbox.Lower()
         sizer_3 = wx.StaticBoxSizer(self.sizer_3_staticbox, wx.HORIZONTAL)
         grid_sizer_2 = wx.GridSizer(4, 1, 0, 0)
@@ -203,14 +210,17 @@ class VTframe(wx.Frame, VT):
         grid_sizer_3.Add(self.bandwidth, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_3.Add(self.plr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_3.Add(self.pld, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-        sizer_4.Add(grid_sizer_3, 1, wx.EXPAND, 0)
-        sizer_1.Add(sizer_4, 1, wx.EXPAND, 0)
+        sizer_15.Add(grid_sizer_3, 1, wx.EXPAND, 0)
+        sizer_14.Add(sizer_15, 1, wx.EXPAND, 0)
+        grid_sizer_6.Add(self.seye, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+        grid_sizer_6.Add(self.refseye, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+        grid_sizer_6.Add(self.gop, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+        grid_sizer_6.Add(self.iflr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+        sizer_16.Add(grid_sizer_6, 1, wx.EXPAND, 0)
+        sizer_14.Add(sizer_16, 1, wx.EXPAND, 0)
+        sizer_1.Add(sizer_14, 1, wx.EXPAND, 0)
         grid_sizer_4.Add(self.ypsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-        grid_sizer_4.Add(self.seye, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-        grid_sizer_4.Add(self.refseye, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.upsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-        grid_sizer_4.Add(self.gop, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-        grid_sizer_4.Add(self.iflr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.vpsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.ssim, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         sizer_5.Add(grid_sizer_4, 1, wx.EXPAND, 0)
@@ -415,15 +425,17 @@ class VTframe(wx.Frame, VT):
         if self.pld.GetValue():
             qos.append('pld')
         conf['qos'] = qos
-        vq = []
+        bs = []
         if self.seye.GetValue():
-            vq.append('streameye')
+            bs.append('streameye')
         if self.refseye.GetValue():
-            vq.append('refstreameye')
+            bs.append('refstreameye')
         if self.gop.GetValue():
-            vq.append('gop')
+            bs.append('gop')
         if self.iflr.GetValue():
-            vq.append('iflr')
+            bs.append('iflr')
+        conf['bs'] = bs
+        vq = []
         if self.ypsnr.GetValue():
             vq.append('ypsnr')
         if self.upsnr.GetValue():
