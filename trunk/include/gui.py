@@ -79,6 +79,8 @@ class VTframe(wx.Frame, VT):
         self.sizer_4_staticbox = wx.StaticBox(self.options_tab, -1, "QoS measures:")
         self.seye = wx.CheckBox(self.options_tab, -1, "StreamEye")
         self.refseye = wx.CheckBox(self.options_tab, -1, "refStreamEye")
+        self.gop = wx.CheckBox(self.options_tab, -1, "GOP")
+        self.iflr = wx.CheckBox(self.options_tab, -1, "IFLR")
         self.ypsnr = wx.CheckBox(self.options_tab, -1, "Y-PSNR")
         self.upsnr = wx.CheckBox(self.options_tab, -1, "U-PSNR")
         self.vpsnr = wx.CheckBox(self.options_tab, -1, "V-PSNR")
@@ -203,10 +205,12 @@ class VTframe(wx.Frame, VT):
         grid_sizer_3.Add(self.pld, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         sizer_4.Add(grid_sizer_3, 1, wx.EXPAND, 0)
         sizer_1.Add(sizer_4, 1, wx.EXPAND, 0)
+        grid_sizer_4.Add(self.ypsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.seye, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.refseye, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-        grid_sizer_4.Add(self.ypsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.upsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+        grid_sizer_4.Add(self.gop, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+        grid_sizer_4.Add(self.iflr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.vpsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.ssim, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         sizer_5.Add(grid_sizer_4, 1, wx.EXPAND, 0)
@@ -416,6 +420,10 @@ class VTframe(wx.Frame, VT):
             vq.append('streameye')
         if self.refseye.GetValue():
             vq.append('refstreameye')
+        if self.gop.GetValue():
+            vq.append('gop')
+        if self.iflr.GetValue():
+            vq.append('iflr')
         if self.ypsnr.GetValue():
             vq.append('ypsnr')
         if self.upsnr.GetValue():
