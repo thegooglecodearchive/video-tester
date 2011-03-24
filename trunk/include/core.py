@@ -117,6 +117,7 @@ class Client(VT):
         from gstreamer import Gstreamer
         from sniffer import Sniffer
         from measures.qos import QoSmeter
+        from measures.bs import BSmeter
         from measures.vq import VQmeter
         try:
             server = ServerProxy('http://' + self.conf['ip'] + ':' + self.conf['port'])
@@ -143,12 +144,13 @@ class Client(VT):
         server.stop(self.conf['bitrate'], self.conf['framerate'])
         self.videodata, size = gstreamer.reference()
         self.packetdata = sniffer.parsePkts()
-        self.__loadData(size, self.conf['codec'])
+        self.codecdata, self.rawdata = self.__loadData(size, self.conf['codec'])
         qosm = QoSmeter(self.conf['qos'], self.packetdata).run()
-        vqm = VQmeter(self.conf['vq'], (self.videodata, self.packetdata)).run()
-        self.__saveMeasures(qosm + vqm)
+        bsm = BSmeter(self.conf['bs'], self.codecdata).run()
+        vqm = VQmeter(self.conf['vq'], (self.rawdata, self.codecdata, self.packetdata)).run()
+        self.__saveMeasures(qosm + bsm + vqm)
         vtLog.info("Client stopped!")
-        return qosm + vqm, self.conf['tempdir'] + self.conf['num']
+        return qosm + bsm + vqm, self.conf['tempdir'] + self.conf['num']
     
     def __ping(self):
         from scapy.all import IP, ICMP, send
@@ -162,11 +164,14 @@ class Client(VT):
     def __loadData(self, size, codec):
         vtLog.info("Loading videos...")
         from video import YUVvideo, CodedVideo
+        codecdata = {}
+        rawdata = {}
         for x in self.videodata.keys():
             if x != 'original':
-                self.videodata[x][0] = CodedVideo(self.videodata[x][0], codec)
-            self.videodata[x][1] = YUVvideo(self.videodata[x][1], size)
+                codecdata[x] = CodedVideo(self.videodata[x][0], codec)
+            rawdata[x] = YUVvideo(self.videodata[x][1], size)
             vtLog.info("+++")
+        return codecdata, rawdata
     
     def __saveMeasures(self, measures):
         vtLog.info("Saving measures...")
