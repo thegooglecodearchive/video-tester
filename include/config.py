@@ -1,10 +1,11 @@
 # coding=UTF8
 
 import logging
+from platform import processor
 
 CONF = 'VT.conf'
 TEMP = 'temp/'
-SERVERBIN = 'rtsp-server/x64/server'
+SERVERBIN = 'rtsp-server/' + processor() + '/server'
 SERVERPORT = 8000
 SERVERIFACE = 'eth0'
 
