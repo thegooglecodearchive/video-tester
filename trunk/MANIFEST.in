@@ -1,1 +1,2 @@
 include VT VT.conf README
+recursive-include rtsp-server *

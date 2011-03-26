@@ -5,23 +5,10 @@ from platform import processor
 from sys import exit
 import os
 
-def determinePath():
-    """Borrowed from wxglade.py"""
-    try:
-        root = __file__
-        if os.path.islink(root):
-            root = os.path.realpath(root)
-        return os.path.dirname(os.path.abspath(root))
-    except:
-        print "I'm sorry, but something is wrong."
-        print "There is no __file__ variable. Please contact the author."
-        exit()
-
-PATH = determinePath()
 USERPATH = os.getcwd()
 CONF = USERPATH + '/VT.conf'
 TEMP = USERPATH + '/temp/'
-SERVERBIN = PATH + 'rtsp-server/' + processor() + '/server'
+SERVERBIN = USERPATH + '/rtsp-server/' + processor() + '/server'
 SERVERPORT = 8000
 SERVERIFACE = 'eth0'
 
