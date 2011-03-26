@@ -1,14 +1,15 @@
 #! /usr/bin/env python
 # coding=UTF8
 
-from include.config import parseArgs, initLogger, vtLog
+from VideoTester.config import parseArgs, initLogger, vtLog
+from sys import exit
 
 if __name__ == '__main__':
     args = parseArgs()
     initLogger(args)
     if args.mode == "server":
-        from include.config import SERVERIP, SERVERPORT
-        from include.core import Server
+        from VideoTester.config import SERVERIP, SERVERPORT
+        from VideoTester.core import Server
         from SimpleXMLRPCServer import SimpleXMLRPCServer
         server = SimpleXMLRPCServer((SERVERIP, SERVERPORT), logRequests=False)
         server.register_instance(Server())
@@ -23,12 +24,12 @@ if __name__ == '__main__':
             vtLog.error("You need administrator privileges to run this program as client")
             exit()
         if args.gui:
-            from include.gui import ClientGUI
+            from VideoTester.gui import ClientGUI
             client = ClientGUI(0)
             client.MainLoop()
         else:
-            from include.config import CONF
-            from include.core import Client
+            from VideoTester.config import CONF
+            from VideoTester.core import Client
             if args.conf:
                 CONF = args.conf
             client = Client(CONF)
