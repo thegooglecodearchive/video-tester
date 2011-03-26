@@ -28,10 +28,19 @@ class VT:
 class Server(VT):
     def __init__(self):
         VT.__init__(self)
-        from config import SERVERPORT
+        from config import SERVERIP, SERVERPORT
+        from SimpleXMLRPCServer import SimpleXMLRPCServer
         self.videos = [''.join([self.path, x[1]]) for x in self.videos]
         self.servers = dict()
         self.port = SERVERPORT + 1
+        server = SimpleXMLRPCServer((SERVERIP, SERVERPORT), logRequests=False)
+        server.register_function(self.run)
+        server.register_function(self.stop)
+        try:
+            print 'Use Control-C to exit'
+            server.serve_forever()
+        except KeyboardInterrupt:
+            pass
         
     def run(self, bitrate, framerate):
         from subprocess import Popen, PIPE
