@@ -1,6 +1,7 @@
 # coding=UTF8
 
 from config import vtLog
+from sys import exit
 
 class VT:
     def __init__(self):
