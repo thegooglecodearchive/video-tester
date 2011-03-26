@@ -1,7 +1,7 @@
 # coding=UTF8
 
 from measures import Meter, Measure
-from include.config import vtLog
+from VideoTester.config import vtLog
 from numpy import *
 
 class BSmeter(Meter):

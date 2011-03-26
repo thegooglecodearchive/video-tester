@@ -1,6 +1,6 @@
 # coding=UTF8
 
-from include.config import vtLog
+from VideoTester.config import vtLog
 
 class Meter:
     def __init__(self):

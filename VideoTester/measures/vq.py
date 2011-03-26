@@ -3,7 +3,7 @@
 from measures import Meter, Measure
 from qos import QoSmeter
 from bs import BSmeter
-from include.config import vtLog
+from VideoTester.config import vtLog
 import math
 import cv
 
