@@ -1,6 +1,6 @@
 # coding=UTF8
 
-from config import vtLog
+from config import VTLOG
 from sys import exit
 
 class VT:
@@ -13,7 +13,7 @@ class VT:
             self.path = self.videos[0][1]
             self.videos.pop(0)
         except:
-            vtLog.error("Bad '" + CONF + "' file")
+            VTLOG.error("Bad '" + CONF + "' file")
             exit()
 
     def parseConf(self, file, section):
@@ -48,12 +48,12 @@ class Server(VT):
             try:
                 self.servers[key]['server'] = Popen(command, stdout=PIPE)
             except OSError, e:
-                vtLog.error(e)
+                VTLOG.error(e)
                 exit()
             self.servers[key]['port'] = self.port
             self.servers[key]['clients'] = 1
-            vtLog.info("Server running!")
-        vtLog.info("PID: " + str(self.servers[key]['server'].pid) + ", " + key + " server, connected clients: " + str(self.servers[key]['clients']))
+            VTLOG.info("Server running!")
+        VTLOG.info("PID: " + str(self.servers[key]['server'].pid) + ", " + key + " server, connected clients: " + str(self.servers[key]['clients']))
         return self.servers[key]['port']
     
     def stop(self, bitrate, framerate):
@@ -62,10 +62,10 @@ class Server(VT):
         if self.servers[key]['clients'] == 0:
             self.servers[key]['server'].terminate()
             self.servers[key]['server'].wait()
-            vtLog.info(key + " server: last client disconnected and server stopped")
+            VTLOG.info(key + " server: last client disconnected and server stopped")
             self.servers.pop(key)
         else:
-            vtLog.info(key + " server: client disconnected. Remaining: " + str(self.servers[key]['clients']))
+            VTLOG.info(key + " server: client disconnected. Remaining: " + str(self.servers[key]['clients']))
         return True
     
     def __freePort(self):
@@ -90,7 +90,7 @@ class Client(VT):
             try:
                 self.conf = dict(self.parseConf(file, "client"))
             except:
-                vtLog.error("Bad configuration file")
+                VTLOG.error("Bad configuration file")
                 exit()
         self.video = ''.join([self.path, dict(self.videos)[self.conf['video']]])
         self.conf['tempdir'] = TEMP + self.conf['video'] + '_' + self.conf['codec'] + '_' + self.conf['bitrate'] + '_' + self.conf['framerate'] + '_' + self.conf['protocols'] + '/'
@@ -104,14 +104,14 @@ class Client(VT):
             i = i + 1
             j = exists(self.conf['tempdir'] + num + '.yuv')
         if j:
-            vtLog.error("The TEMP directory is full")
+            VTLOG.error("The TEMP directory is full")
             exit()
         self.conf['num'] = num
 
     def run(self):
-        vtLog.info("Client running!")
-        vtLog.info("Server at " + self.conf['ip'])
-        vtLog.info("Evaluating: " + self.conf['video'] + " + " + self.conf['codec'] + " at " + self.conf['bitrate'] + " kbps and " + self.conf['framerate'] + " fps under " + self.conf['protocols'])
+        VTLOG.info("Client running!")
+        VTLOG.info("Server at " + self.conf['ip'])
+        VTLOG.info("Evaluating: " + self.conf['video'] + " + " + self.conf['codec'] + " at " + self.conf['bitrate'] + " kbps and " + self.conf['framerate'] + " fps under " + self.conf['protocols'])
         from xmlrpclib import ServerProxy
         from scapy.all import rdpcap
         from multiprocessing import Process, Queue
@@ -124,7 +124,7 @@ class Client(VT):
             server = ServerProxy('http://' + self.conf['ip'] + ':' + self.conf['port'])
             self.conf['rtspport'] = str(server.run(self.conf['bitrate'], self.conf['framerate']))
         except:
-            vtLog.error("Bad IP or port")
+            VTLOG.error("Bad IP or port")
             exit()
         sniffer = Sniffer(self.conf)
         gstreamer = Gstreamer(self.conf, self.video)
@@ -137,7 +137,7 @@ class Client(VT):
             sniffer.cap = rdpcap(q.get())
             child.join()
         except KeyboardInterrupt:
-            vtLog.warning("Keyboard interrupt!")
+            VTLOG.warning("Keyboard interrupt!")
             server.stop(self.conf['bitrate'], self.conf['framerate'])
             child.terminate()
             child.join()
@@ -150,20 +150,20 @@ class Client(VT):
         bsm = BSmeter(self.conf['bs'], self.codecdata).run()
         vqm = VQmeter(self.conf['vq'], (self.rawdata, self.codecdata, self.packetdata)).run()
         self.__saveMeasures(qosm + bsm + vqm)
-        vtLog.info("Client stopped!")
+        VTLOG.info("Client stopped!")
         return qosm + bsm + vqm, self.conf['tempdir'] + self.conf['num']
     
     def __ping(self):
         from scapy.all import IP, ICMP, send
         from time import sleep
         sleep(0.5)
-        vtLog.info("Pinging...")
+        VTLOG.info("Pinging...")
         for i in range(0, 4):
             send(IP(dst=self.conf['ip'])/ICMP(seq=i), verbose=False)
             sleep(0.5)
     
     def __loadData(self, size, codec):
-        vtLog.info("Loading videos...")
+        VTLOG.info("Loading videos...")
         from video import YUVvideo, CodedVideo
         codecdata = {}
         rawdata = {}
@@ -171,11 +171,11 @@ class Client(VT):
             if x != 'original':
                 codecdata[x] = CodedVideo(self.videodata[x][0], codec)
             rawdata[x] = YUVvideo(self.videodata[x][1], size)
-            vtLog.info("+++")
+            VTLOG.info("+++")
         return codecdata, rawdata
     
     def __saveMeasures(self, measures):
-        vtLog.info("Saving measures...")
+        VTLOG.info("Saving measures...")
         from pickle import dump
         for measure in measures:
             f = open(self.conf['tempdir'] + self.conf['num'] + '_' + measure['name'] + '.pkl', "wb")

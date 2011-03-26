@@ -2,7 +2,7 @@
 
 from scapy.all import *
 from time import time
-from config import vtLog
+from config import VTLOG
 
 class RTSPi(Packet):
     name = "RTSP interleaved"
@@ -23,13 +23,13 @@ class Sniffer:
         self.ping = {0:{}, 1:{}, 2:{}, 3:{}}
     
     def run(self, q, gui=False):
-        vtLog.info("Starting sniffer...")
+        VTLOG.info("Starting sniffer...")
         expr='host ' + self.conf['ip']
         cap = self.sniff(iface=self.conf['iface'], filter=expr)
         location = self.conf['tempdir'] + self.conf['num'] + '.cap'
         wrpcap(location, cap)
         q.put(location)
-        vtLog.info("Sniffer stopped")
+        VTLOG.info("Sniffer stopped")
 
     def sniff(count=0, prn = None, lfilter=None, *arg, **karg):
         #sniff() Scapy function modification
@@ -38,7 +38,7 @@ class Sniffer:
         s = L2socket(type=ETH_P_ALL, *arg, **karg)
         lst = []
         remain = None
-        vtLog.debug("Sniffer: loop started. Sniffing...")
+        VTLOG.debug("Sniffer: loop started. Sniffing...")
         while 1:
             sel = select([s],[],[],remain)
             if s in sel[0]:
@@ -53,7 +53,7 @@ class Sniffer:
                 aux = str(p)
                 #Look for a TEARDOWN packet to stop the loop
                 if (aux.find("TEARDOWN") != -1) and (aux.find("Public:") == -1):
-                    vtLog.debug("TEARDOWN found!")
+                    VTLOG.debug("TEARDOWN found!")
                     break
                 c += 1
                 if prn:
@@ -63,11 +63,11 @@ class Sniffer:
                 if count > 0 and c >= count:
                     break
         s.close()
-        vtLog.debug("Sniffer: loop terminated")
+        VTLOG.debug("Sniffer: loop terminated")
         return PacketList(lst,"Sniffed")
     
     def parsePkts(self):
-        vtLog.info("Starting packet parser...")
+        VTLOG.info("Starting packet parser...")
         if self.conf['protocols'] == "tcp":
             self.__parseTCP()
         else:
@@ -75,8 +75,8 @@ class Sniffer:
         self.__normalize()
         a = str(self.sequences[-1]-len(self.sequences)+1)
         b = str(len(self.sequences))
-        vtLog.debug(b + " RTP packets received, " + a + " losses")
-        vtLog.info("Packet parser stopped")
+        VTLOG.debug(b + " RTP packets received, " + a + " losses")
+        VTLOG.info("Packet parser stopped")
         return self.lengths, self.times, self.sequences, self.timestamps, self.ping
     
     def __prepare(self, p):
@@ -89,15 +89,15 @@ class Sniffer:
                 if line.find("m=video") != -1:
                     fields = line.split(" ")
                     self.ptype = int(fields[-1])
-                    vtLog.debug("Payload type found!")
+                    VTLOG.debug("Payload type found!")
             for line in lines:
                 if line.find("rtpmap:" + str(self.ptype)) != -1:
                     fields = line.split("/")
                     self.clock = int(fields[-1])
-                    vtLog.debug("Clock rate found!")
+                    VTLOG.debug("Clock rate found!")
         elif (str(p).find("PLAY") != -1) and (str(p).find("Public:") == -1):
             play = True
-            vtLog.debug("PLAY found!")
+            VTLOG.debug("PLAY found!")
         return play
     
     def __bubbleSort(self, list, list1=None, list2=None):
@@ -127,20 +127,20 @@ class Sniffer:
                     self.times.append(p.time)
                     self.sequences.append(p[RTP].sequence)
                     self.timestamps.append(p[RTP].timestamp)
-                    vtLog.debug("UDP/RTP packet found. Sequence: " + str(p[RTP].sequence))
+                    VTLOG.debug("UDP/RTP packet found. Sequence: " + str(p[RTP].sequence))
         
         play = False
         for p in self.cap:
             if p.haslayer(IP):
                 if (str(p).find("PAUSE") != -1) and play:
-                    vtLog.debug("PAUSE found!")
+                    VTLOG.debug("PAUSE found!")
                     break
                 if not play:
                     play = self.__prepare(p)
                 elif play and (p[IP].src == self.conf['ip']) and (p.haslayer(UDP)) and (str(p).find("GStreamer") == -1):
                     extract(p)
         self.__bubbleSort(self.sequences, self.times, self.timestamps)
-        vtLog.debug("Sequence list sorted")
+        VTLOG.debug("Sequence list sorted")
     
     def __parseTCP(self):
         def extract(p):
@@ -162,11 +162,11 @@ class Sniffer:
                         self.times.append(float(aux[1]) / 1000000)
                         self.sequences.append(p[RTP].sequence)
                         self.timestamps.append(p[RTP].timestamp)
-                        vtLog.debug("TCP/RTP packet found. Sequence: " + str(p[RTP].sequence))
+                        VTLOG.debug("TCP/RTP packet found. Sequence: " + str(p[RTP].sequence))
             else:
                 #Avoid PACKETLOSS
                 a = loss + len('PACKETLOSS')
-                vtLog.debug("PACKETLOSS!")
+                VTLOG.debug("PACKETLOSS!")
             p = RTSPi(str(b)[a:len(b)])
             ptype = ord(str(p[RTSPi].payload)[1]) & 0x7F
             #Let's find the next RTSP packet
@@ -175,7 +175,7 @@ class Sniffer:
                 if stream.find('PACKETLOSS') == 0:
                     #Avoid PACKETLOSS
                     stream = stream[len('PACKETLOSS'):len(stream)]
-                    vtLog.debug("PACKETLOSS!")
+                    VTLOG.debug("PACKETLOSS!")
                 else:
                     #Find next packet
                     stream = stream[1:len(stream)]
@@ -202,7 +202,7 @@ class Sniffer:
         for p in self.cap:
             if p.haslayer(IP):
                 if (str(p).find("PAUSE") != -1) and play:
-                    vtLog.debug("PAUSE found!")
+                    VTLOG.debug("PAUSE found!")
                     break
                 if not play:
                     play = self.__prepare(p)
@@ -211,9 +211,9 @@ class Sniffer:
                     packetlist.append(p)
                     seqlist.append(p[TCP].seq)
                     lenlist.append(len(p[TCP].payload))
-                    vtLog.debug("TCP packet appended. Sequence: " + str(p[TCP].seq))
+                    VTLOG.debug("TCP packet appended. Sequence: " + str(p[TCP].seq))
         seqlist, packetlist, lenlist = self.__bubbleSort(seqlist, packetlist, lenlist)
-        vtLog.debug("Sequence list sorted")
+        VTLOG.debug("Sequence list sorted")
         #Locate packet losses
         fill = fillGaps(seqlist, lenlist)
         stream = ''
@@ -227,9 +227,9 @@ class Sniffer:
             stream = ''.join([stream, 'ENDOFPACKET'])
             if fill[i]:
                 #Mark PACKETLOSS
-                vtLog.debug("PACKETLOSS!")
+                VTLOG.debug("PACKETLOSS!")
                 stream = ''.join([stream, 'PACKETLOSS'])
-        vtLog.debug("TCP payloads assembled")
+        VTLOG.debug("TCP payloads assembled")
         stream = RTSPi(stream)
         extract(stream)
     

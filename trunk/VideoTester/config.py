@@ -5,16 +5,10 @@ from platform import processor
 from sys import exit
 import os
 
-USERPATH = os.getcwd()
-CONF = USERPATH + '/VT.conf'
-TEMP = USERPATH + '/temp/'
-SERVERBIN = USERPATH + '/rtsp-server/' + processor() + '/server'
-SERVERPORT = 8000
-SERVERIFACE = 'eth0'
-
-vtLog = logging.getLogger("VT")
-
 def createDir(dir):
+    """
+    asdfas
+    """
     from os import mkdir
     try:
         mkdir(dir)
@@ -31,13 +25,13 @@ def initLogger(args):
     fh = logging.FileHandler(TEMP + 'client.log')
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
-    vtLog.addHandler(fh)
+    VTLOG.addHandler(fh)
     if not hasattr(args, 'gui') or not args.gui:
         ch = logging.StreamHandler()
         ch.setLevel(logging.INFO)
         ch.setFormatter(formatter)
-        vtLog.addHandler(ch)
-    vtLog.setLevel(logging.DEBUG)
+        VTLOG.addHandler(ch)
+    VTLOG.setLevel(logging.DEBUG)
 
 def parseArgs():
     import textwrap
@@ -66,4 +60,19 @@ def getIpAddress(ifname):
         struct.pack('256s', ifname[:15])
     )[20:24])
 
+#: VT logger.
+VTLOG = logging.getLogger("VT")
+#: Current working path (result of ``os.getcwd()`` function).
+USERPATH = os.getcwd()
+#: Path to the configuration file (relative to ``USERPATH``).
+CONF = USERPATH + '/VT.conf'
+#: Path to the temporal directory (relative to ``USERPATH``).
+TEMP = USERPATH + '/temp/'
+#: Path to the RTSP server binaries (relative to ``USERPATH``).
+SERVERBIN = USERPATH + '/rtsp-server/' + processor() + '/server'
+#: Server interface.
+SERVERIFACE = 'eth0'
+#: Server IP.
 SERVERIP = getIpAddress(SERVERIFACE)
+#: Base port.
+SERVERPORT = 8000

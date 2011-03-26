@@ -1,0 +1,187 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1. VideoTester.config &mdash; VideoTester v0.1 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="VideoTester v0.1 documentation" href="index.html" />
+    <link rel="up" title="Modules" href="modules.html" />
+    <link rel="next" title="2. VideoTester.core" href="core.html" />
+    <link rel="prev" title="Modules" href="modules.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="core.html" title="2. VideoTester.core"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="Modules"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">VideoTester v0.1 documentation</a> &raquo;</li>
+          <li><a href="modules.html" accesskey="U">Modules</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="videotester-config">
+<h1>1. <tt class="docutils literal"><span class="pre">VideoTester.config</span></tt><a class="headerlink" href="#videotester-config" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-VideoTester.config">
+<span id="constants"></span><h2>1.2. Constants<a class="headerlink" href="#module-VideoTester.config" title="Permalink to this headline">¶</a></h2>
+<dl class="data">
+<dt id="VideoTester.config.VTLOG">
+<tt class="descclassname">VideoTester.config.</tt><tt class="descname">VTLOG</tt><a class="headerlink" href="#VideoTester.config.VTLOG" title="Permalink to this definition">¶</a></dt>
+<dd><p>VT logger.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="VideoTester.config.USERPATH">
+<tt class="descclassname">VideoTester.config.</tt><tt class="descname">USERPATH</tt><a class="headerlink" href="#VideoTester.config.USERPATH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current working path (result of <tt class="docutils literal"><span class="pre">os.getcwd()</span></tt> function).</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="VideoTester.config.CONF">
+<tt class="descclassname">VideoTester.config.</tt><tt class="descname">CONF</tt><a class="headerlink" href="#VideoTester.config.CONF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the configuration file (relative to <tt class="docutils literal"><span class="pre">USERPATH</span></tt>).</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="VideoTester.config.TEMP">
+<tt class="descclassname">VideoTester.config.</tt><tt class="descname">TEMP</tt><a class="headerlink" href="#VideoTester.config.TEMP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the temporal directory (relative to <tt class="docutils literal"><span class="pre">USERPATH</span></tt>).</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="VideoTester.config.SERVERBIN">
+<tt class="descclassname">VideoTester.config.</tt><tt class="descname">SERVERBIN</tt><a class="headerlink" href="#VideoTester.config.SERVERBIN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the RTSP server binaries (relative to <tt class="docutils literal"><span class="pre">USERPATH</span></tt>).</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="VideoTester.config.SERVERIFACE">
+<tt class="descclassname">VideoTester.config.</tt><tt class="descname">SERVERIFACE</tt><a class="headerlink" href="#VideoTester.config.SERVERIFACE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Server interface.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="VideoTester.config.SERVERIP">
+<tt class="descclassname">VideoTester.config.</tt><tt class="descname">SERVERIP</tt><a class="headerlink" href="#VideoTester.config.SERVERIP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Server IP.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="VideoTester.config.SERVERPORT">
+<tt class="descclassname">VideoTester.config.</tt><tt class="descname">SERVERPORT</tt><a class="headerlink" href="#VideoTester.config.SERVERPORT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base port.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-VideoTester.config">
+<span id="functions"></span><h2>1.2. Functions<a class="headerlink" href="#module-VideoTester.config" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="VideoTester.config.createDir">
+<tt class="descclassname">VideoTester.config.</tt><tt class="descname">createDir</tt><big>(</big><em>dir</em><big>)</big><a class="headerlink" href="#VideoTester.config.createDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>asdfas</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1. <tt class="docutils literal"><span class="pre">VideoTester.config</span></tt></a><ul>
+<li><a class="reference internal" href="#module-VideoTester.config">1.1. Constants</a></li>
+<li><a class="reference internal" href="#module-VideoTester.config">1.2. Functions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="previous chapter">Modules</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="core.html"
+                        title="next chapter">2. <tt class="docutils literal"><span class="pre">VideoTester.core</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/config.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="core.html" title="2. VideoTester.core"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="Modules"
+             >previous</a> |</li>
+        <li><a href="index.html">VideoTester v0.1 documentation</a> &raquo;</li>
+          <li><a href="modules.html" >Modules</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Iñaki Úcar.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

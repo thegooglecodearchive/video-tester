@@ -5,7 +5,7 @@ import pygst
 pygst.require("0.10")
 from gst import parse_launch, MESSAGE_EOS, MESSAGE_ERROR, STATE_PAUSED, STATE_READY, STATE_NULL, STATE_PLAYING
 from time import sleep
-from config import vtLog
+from config import VTLOG
 from pickle import dump
 
 class Gstreamer:
@@ -41,7 +41,7 @@ class Gstreamer:
             sleep(0.5)
             self.pipeline.set_state(STATE_READY)
             self.pipeline.set_state(STATE_NULL)
-            vtLog.debug("GStreamer: MESSAGE_EOS received")
+            VTLOG.debug("GStreamer: MESSAGE_EOS received")
             self.loop.quit()
         elif t == MESSAGE_ERROR:
             self.pipeline.set_state(STATE_PAUSED)
@@ -49,8 +49,8 @@ class Gstreamer:
             self.pipeline.set_state(STATE_READY)
             self.pipeline.set_state(STATE_NULL)
             e, d = msg.parse_error()
-            vtLog.error("GStreamer: MESSAGE_ERROR received")
-            vtLog.error(e)
+            VTLOG.error("GStreamer: MESSAGE_ERROR received")
+            VTLOG.error(e)
             self.loop.quit()
         return True
     
@@ -59,10 +59,10 @@ class Gstreamer:
         self.pipeline.set_state(STATE_PLAYING)
         self.loop = MainLoop()
         self.loop.run()
-        vtLog.debug("GStreamer: Loop stopped")
+        VTLOG.debug("GStreamer: Loop stopped")
     
     def receiver(self):
-        vtLog.info("Starting GStreamer receiver...")
+        VTLOG.info("Starting GStreamer receiver...")
         self.pipeline = parse_launch('rtspsrc name=source ! tee name=t ! queue ! ' + self.depay + ' ! filesink name=sink1 t. ! queue \
                 ! decodebin ! videorate skip-to-first=True ! video/x-raw-yuv,framerate=' + self.conf['framerate'] + '/1 ! filesink name=sink2')
         source = self.pipeline.get_by_name('source')
@@ -79,10 +79,10 @@ class Gstreamer:
         pad = sink2.get_pad("sink")
         pad.connect("notify::caps", self.__notifyCaps)
         self.__play()
-        vtLog.info("GStreamer receiver stopped")
+        VTLOG.info("GStreamer receiver stopped")
     
     def reference(self):
-        vtLog.info("Making reference...")
+        VTLOG.info("Making reference...")
         self.pipeline = parse_launch('filesrc name=source ! decodebin ! videorate ! video/x-raw-yuv,framerate=' + self.conf['framerate'] + '/1  ! filesink name=sink1')
         source = self.pipeline.get_by_name('source')
         sink1 = self.pipeline.get_by_name('sink1')
@@ -107,7 +107,7 @@ class Gstreamer:
         self.files['coded'].append(location)
         sink3.props.location = location
         self.__play()
-        vtLog.info("Reference made")
+        VTLOG.info("Reference made")
         return self.files, self.size
     
     def __notifyCaps(self, pad, args):
