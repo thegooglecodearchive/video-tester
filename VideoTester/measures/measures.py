@@ -1,6 +1,6 @@
 # coding=UTF8
 
-from VideoTester.config import vtLog
+from VideoTester.config import VTLOG
 
 class Meter:
     def __init__(self):
@@ -9,7 +9,7 @@ class Meter:
     def run(self):
         measures = []
         for measure in self.measures:
-            vtLog.info("- Measuring: " + measure.measure['name'])
+            VTLOG.info("- Measuring: " + measure.measure['name'])
             measures.append(measure.calculate())
         return measures
 

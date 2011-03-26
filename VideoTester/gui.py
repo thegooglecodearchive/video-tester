@@ -8,7 +8,7 @@ from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
 from matplotlib.backends.backend_wxagg import NavigationToolbar2Wx as Toolbar
 from core import VT, Client
 import pickle
-from config import vtLog
+from config import VTLOG
 import logging
 import pygst
 pygst.require("0.10")
@@ -112,7 +112,7 @@ class VTframe(wx.Frame, VT):
         self.hdlr = FuncLog(update)
         self.hdlr.setLevel(logging.DEBUG)
         self.hdlr.setFormatter(formatter)
-        vtLog.addHandler(self.hdlr)
+        VTLOG.addHandler(self.hdlr)
         self.Bind(wx.EVT_IDLE, self.onIdle)
         # end wxGlade
 
@@ -254,7 +254,7 @@ class VTframe(wx.Frame, VT):
                 self.pipeline.set_state(STATE_NULL)
             except:
                 pass
-            vtLog.removeHandler(self.hdlr)
+            VTLOG.removeHandler(self.hdlr)
             self.Destroy() # frame
     
     def onAbout(self, event):

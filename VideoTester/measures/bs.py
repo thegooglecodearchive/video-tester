@@ -1,13 +1,13 @@
 # coding=UTF8
 
 from measures import Meter, Measure
-from VideoTester.config import vtLog
+from VideoTester.config import VTLOG
 from numpy import *
 
 class BSmeter(Meter):
     def __init__(self, selected, data):
         Meter.__init__(self)
-        vtLog.info("Starting BSmeter...")
+        VTLOG.info("Starting BSmeter...")
         if 'streameye' in selected:
             self.measures.append(StreamEye(data))
         if 'refstreameye' in selected:

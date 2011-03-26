@@ -1,12 +1,12 @@
 # coding=UTF8
 
 from measures import Meter, Measure
-from VideoTester.config import vtLog
+from VideoTester.config import VTLOG
 
 class QoSmeter(Meter):
     def __init__(self, selected, data):
         Meter.__init__(self)
-        vtLog.info("Starting QoSmeter...")
+        VTLOG.info("Starting QoSmeter...")
         if 'latency' in selected:
             self.measures.append(Latency(data))
         if 'delta' in selected:

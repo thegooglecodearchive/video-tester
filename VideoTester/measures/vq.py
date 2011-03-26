@@ -3,14 +3,14 @@
 from measures import Meter, Measure
 from qos import QoSmeter
 from bs import BSmeter
-from VideoTester.config import vtLog
+from VideoTester.config import VTLOG
 import math
 import cv
 
 class VQmeter(Meter):
     def __init__(self, selected, data):
         Meter.__init__(self)
-        vtLog.info("Starting VQmeter...")
+        VTLOG.info("Starting VQmeter...")
         if 'ypsnr' in selected:
             self.measures.append(PSNR(data))
         if 'upsnr' in selected:
