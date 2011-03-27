@@ -59,23 +59,27 @@
 <dl class="class">
 <dt id="VideoTester.core.VT">
 <em class="property">class </em><tt class="descclassname">VideoTester.core.</tt><tt class="descname">VT</tt><a class="headerlink" href="#VideoTester.core.VT" title="Permalink to this definition">¶</a></dt>
-<dd><p>Superclass that gathers several common functionalities to the client and the server.</p>
+<dd><p>Superclass that gathers several common functionalities shared by the client and the server.</p>
 <dl class="attribute">
 <dt id="VideoTester.core.VT.videos">
 <tt class="descname">videos</tt><a class="headerlink" href="#VideoTester.core.VT.videos" title="Permalink to this definition">¶</a></dt>
-<dd><p>The list of <tt class="docutils literal"><span class="pre">(id,</span> <span class="pre">name)</span></tt> pairs for each available video.</p>
+<dd><p>List of <tt class="docutils literal"><span class="pre">(id,</span> <span class="pre">name)</span></tt> pairs for each available video.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="VideoTester.core.VT.path">
 <tt class="descname">path</tt><a class="headerlink" href="#VideoTester.core.VT.path" title="Permalink to this definition">¶</a></dt>
-<dd><p>The path to the video directory.</p>
+<dd><p>Path to the video directory.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="VideoTester.core.VT.run">
 <tt class="descname">run</tt><big>(</big><big>)</big><a class="headerlink" href="#VideoTester.core.VT.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Do nothing. This method MUST be overwritten by the subclasses.</p>
+<dd><p>Do nothing.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method MUST be overwritten by the subclasses.</p>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -84,10 +88,16 @@
 <dd><p>Extract a section from a configuration file.</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><cite>file</cite> (string): Path to the configuration file.
-<cite>section</cite> (string): Section to extract.</dd>
+<dd><div class="first last line-block">
+<div class="line"><cite>file</cite> (string): Path to the configuration file.</div>
+<div class="line"><cite>section</cite> (string): Section to be extracted.</div>
+</div>
+</dd>
 <dt>Returns:</dt>
-<dd>A list of <tt class="docutils literal"><span class="pre">(name,</span> <span class="pre">value)</span></tt> pairs for each option in the given section.</dd>
+<dd><div class="first last line-block">
+<div class="line">A list of <tt class="docutils literal"><span class="pre">(name,</span> <span class="pre">value)</span></tt> pairs for each option in the given section.</div>
+</div>
+</dd>
 </dl>
 </dd></dl>
 
@@ -96,23 +106,24 @@
 <dl class="class">
 <dt id="VideoTester.core.Server">
 <em class="property">class </em><tt class="descclassname">VideoTester.core.</tt><tt class="descname">Server</tt><a class="headerlink" href="#VideoTester.core.Server" title="Permalink to this definition">¶</a></dt>
-<dd><p>VT Server class.</p>
+<dd><p>Bases: <a class="reference internal" href="#VideoTester.core.VT" title="VideoTester.core.VT"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.core.VT</span></tt></a></p>
+<p>VT Server class.</p>
 <dl class="attribute">
 <dt id="VideoTester.core.Server.videos">
 <tt class="descname">videos</tt><a class="headerlink" href="#VideoTester.core.Server.videos" title="Permalink to this definition">¶</a></dt>
-<dd><p>The list of available videos (complete path).</p>
+<dd><p>List of available videos (complete path).</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="VideoTester.core.Server.servers">
 <tt class="descname">servers</tt><a class="headerlink" href="#VideoTester.core.Server.servers" title="Permalink to this definition">¶</a></dt>
-<dd><p>A dictionary of running RTSP servers.</p>
+<dd><p>Dictionary of running RTSP servers.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="VideoTester.core.Server.port">
 <tt class="descname">port</tt><a class="headerlink" href="#VideoTester.core.Server.port" title="Permalink to this definition">¶</a></dt>
-<dd><p>An integer with the next RTSP port. It increments each time by one.</p>
+<dd><p>Next RTSP port (integer). It increases each time by one.</p>
 </dd></dl>
 
 <dl class="method">
@@ -122,12 +133,21 @@
 or add a client (if running).</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><cite>bitrate</cite> (string or integer): The bitrate (in kbps).
-<cite>framerate</cite> (string or integer): The framerate (in fps).</dd>
+<dd><div class="first last line-block">
+<div class="line"><cite>bitrate</cite> (string or integer): The bitrate (in kbps).</div>
+<div class="line"><cite>framerate</cite> (string or integer): The framerate (in fps).</div>
+</div>
+</dd>
 <dt>Returns:</dt>
-<dd>The RTSP server port in integer format.</dd>
+<dd><div class="first last line-block">
+<div class="line">The RTSP server port in integer format.</div>
+</div>
+</dd>
 <dt>Raises:</dt>
-<dd><cite>OSError</cite>: An error ocurred running subprocess.</dd>
+<dd><div class="first last line-block">
+<div class="line"><cite>OSError</cite>: An error ocurred while running subprocess.</div>
+</div>
+</dd>
 </dl>
 </dd></dl>
 
@@ -138,23 +158,16 @@ or add a client (if running).</p>
 or remove a client (if remaining clients).</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><cite>bitrate</cite> (string or integer): The bitrate (in kbps).
-<cite>framerate</cite> (string or integer): The framerate (in fps).</dd>
+<dd><div class="first last line-block">
+<div class="line"><cite>bitrate</cite> (string or integer): The bitrate (in kbps).</div>
+<div class="line"><cite>framerate</cite> (string or integer): The framerate (in fps).</div>
+</div>
+</dd>
 <dt>Returns:</dt>
-<dd>True.</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="VideoTester.core.Server.parseConf">
-<tt class="descname">parseConf</tt><big>(</big><em>file</em>, <em>section</em><big>)</big><a class="headerlink" href="#VideoTester.core.Server.parseConf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract a section from a configuration file.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><cite>file</cite> (string): Path to the configuration file.
-<cite>section</cite> (string): Section to extract.</dd>
-<dt>Returns:</dt>
-<dd>A list of <tt class="docutils literal"><span class="pre">(name,</span> <span class="pre">value)</span></tt> pairs for each option in the given section.</dd>
+<dd><div class="first last line-block">
+<div class="line">True.</div>
+</div>
+</dd>
 </dl>
 </dd></dl>
 
@@ -163,20 +176,8 @@ or remove a client (if remaining clients).</p>
 <dl class="class">
 <dt id="VideoTester.core.Client">
 <em class="property">class </em><tt class="descclassname">VideoTester.core.</tt><tt class="descname">Client</tt><big>(</big><em>file</em>, <em>gui=False</em><big>)</big><a class="headerlink" href="#VideoTester.core.Client" title="Permalink to this definition">¶</a></dt>
-<dd><p>VT Client class.</p>
-<dl class="method">
-<dt id="VideoTester.core.Client.parseConf">
-<tt class="descname">parseConf</tt><big>(</big><em>file</em>, <em>section</em><big>)</big><a class="headerlink" href="#VideoTester.core.Client.parseConf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract a section from a configuration file.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><cite>file</cite> (string): Path to the configuration file.
-<cite>section</cite> (string): Section to extract.</dd>
-<dt>Returns:</dt>
-<dd>A list of <tt class="docutils literal"><span class="pre">(name,</span> <span class="pre">value)</span></tt> pairs for each option in the given section.</dd>
-</dl>
-</dd></dl>
-
+<dd><p>Bases: <a class="reference internal" href="#VideoTester.core.VT" title="VideoTester.core.VT"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.core.VT</span></tt></a></p>
+<p>VT Client class.</p>
 </dd></dl>
 
 </div>

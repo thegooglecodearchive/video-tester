@@ -3,3 +3,4 @@
 
 .. automodule:: VideoTester.gstreamer
     :members:
+    :show-inheritance:

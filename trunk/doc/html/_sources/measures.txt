@@ -3,3 +3,4 @@
 
 .. automodule:: VideoTester.measures.measures
     :members:
+    :show-inheritance:

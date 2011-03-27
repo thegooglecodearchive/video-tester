@@ -9,23 +9,23 @@ from sys import exit
 
 class VT:
     """
-    Superclass that gathers several common functionalities to the client and the server.
+    Superclass that gathers several common functionalities shared by the client and the server.
     """
     def __init__(self):
         """
-        Parse the video section that MUST be present in the default configuration file (stored in ``CONF``).
+        Parse the video section that MUST be present in the default configuration file (stored in :const:`VideoTester.config.CONF`).
         This section MUST contain the same videos at the client and the server.
         
         Raises:
-            `Except`: Bad configuration file or path.
+            | `Except`: Bad configuration file or path.
         """
         from config import CONF
         try:
-            #: The list of ``(id, name)`` pairs for each available video.
+            #: List of ``(id, name)`` pairs for each available video.
             self.videos = self.parseConf(CONF, "video")
             if self.videos[0][0] != 'path':
                 raise
-            #: The path to the video directory.
+            #: Path to the video directory.
             self.path = self.videos[0][1]
             self.videos.pop(0)
         except:
@@ -34,7 +34,10 @@ class VT:
     
     def run(self):
         """
-        Do nothing. This method MUST be overwritten by the subclasses.
+        Do nothing.
+        
+        .. note::
+            This method MUST be overwritten by the subclasses.
         """
         pass
 
@@ -43,11 +46,11 @@ class VT:
         Extract a section from a configuration file.
         
         Args:
-            `file` (string): Path to the configuration file.
-            `section` (string): Section to extract.
+            | `file` (string): Path to the configuration file.
+            | `section` (string): Section to be extracted.
         
         Returns:
-            A list of ``(name, value)`` pairs for each option in the given section.
+            | A list of ``(name, value)`` pairs for each option in the given section.
         """
         import ConfigParser
         config = ConfigParser.RawConfigParser()
@@ -64,21 +67,21 @@ class Server(VT):
         """
         VT.__init__(self)
         from config import SERVERIP, SERVERPORT
-        #: The list of available videos (complete path).
+        #: List of available videos (complete path).
         self.videos = [''.join([self.path, x[1]]) for x in self.videos]
-        #: A dictionary of running RTSP servers.
+        #: Dictionary of running RTSP servers.
         self.servers = dict()
-        #: An integer with the next RTSP port. It increments each time by one.
+        #: Next RTSP port (integer). It increases each time by one.
         self.port = SERVERPORT + 1
         self.__launch(SERVERIP, SERVERPORT)
     
     def __launch(self, ip, port):
         """
-        Launch the XMLRPC server and offer the methods ``run()`` and ``stop()``
+        Launch the XMLRPC server and offer the methods :meth:`VideoTester.core.Server.run` and :meth:`VideoTester.core.Server.stop`
         
         Args:
-            `ip` (string): The server IP address.
-            `port` (string): The XMLRPC listen port.
+            | `ip` (string): The server IP address.
+            | `port` (string): The XMLRPC listen port.
         """
         from SimpleXMLRPCServer import SimpleXMLRPCServer
         server = SimpleXMLRPCServer((ip, port), logRequests=False)
@@ -96,14 +99,14 @@ class Server(VT):
         or add a client (if running).
         
         Args:
-            `bitrate` (string or integer): The bitrate (in kbps).
-            `framerate` (string or integer): The framerate (in fps).
+            | `bitrate` (string or integer): The bitrate (in kbps).
+            | `framerate` (string or integer): The framerate (in fps).
         
         Returns:
-            The RTSP server port in integer format.
+            | The RTSP server port in integer format.
         
         Raises:
-            `OSError`: An error ocurred running subprocess.
+            | `OSError`: An error ocurred while running subprocess.
         """
         from subprocess import Popen, PIPE
         from config import SERVERBIN
@@ -133,11 +136,11 @@ class Server(VT):
         or remove a client (if remaining clients).
         
         Args:
-            `bitrate` (string or integer): The bitrate (in kbps).
-            `framerate` (string or integer): The framerate (in fps).
+            | `bitrate` (string or integer): The bitrate (in kbps).
+            | `framerate` (string or integer): The framerate (in fps).
         
         Returns:
-            True.
+            | True.
         """
         key = str(bitrate) + ' kbps - ' + str(framerate) + ' fps'
         self.servers[key]['clients'] = self.servers[key]['clients'] - 1
@@ -152,12 +155,12 @@ class Server(VT):
     
     def __freePort(self):
         """
-        Check that the ``self.port`` is unused.
+        Check that the :attr:`VideoTester.core.Server.port` is unused.
         
         Returns:
-            Boolean:
-            * True if port is unused.
-            * False if port is in use.
+            | Boolean:
+            |   True if port is unused.
+            |   False if port is in use.
         """
         from socket import socket
         try:

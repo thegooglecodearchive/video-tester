@@ -3,4 +3,4 @@
 
 .. automodule:: VideoTester.gui
     :members:
-    :inherited-members:
+    :show-inheritance:

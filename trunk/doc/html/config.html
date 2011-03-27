@@ -57,7 +57,7 @@
   <div class="section" id="videotester-config">
 <h1>1. <tt class="docutils literal"><span class="pre">VideoTester.config</span></tt><a class="headerlink" href="#videotester-config" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-VideoTester.config">
-<span id="constants"></span><h2>1.1. Constants<a class="headerlink" href="#module-VideoTester.config" title="Permalink to this headline">¶</a></h2>
+<span id="constants"></span><h2>1.2. Constants<a class="headerlink" href="#module-VideoTester.config" title="Permalink to this headline">¶</a></h2>
 <dl class="data">
 <dt id="VideoTester.config.VTLOG">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">VTLOG</tt><a class="headerlink" href="#VideoTester.config.VTLOG" title="Permalink to this definition">¶</a></dt>
@@ -67,25 +67,25 @@
 <dl class="data">
 <dt id="VideoTester.config.USERPATH">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">USERPATH</tt><a class="headerlink" href="#VideoTester.config.USERPATH" title="Permalink to this definition">¶</a></dt>
-<dd><p>Current working path (result of <tt class="docutils literal"><span class="pre">os.getcwd()</span></tt> function).</p>
+<dd><p>Current working path (result of <tt class="xref py py-func docutils literal"><span class="pre">os.getcwd()</span></tt> function).</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="VideoTester.config.CONF">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">CONF</tt><a class="headerlink" href="#VideoTester.config.CONF" title="Permalink to this definition">¶</a></dt>
-<dd><p>Path to the default configuration file (relative to <tt class="docutils literal"><span class="pre">USERPATH</span></tt>).</p>
+<dd><p>Path to the default configuration file (relative to <a class="reference internal" href="#VideoTester.config.USERPATH" title="VideoTester.config.USERPATH"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.USERPATH</span></tt></a>).</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="VideoTester.config.TEMP">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">TEMP</tt><a class="headerlink" href="#VideoTester.config.TEMP" title="Permalink to this definition">¶</a></dt>
-<dd><p>Path to the temporal directory (relative to <tt class="docutils literal"><span class="pre">USERPATH</span></tt>).</p>
+<dd><p>Path to the temporal directory (relative to <a class="reference internal" href="#VideoTester.config.USERPATH" title="VideoTester.config.USERPATH"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.USERPATH</span></tt></a>).</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="VideoTester.config.SERVERBIN">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">SERVERBIN</tt><a class="headerlink" href="#VideoTester.config.SERVERBIN" title="Permalink to this definition">¶</a></dt>
-<dd><p>Path to the RTSP server binaries (relative to <tt class="docutils literal"><span class="pre">USERPATH</span></tt>).</p>
+<dd><p>Path to the RTSP server binaries (relative to <a class="reference internal" href="#VideoTester.config.USERPATH" title="VideoTester.config.USERPATH"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.USERPATH</span></tt></a>).</p>
 </dd></dl>
 
 <dl class="data">
@@ -106,26 +106,46 @@
 <dd><p>Server base port.</p>
 </dd></dl>
 
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference internal" href="#VideoTester.config.CONF" title="VideoTester.config.CONF"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.CONF</span></tt></a>, <a class="reference internal" href="#VideoTester.config.TEMP" title="VideoTester.config.TEMP"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.TEMP</span></tt></a>, <a class="reference internal" href="#VideoTester.config.SERVERBIN" title="VideoTester.config.SERVERBIN"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.SERVERBIN</span></tt></a> and <a class="reference internal" href="#VideoTester.config.SERVERPORT" title="VideoTester.config.SERVERPORT"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.SERVERPORT</span></tt></a> MAY be replaced by more suitable values.</p>
 </div>
-<div class="section" id="functions">
-<h2>1.2. Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-VideoTester.config"></span><dl class="function">
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><a class="reference internal" href="#VideoTester.config.SERVERIFACE" title="VideoTester.config.SERVERIFACE"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.SERVERIFACE</span></tt></a> MUST be replaced according to your network configuration, and <a class="reference internal" href="#VideoTester.config.SERVERIP" title="VideoTester.config.SERVERIP"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.SERVERIP</span></tt></a> will be set automatically.</p>
+</div>
+</div>
+<div class="section" id="module-VideoTester.config">
+<span id="functions"></span><h2>1.2. Functions<a class="headerlink" href="#module-VideoTester.config" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="VideoTester.config.makeDir">
+<tt class="descclassname">VideoTester.config.</tt><tt class="descname">makeDir</tt><big>(</big><em>dir</em><big>)</big><a class="headerlink" href="#VideoTester.config.makeDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the directory <cite>dir</cite> if not exists.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="VideoTester.config.initLogger">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">initLogger</tt><big>(</big><em>args</em><big>)</big><a class="headerlink" href="#VideoTester.config.initLogger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize the VT logger: this function sets a formatter, the handlers and their logging levels.</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><cite>args</cite>: The command-line arguments returned by <tt class="docutils literal"><span class="pre">parseArgs()</span></tt>.</dd>
+<dd><div class="first last line-block">
+<div class="line"><cite>args</cite>: The command-line arguments returned by <a class="reference internal" href="#VideoTester.config.parseArgs" title="VideoTester.config.parseArgs"><tt class="xref py py-func docutils literal"><span class="pre">parseArgs()</span></tt></a>.</div>
+</div>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="VideoTester.config.parseArgs">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">parseArgs</tt><big>(</big><big>)</big><a class="headerlink" href="#VideoTester.config.parseArgs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse the command-line arguments with the standard module <tt class="docutils literal"><span class="pre">argparse</span></tt>.</p>
+<dd><p>Parse the command-line arguments with the standard module <tt class="xref py py-mod docutils literal"><span class="pre">argparse</span></tt>.</p>
 <dl class="docutils">
 <dt>Returns:</dt>
-<dd>An object with the argument strings as attributes.</dd>
+<dd><div class="first last line-block">
+<div class="line">An object with the argument strings as attributes.</div>
+</div>
+</dd>
 </dl>
 </dd></dl>
 
@@ -135,9 +155,15 @@
 <dd><p>Get the IP address of a network interface.</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><cite>ifname</cite> (string): The interface name.</dd>
+<dd><div class="first last line-block">
+<div class="line"><cite>ifname</cite> (string): The interface name.</div>
+</div>
+</dd>
 <dt>Returns:</dt>
-<dd>A string with the IP address.</dd>
+<dd><div class="first last line-block">
+<div class="line">A string with the IP address.</div>
+</div>
+</dd>
 </dl>
 </dd></dl>
 
@@ -157,7 +183,7 @@
   <ul>
 <li><a class="reference internal" href="#">1. <tt class="docutils literal"><span class="pre">VideoTester.config</span></tt></a><ul>
 <li><a class="reference internal" href="#module-VideoTester.config">1.1. Constants</a></li>
-<li><a class="reference internal" href="#functions">1.2. Functions</a></li>
+<li><a class="reference internal" href="#module-VideoTester.config">1.2. Functions</a></li>
 </ul>
 </li>
 </ul>
