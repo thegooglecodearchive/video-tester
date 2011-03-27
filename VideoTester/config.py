@@ -1,13 +1,17 @@
 # coding=UTF8
+## This file is part of VideoTester
+## See http://video-tester.googlecode.com for more information
+## Copyright 2011 Iñaki Úcar <i.ucar86@gmail.com>
+## This program is published under a GPLv3 license
 
 import logging
 from platform import processor
 from sys import exit
 import os
 
-def createDir(dir):
+def makeDir(dir):
     """
-    asdfas
+    Makes the directory ``dir`` if not exists.
     """
     from os import mkdir
     try:
@@ -16,12 +20,18 @@ def createDir(dir):
         pass
 
 def initLogger(args):
+    """
+    Inits the VT logger: it sets a formatter, the handlers and their logging levels.
+    
+    Args:
+        `args`: The command-line arguments returned by ``parseArgs()``.
+    """
     if args.mode == "server":
         formatter = logging.Formatter("[%(asctime)s VTServer] %(levelname)s : %(message)s")
     else:
         logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
         formatter = logging.Formatter("[%(asctime)s VTClient] %(levelname)s : %(message)s")
-    createDir(TEMP)
+    makeDir(TEMP)
     fh = logging.FileHandler(TEMP + 'client.log')
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
@@ -34,13 +44,24 @@ def initLogger(args):
     VTLOG.setLevel(logging.DEBUG)
 
 def parseArgs():
+    """
+    Parses the command-line arguments with the standard module ``argparse``.
+    
+    Returns:
+        An object with the argument strings as attributes.
+    """
     import textwrap
     import argparse
     parser = argparse.ArgumentParser(
             formatter_class=argparse.RawDescriptionHelpFormatter,
             description=textwrap.dedent('''\
-                Video Tester, by Iñaki Úcar (june 2011), mailto:i.ucar86@gmail.com
-                ------------------------------------------------------------------
+                VideoTester 0.1
+                ===============
+                  Video Quality Assessment Tool
+                  Visit http://video-tester.googlecode.com for support and updates
+                  
+                  Copyright 2011 Iñaki Úcar <i.ucar86@gmail.com>
+                  This program is published under a GPLv3 license
                 '''))
     subparsers = parser.add_subparsers(title='subcommands', dest='mode')
     parser_server = subparsers.add_parser('server', help='launch VT as server')
@@ -50,6 +71,15 @@ def parseArgs():
     return parser.parse_args()
 
 def getIpAddress(ifname):
+    """
+    Gets the IP address of a network interface.
+    
+    Args:
+        `ifname` (string): The interface name.
+    
+    Returns:
+        A string with the IP address.
+    """
     import socket
     import fcntl
     import struct
@@ -64,7 +94,7 @@ def getIpAddress(ifname):
 VTLOG = logging.getLogger("VT")
 #: Current working path (result of ``os.getcwd()`` function).
 USERPATH = os.getcwd()
-#: Path to the configuration file (relative to ``USERPATH``).
+#: Path to the default configuration file (relative to ``USERPATH``).
 CONF = USERPATH + '/VT.conf'
 #: Path to the temporal directory (relative to ``USERPATH``).
 TEMP = USERPATH + '/temp/'
@@ -74,5 +104,5 @@ SERVERBIN = USERPATH + '/rtsp-server/' + processor() + '/server'
 SERVERIFACE = 'eth0'
 #: Server IP.
 SERVERIP = getIpAddress(SERVERIFACE)
-#: Base port.
+#: Server base port.
 SERVERPORT = 8000

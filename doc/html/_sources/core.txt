@@ -3,3 +3,4 @@
 
 .. automodule:: VideoTester.core
     :members:
+    :inherited-members:

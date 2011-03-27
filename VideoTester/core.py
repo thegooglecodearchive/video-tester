@@ -1,39 +1,87 @@
 # coding=UTF8
+## This file is part of VideoTester
+## See http://video-tester.googlecode.com for more information
+## Copyright 2011 Iñaki Úcar <i.ucar86@gmail.com>
+## This program is published under a GPLv3 license
 
 from config import VTLOG
 from sys import exit
 
 class VT:
+    """
+    Superclass that gathers several common functionalities to the client and the server.
+    """
     def __init__(self):
+        """
+        Parses the video section that MUST be present in the default configuration file (stored in ``CONF``).
+        This section MUST contains the same videos at the client and the server.
+        
+        Raises:
+            `Except`: Bad configuration file or path.
+        """
         from config import CONF
         try:
+            #: The list of ``(id, name)`` pairs for each available video.
             self.videos = self.parseConf(CONF, "video")
             if self.videos[0][0] != 'path':
                 raise
+            #: The path to the video directory.
             self.path = self.videos[0][1]
             self.videos.pop(0)
         except:
-            VTLOG.error("Bad '" + CONF + "' file")
+            VTLOG.error("Bad '" + CONF + "' file or path")
             exit()
+    
+    def run(self):
+        """
+        Does nothing. This method MUST be overwritten by the subclasses.
+        """
+        pass
 
     def parseConf(self, file, section):
+        """
+        Extracts a section from a configuration file.
+        
+        Args:
+            `file` (string): Path to the configuration file.
+            `section` (string): Section to extract.
+        
+        Returns:
+            A list of ``(name, value)`` pairs for each option in the given section.
+        """
         import ConfigParser
         config = ConfigParser.RawConfigParser()
         config.read(file)
         return config.items(section)
-    
-    def run(self):
-        pass
 
 class Server(VT):
+    """
+    VT Server class.
+    """
     def __init__(self):
+        """
+        Some initialization code.
+        """
         VT.__init__(self)
         from config import SERVERIP, SERVERPORT
-        from SimpleXMLRPCServer import SimpleXMLRPCServer
+        #: The list of available videos (complete path).
         self.videos = [''.join([self.path, x[1]]) for x in self.videos]
+        #: A dictionary of running RTSP servers.
         self.servers = dict()
+        #: An integer with the next RTSP port. It increments each time by one.
         self.port = SERVERPORT + 1
-        server = SimpleXMLRPCServer((SERVERIP, SERVERPORT), logRequests=False)
+        self.__launch(SERVERIP, SERVERPORT)
+    
+    def __launch(self, ip, port):
+        """
+        Launches the XMLRPC server and offers the methods ``run()`` and ``stop()``
+        
+        Args:
+            `ip` (string): The server IP address.
+            `port` (string): The XMLRPC listen port.
+        """
+        from SimpleXMLRPCServer import SimpleXMLRPCServer
+        server = SimpleXMLRPCServer((ip, port), logRequests=False)
         server.register_function(self.run)
         server.register_function(self.stop)
         try:
@@ -43,6 +91,20 @@ class Server(VT):
             pass
         
     def run(self, bitrate, framerate):
+        """
+        Runs a subprocess for an RTSP server with a given bitrate and framerate (if not running)
+        or adds a client (if running).
+        
+        Args:
+            `bitrate` (string or integer): The bitrate (in kbps).
+            `framerate` (string or integer): The framerate (in fps).
+        
+        Returns:
+            The RTSP server port in integer format.
+        
+        Raises:
+            `OSError`: An error ocurred running subprocess.
+        """
         from subprocess import Popen, PIPE
         from config import SERVERBIN
         key = str(bitrate) + ' kbps - ' + str(framerate) + ' fps'
@@ -66,6 +128,17 @@ class Server(VT):
         return self.servers[key]['port']
     
     def stop(self, bitrate, framerate):
+        """
+        Stops an RTSP server with a given bitrate and framerate (if no remaining clients)
+        or removes a client.
+        
+        Args:
+            `bitrate` (string or integer): The bitrate (in kbps).
+            `framerate` (string or integer): The framerate (in fps).
+        
+        Returns:
+            True.
+        """
         key = str(bitrate) + ' kbps - ' + str(framerate) + ' fps'
         self.servers[key]['clients'] = self.servers[key]['clients'] - 1
         if self.servers[key]['clients'] == 0:
@@ -78,6 +151,14 @@ class Server(VT):
         return True
     
     def __freePort(self):
+        """
+        Checks that the self.port is unused.
+        
+        Returns:
+            Boolean:
+            * True if port is unused.
+            * False if port is in use.
+        """
         from socket import socket
         try:
             s = socket()
@@ -88,10 +169,13 @@ class Server(VT):
         return True
 
 class Client(VT):
+    """
+    VT Client class.
+    """
     def __init__(self, file, gui=False):
         VT.__init__(self)
         from os.path import exists
-        from config import TEMP, createDir
+        from config import TEMP, makeDir
         self.gui = gui
         if self.gui:
             self.conf = file
@@ -103,7 +187,7 @@ class Client(VT):
                 exit()
         self.video = ''.join([self.path, dict(self.videos)[self.conf['video']]])
         self.conf['tempdir'] = TEMP + self.conf['video'] + '_' + self.conf['codec'] + '_' + self.conf['bitrate'] + '_' + self.conf['framerate'] + '_' + self.conf['protocols'] + '/'
-        createDir(self.conf['tempdir'])
+        makeDir(self.conf['tempdir'])
         i , j = 0, True
         while j and i < 100:
             if i < 10:
