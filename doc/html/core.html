@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. VideoTester.core &mdash; VideoTester v0.1 documentation</title>
+    <title>2. VideoTester.core — Client and server base classes &mdash; VideoTester v0.1 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -25,8 +25,8 @@
     <link rel="shortcut icon" href="_static/VTfavicon.png"/>
     <link rel="top" title="VideoTester v0.1 documentation" href="index.html" />
     <link rel="up" title="Module Reference" href="modules.html" />
-    <link rel="next" title="3. VideoTester.gstreamer" href="gstreamer.html" />
-    <link rel="prev" title="1. VideoTester.config" href="config.html" /> 
+    <link rel="next" title="3. VideoTester.gstreamer — Video processing with GStreamer bindings" href="gstreamer.html" />
+    <link rel="prev" title="1. VideoTester.config — Common constants and functions" href="config.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,10 +39,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="gstreamer.html" title="3. VideoTester.gstreamer"
+          <a href="gstreamer.html" title="3. VideoTester.gstreamer — Video processing with GStreamer bindings"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="config.html" title="1. VideoTester.config"
+          <a href="config.html" title="1. VideoTester.config — Common constants and functions"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">VideoTester v0.1 documentation</a> &raquo;</li>
           <li><a href="modules.html" accesskey="U">Module Reference</a> &raquo;</li> 
@@ -55,11 +55,24 @@
           <div class="body">
             
   <div class="section" id="module-VideoTester.core">
-<span id="videotester-core"></span><h1>2. <tt class="docutils literal"><span class="pre">VideoTester.core</span></tt><a class="headerlink" href="#module-VideoTester.core" title="Permalink to this headline">¶</a></h1>
+<span id="videotester-core-client-and-server-base-classes"></span><h1>2. <tt class="docutils literal"><span class="pre">VideoTester.core</span></tt> &#8212; Client and server base classes<a class="headerlink" href="#module-VideoTester.core" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="VideoTester.core.VT">
 <em class="property">class </em><tt class="descclassname">VideoTester.core.</tt><tt class="descname">VT</tt><a class="headerlink" href="#VideoTester.core.VT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Superclass that gathers several common functionalities shared by the client and the server.</p>
+<p><strong>On init:</strong> Parse the <cite>video</cite> section.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This section MUST be present in the default configuration file (see <a class="reference internal" href="config.html#VideoTester.config.CONF" title="VideoTester.config.CONF"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.CONF</span></tt></a>)
+and MUST contain the same videos at the client and the server.</p>
+</div>
+<dl class="docutils">
+<dt>Raises:</dt>
+<dd><div class="first last line-block">
+<div class="line"><cite>Except</cite>: Bad configuration file or path.</div>
+</div>
+</dd>
+</dl>
 <dl class="attribute">
 <dt id="VideoTester.core.VT.videos">
 <tt class="descname">videos</tt><a class="headerlink" href="#VideoTester.core.VT.videos" title="Permalink to this definition">¶</a></dt>
@@ -108,6 +121,7 @@
 <em class="property">class </em><tt class="descclassname">VideoTester.core.</tt><tt class="descname">Server</tt><a class="headerlink" href="#VideoTester.core.Server" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#VideoTester.core.VT" title="VideoTester.core.VT"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.core.VT</span></tt></a></p>
 <p>VT Server class.</p>
+<p><strong>On init:</strong> Some initialization code.</p>
 <dl class="attribute">
 <dt id="VideoTester.core.Server.videos">
 <tt class="descname">videos</tt><a class="headerlink" href="#VideoTester.core.Server.videos" title="Permalink to this definition">¶</a></dt>
@@ -178,6 +192,64 @@ or remove a client (if remaining clients).</p>
 <em class="property">class </em><tt class="descclassname">VideoTester.core.</tt><tt class="descname">Client</tt><big>(</big><em>file</em>, <em>gui=False</em><big>)</big><a class="headerlink" href="#VideoTester.core.Client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#VideoTester.core.VT" title="VideoTester.core.VT"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.core.VT</span></tt></a></p>
 <p>VT Client class.</p>
+<p><strong>On init:</strong> Some initialization code.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><div class="first last line-block">
+<div class="line"><cite>file</cite> (string or dictionary): Path to configuration file (string) or parsed configuration file (dictionary).</div>
+<div class="line"><cite>gui</cite> (boolean):</div>
+<div class="line-block">
+<div class="line">True if <a class="reference internal" href="#VideoTester.core.Client" title="VideoTester.core.Client"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.core.Client</span></tt></a> is called from GUI.</div>
+<div class="line">False otherwise.</div>
+</div>
+</div>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If <tt class="docutils literal"><span class="pre">gui</span> <span class="pre">==</span> <span class="pre">True</span></tt>, <cite>file</cite> MUST be a dictionary. Otherwise, <cite>file</cite> MUST be a string.</p>
+</div>
+<dl class="docutils">
+<dt>Raises:</dt>
+<dd><div class="first last line-block">
+<div class="line"><cite>Exception</cite>: Bad configuration file or path.</div>
+</div>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="VideoTester.core.Client.conf">
+<tt class="descname">conf</tt><a class="headerlink" href="#VideoTester.core.Client.conf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of configuration options.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.core.Client.video">
+<tt class="descname">video</tt><a class="headerlink" href="#VideoTester.core.Client.video" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the selected video.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoTester.core.Client.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="headerlink" href="#VideoTester.core.Client.run" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Run client and perform all the operations:</dt>
+<dd><ul class="first last simple">
+<li>Connect to the server.</li>
+<li>Receive video while sniffing packets.</li>
+<li>Close connection.</li>
+<li>Process data and extract information.</li>
+<li>Run meters.</li>
+</ul>
+</dd>
+<dt>Returns:</dt>
+<dd><div class="first last line-block">
+<div class="line">A list of measures (see [_]).</div>
+<div class="line">The path to the temporary directory plus files prefix: <cite>&lt;path-to-tempdir&gt;/&lt;prefix&gt;</cite></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -193,10 +265,10 @@ or remove a client (if remaining clients).</p>
             </a></p>
   <h4>Previous topic</h4>
   <p class="topless"><a href="config.html"
-                        title="previous chapter">1. <tt class="docutils literal docutils literal"><span class="pre">VideoTester.config</span></tt></a></p>
+                        title="previous chapter">1. <tt class="docutils literal docutils literal"><span class="pre">VideoTester.config</span></tt> &#8212; Common constants and functions</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="gstreamer.html"
-                        title="next chapter">3. <tt class="docutils literal"><span class="pre">VideoTester.gstreamer</span></tt></a></p>
+                        title="next chapter">3. <tt class="docutils literal"><span class="pre">VideoTester.gstreamer</span></tt> &#8212; Video processing with GStreamer bindings</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/core.txt"
@@ -229,10 +301,10 @@ or remove a client (if remaining clients).</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="gstreamer.html" title="3. VideoTester.gstreamer"
+          <a href="gstreamer.html" title="3. VideoTester.gstreamer — Video processing with GStreamer bindings"
              >next</a> |</li>
         <li class="right" >
-          <a href="config.html" title="1. VideoTester.config"
+          <a href="config.html" title="1. VideoTester.config — Common constants and functions"
              >previous</a> |</li>
         <li><a href="index.html">VideoTester v0.1 documentation</a> &raquo;</li>
           <li><a href="modules.html" >Module Reference</a> &raquo;</li> 

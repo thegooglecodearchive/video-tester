@@ -13,8 +13,11 @@ class VT:
     """
     def __init__(self):
         """
-        Parse the video section that MUST be present in the default configuration file (stored in :const:`VideoTester.config.CONF`).
-        This section MUST contain the same videos at the client and the server.
+        **On init:** Parse the `video` section.
+        
+        .. warning::
+            This section MUST be present in the default configuration file (see :const:`VideoTester.config.CONF`)
+            and MUST contain the same videos at the client and the server.
         
         Raises:
             | `Except`: Bad configuration file or path.
@@ -63,7 +66,7 @@ class Server(VT):
     """
     def __init__(self):
         """
-        Some initialization code.
+        **On init:** Some initialization code.
         """
         VT.__init__(self)
         from config import SERVERIP, SERVERPORT
@@ -177,7 +180,19 @@ class Client(VT):
     """
     def __init__(self, file, gui=False):
         """
-        Some initialization code.
+        **On init:** Some initialization code.
+        
+        Args:
+            | `file` (string or dictionary): Path to configuration file (string) or parsed configuration file (dictionary).
+            | `gui` (boolean):
+            |   True if :class:`VideoTester.core.Client` is called from GUI.
+            |   False otherwise.
+        
+        .. warning::
+            If ``gui == True``, `file` MUST be a dictionary. Otherwise, `file` MUST be a string.
+        
+        Raises:
+            | `Exception`: Bad configuration file or path.
         """
         VT.__init__(self)
         from os.path import exists
@@ -186,10 +201,12 @@ class Client(VT):
             self.conf = file
         else:
             try:
+                #: Dictionary of configuration options.
                 self.conf = dict(self.parseConf(file, "client"))
             except:
-                VTLOG.error("Bad configuration file")
+                VTLOG.error("Bad configuration file or path")
                 exit()
+        #: Path to the selected video.
         self.video = ''.join([self.path, dict(self.videos)[self.conf['video']]])
         self.conf['tempdir'] = TEMP + self.conf['video'] + '_' + self.conf['codec'] + '_' + self.conf['bitrate'] + '_' + self.conf['framerate'] + '_' + self.conf['protocols'] + '/'
         makeDir(self.conf['tempdir'])
@@ -204,9 +221,22 @@ class Client(VT):
         if j:
             VTLOG.error("The TEMP directory is full")
             exit()
+        #: Numerical prefix for temporary files.
         self.conf['num'] = num
 
     def run(self):
+        """
+        Run client and perform all the operations:
+         * Connect to the server.
+         * Receive video while sniffing packets.
+         * Close connection.
+         * Process data and extract information.
+         * Run meters.
+        
+        Returns:
+            | A list of measures (see [_]).
+            | The path to the temporary directory plus files prefix: `<path-to-tempdir>/<prefix>`
+        """
         VTLOG.info("Client running!")
         VTLOG.info("Server at " + self.conf['ip'])
         VTLOG.info("Evaluating: " + self.conf['video'] + " + " + self.conf['codec'] + " at " + self.conf['bitrate'] + " kbps and " + self.conf['framerate'] + " fps under " + self.conf['protocols'])
@@ -241,17 +271,20 @@ class Client(VT):
             child.join()
             exit()
         server.stop(self.conf['bitrate'], self.conf['framerate'])
-        self.videodata, size = gstreamer.reference()
-        self.packetdata = sniffer.parsePkts()
-        self.codecdata, self.rawdata = self.__loadData(size, self.conf['codec'])
-        qosm = QoSmeter(self.conf['qos'], self.packetdata).run()
-        bsm = BSmeter(self.conf['bs'], self.codecdata).run()
-        vqm = VQmeter(self.conf['vq'], (self.rawdata, self.codecdata, self.packetdata)).run()
+        videodata, size = gstreamer.reference()
+        packetdata = sniffer.parsePkts()
+        codecdata, rawdata = self.__loadData(videodata, size, self.conf['codec'])
+        qosm = QoSmeter(self.conf['qos'], packetdata).run()
+        bsm = BSmeter(self.conf['bs'], codecdata).run()
+        vqm = VQmeter(self.conf['vq'], (rawdata, codecdata, packetdata)).run()
         self.__saveMeasures(qosm + bsm + vqm)
         VTLOG.info("Client stopped!")
         return qosm + bsm + vqm, self.conf['tempdir'] + self.conf['num']
     
     def __ping(self):
+        """
+        Ping to server (4 echoes).
+        """
         from scapy.all import IP, ICMP, send
         from time import sleep
         sleep(0.5)
@@ -260,19 +293,35 @@ class Client(VT):
             send(IP(dst=self.conf['ip'])/ICMP(seq=i), verbose=False)
             sleep(0.5)
     
-    def __loadData(self, size, codec):
+    def __loadData(self, videodata, size, codec):
+        """
+        Load raw video data and coded video data.
+        
+        Args:
+            | `videodata` (see :attr:`VideoTester.gstreamer.Gstreamer.files`):
+        
+        Returns:
+            | Coded video data object (see :class:`VideoTester.video.YUVvideo`).
+            | Raw video data object (see :class:`VideoTester.video.CodedVideo`).
+        """
         VTLOG.info("Loading videos...")
         from video import YUVvideo, CodedVideo
         codecdata = {}
         rawdata = {}
-        for x in self.videodata.keys():
+        for x in videodata.keys():
             if x != 'original':
-                codecdata[x] = CodedVideo(self.videodata[x][0], codec)
-            rawdata[x] = YUVvideo(self.videodata[x][1], size)
+                codecdata[x] = CodedVideo(videodata[x][0], codec)
+            rawdata[x] = YUVvideo(videodata[x][1], size)
             VTLOG.info("+++")
         return codecdata, rawdata
     
     def __saveMeasures(self, measures):
+        """
+        Save measures to disc (with standard module :mod:`pickle`).
+        
+        Args:
+            | `measures`: List of measures.
+        """
         VTLOG.info("Saving measures...")
         from pickle import dump
         for measure in measures:

@@ -1,5 +1,5 @@
-``VideoTester.measures.qos``
-============================
+``VideoTester.measures.qos`` --- QoS measures
+=============================================
 
 .. automodule:: VideoTester.measures.qos
     :members:

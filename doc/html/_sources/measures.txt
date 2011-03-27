@@ -1,5 +1,5 @@
-``VideoTester.measures.measures``
-=================================
+``VideoTester.measures.measures`` --- Generic superclasses
+==========================================================
 
 .. automodule:: VideoTester.measures.measures
     :members:
