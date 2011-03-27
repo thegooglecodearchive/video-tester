@@ -13,8 +13,8 @@ class VT:
     """
     def __init__(self):
         """
-        Parses the video section that MUST be present in the default configuration file (stored in ``CONF``).
-        This section MUST contains the same videos at the client and the server.
+        Parse the video section that MUST be present in the default configuration file (stored in ``CONF``).
+        This section MUST contain the same videos at the client and the server.
         
         Raises:
             `Except`: Bad configuration file or path.
@@ -34,13 +34,13 @@ class VT:
     
     def run(self):
         """
-        Does nothing. This method MUST be overwritten by the subclasses.
+        Do nothing. This method MUST be overwritten by the subclasses.
         """
         pass
 
     def parseConf(self, file, section):
         """
-        Extracts a section from a configuration file.
+        Extract a section from a configuration file.
         
         Args:
             `file` (string): Path to the configuration file.
@@ -74,7 +74,7 @@ class Server(VT):
     
     def __launch(self, ip, port):
         """
-        Launches the XMLRPC server and offers the methods ``run()`` and ``stop()``
+        Launch the XMLRPC server and offer the methods ``run()`` and ``stop()``
         
         Args:
             `ip` (string): The server IP address.
@@ -92,8 +92,8 @@ class Server(VT):
         
     def run(self, bitrate, framerate):
         """
-        Runs a subprocess for an RTSP server with a given bitrate and framerate (if not running)
-        or adds a client (if running).
+        Run a subprocess for an RTSP server with a given bitrate and framerate (if not running)
+        or add a client (if running).
         
         Args:
             `bitrate` (string or integer): The bitrate (in kbps).
@@ -129,8 +129,8 @@ class Server(VT):
     
     def stop(self, bitrate, framerate):
         """
-        Stops an RTSP server with a given bitrate and framerate (if no remaining clients)
-        or removes a client.
+        Stop an RTSP server with a given bitrate and framerate (if no remaining clients)
+        or remove a client (if remaining clients).
         
         Args:
             `bitrate` (string or integer): The bitrate (in kbps).
@@ -152,7 +152,7 @@ class Server(VT):
     
     def __freePort(self):
         """
-        Checks that the self.port is unused.
+        Check that the ``self.port`` is unused.
         
         Returns:
             Boolean:
@@ -173,11 +173,13 @@ class Client(VT):
     VT Client class.
     """
     def __init__(self, file, gui=False):
+        """
+        Some initialization code.
+        """
         VT.__init__(self)
         from os.path import exists
         from config import TEMP, makeDir
-        self.gui = gui
-        if self.gui:
+        if gui:
             self.conf = file
         else:
             try:
@@ -222,7 +224,7 @@ class Client(VT):
         sniffer = Sniffer(self.conf)
         gstreamer = Gstreamer(self.conf, self.video)
         q = Queue()
-        child = Process(target=sniffer.run, args=(q, self.gui))
+        child = Process(target=sniffer.run, args=(q,))
         try:
             child.start()
             self.__ping()

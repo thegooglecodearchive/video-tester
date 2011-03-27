@@ -3,3 +3,4 @@
 
 .. automodule:: VideoTester.measures.vq
     :members:
+    :inherited-members:
