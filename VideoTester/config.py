@@ -11,7 +11,7 @@ import os
 
 def makeDir(dir):
     """
-    Make the directory ``dir`` if not exists.
+    Make the directory `dir` if not exists.
     """
     from os import mkdir
     try:
@@ -24,7 +24,7 @@ def initLogger(args):
     Initialize the VT logger: this function sets a formatter, the handlers and their logging levels.
     
     Args:
-        `args`: The command-line arguments returned by ``parseArgs()``.
+        | `args`: The command-line arguments returned by :func:`parseArgs()`.
     """
     if args.mode == "server":
         formatter = logging.Formatter("[%(asctime)s VTServer] %(levelname)s : %(message)s")
@@ -45,10 +45,10 @@ def initLogger(args):
 
 def parseArgs():
     """
-    Parse the command-line arguments with the standard module ``argparse``.
+    Parse the command-line arguments with the standard module :mod:`argparse`.
     
     Returns:
-        An object with the argument strings as attributes.
+        | An object with the argument strings as attributes.
     """
     import textwrap
     import argparse
@@ -75,10 +75,10 @@ def getIpAddress(ifname):
     Get the IP address of a network interface.
     
     Args:
-        `ifname` (string): The interface name.
+        | `ifname` (string): The interface name.
     
     Returns:
-        A string with the IP address.
+        | A string with the IP address.
     """
     import socket
     import fcntl
@@ -92,13 +92,13 @@ def getIpAddress(ifname):
 
 #: VT logger.
 VTLOG = logging.getLogger("VT")
-#: Current working path (result of ``os.getcwd()`` function).
+#: Current working path (result of :func:`os.getcwd()` function).
 USERPATH = os.getcwd()
-#: Path to the default configuration file (relative to ``USERPATH``).
+#: Path to the default configuration file (relative to :const:`VideoTester.config.USERPATH`).
 CONF = USERPATH + '/VT.conf'
-#: Path to the temporal directory (relative to ``USERPATH``).
+#: Path to the temporal directory (relative to :const:`VideoTester.config.USERPATH`).
 TEMP = USERPATH + '/temp/'
-#: Path to the RTSP server binaries (relative to ``USERPATH``).
+#: Path to the RTSP server binaries (relative to :const:`VideoTester.config.USERPATH`).
 SERVERBIN = USERPATH + '/rtsp-server/' + processor() + '/server'
 #: Server interface.
 SERVERIFACE = 'eth0'

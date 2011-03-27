@@ -3,3 +3,4 @@
 
 .. automodule:: VideoTester.sniffer
     :members:
+    :show-inheritance:
