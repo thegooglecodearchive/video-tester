@@ -17,7 +17,7 @@ clean:
 	-rm -f MANIFEST
 
 sdist:
-	-svn remove $(DOC)
+	-svn remove $(DOC) --force
 	-rm -rf $(DIST)
 	-make -C $(MAKEFILE) html
 	-cp -rf $(BUILDDIR) .
