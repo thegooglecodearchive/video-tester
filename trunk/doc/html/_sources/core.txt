@@ -1,5 +1,5 @@
-``VideoTester.core``
-====================
+``VideoTester.core`` --- Client and server base classes
+=======================================================
 
 .. automodule:: VideoTester.core
     :members:

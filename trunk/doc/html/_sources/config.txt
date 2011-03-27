@@ -1,5 +1,5 @@
-``VideoTester.config``
-======================
+``VideoTester.config`` --- Common constants and functions
+=========================================================
 
 Constants
 ---------
