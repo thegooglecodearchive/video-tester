@@ -26,7 +26,7 @@ class Sniffer:
         self.timestamps = []
         self.ping = {0:{}, 1:{}, 2:{}, 3:{}}
     
-    def run(self, q, gui=False):
+    def run(self, q):
         VTLOG.info("Starting sniffer...")
         expr='host ' + self.conf['ip']
         cap = self.sniff(iface=self.conf['iface'], filter=expr)

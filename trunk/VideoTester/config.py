@@ -11,7 +11,7 @@ import os
 
 def makeDir(dir):
     """
-    Makes the directory ``dir`` if not exists.
+    Make the directory ``dir`` if not exists.
     """
     from os import mkdir
     try:
@@ -21,7 +21,7 @@ def makeDir(dir):
 
 def initLogger(args):
     """
-    Inits the VT logger: it sets a formatter, the handlers and their logging levels.
+    Initialize the VT logger: this function sets a formatter, the handlers and their logging levels.
     
     Args:
         `args`: The command-line arguments returned by ``parseArgs()``.
@@ -45,7 +45,7 @@ def initLogger(args):
 
 def parseArgs():
     """
-    Parses the command-line arguments with the standard module ``argparse``.
+    Parse the command-line arguments with the standard module ``argparse``.
     
     Returns:
         An object with the argument strings as attributes.
@@ -72,7 +72,7 @@ def parseArgs():
 
 def getIpAddress(ifname):
     """
-    Gets the IP address of a network interface.
+    Get the IP address of a network interface.
     
     Args:
         `ifname` (string): The interface name.

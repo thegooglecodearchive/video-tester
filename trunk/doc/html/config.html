@@ -22,6 +22,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/VTfavicon.png"/>
     <link rel="top" title="VideoTester v0.1 documentation" href="index.html" />
     <link rel="up" title="Module Reference" href="modules.html" />
     <link rel="next" title="2. VideoTester.core" href="core.html" />
@@ -111,7 +112,7 @@
 <span class="target" id="module-VideoTester.config"></span><dl class="function">
 <dt id="VideoTester.config.initLogger">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">initLogger</tt><big>(</big><em>args</em><big>)</big><a class="headerlink" href="#VideoTester.config.initLogger" title="Permalink to this definition">¶</a></dt>
-<dd><p>Inits the VT logger: it sets a formatter, the handlers and their logging levels.</p>
+<dd><p>Initialize the VT logger: this function sets a formatter, the handlers and their logging levels.</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd><cite>args</cite>: The command-line arguments returned by <tt class="docutils literal"><span class="pre">parseArgs()</span></tt>.</dd>
@@ -121,7 +122,7 @@
 <dl class="function">
 <dt id="VideoTester.config.parseArgs">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">parseArgs</tt><big>(</big><big>)</big><a class="headerlink" href="#VideoTester.config.parseArgs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses the command-line arguments with the standard module <tt class="docutils literal"><span class="pre">argparse</span></tt>.</p>
+<dd><p>Parse the command-line arguments with the standard module <tt class="docutils literal"><span class="pre">argparse</span></tt>.</p>
 <dl class="docutils">
 <dt>Returns:</dt>
 <dd>An object with the argument strings as attributes.</dd>
@@ -131,7 +132,7 @@
 <dl class="function">
 <dt id="VideoTester.config.getIpAddress">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">getIpAddress</tt><big>(</big><em>ifname</em><big>)</big><a class="headerlink" href="#VideoTester.config.getIpAddress" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the IP address of a network interface.</p>
+<dd><p>Get the IP address of a network interface.</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd><cite>ifname</cite> (string): The interface name.</dd>
@@ -149,6 +150,9 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/VT200x170.png" alt="Logo"/>
+            </a></p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">1. <tt class="docutils literal"><span class="pre">VideoTester.config</span></tt></a><ul>
