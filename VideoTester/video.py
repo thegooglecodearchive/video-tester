@@ -144,5 +144,30 @@ class CodedVideo:
             i += 1
     
     def __readTheora(self):
-        pass
-        
+        SC1 = [array([0xa3, 0x00, 0x00, 0x81, 0x00, 0x00, 0x00], dtype=uint8),
+                array([0xa3, 0x00, 0x00, 0x81, 0x00, 0x00, 0x80], dtype=uint8),
+                array([0xa3, 0x00, 0x81, 0x00, 0x00, 0x00], dtype=uint8)]
+        mask1 = [array([0xff, 0x00, 0x00, 0xff, 0x00, 0x00, 0xff], dtype=uint8),
+                array([0xff, 0x00, 0xff, 0x00, 0x00, 0xff], dtype=uint8)]
+        SC2 = array([0x1f, 0x43, 0xb6, 0x75], dtype=uint8)
+        mask2 = array([0xff, 0xff, 0xff, 0xff], dtype=uint8)
+        first = -1
+        i = 0
+        while i < len(self.f)-7:
+            if all((self.f[i:i+7] & mask1[0]) == SC1[0]) or all((self.f[i:i+7] & mask1[0]) == SC1[1]) or all((self.f[i:i+6] & mask1[1]) == SC1[2]):
+                if not all((self.f[i:i+7] & mask1[0]) == SC1[1]):
+                    self.frames['lengths'].append(i-first)
+                if not all((self.f[i:i+6] & mask1[1]) == SC1[2]):
+                    i += 7
+                else:
+                    i += 6
+                first = i
+                if self.f[i] & 0x40 == 0:
+                    self.frames['types'].append('I')
+                else:
+                    self.frames['types'].append('P')
+                i += 1
+            elif all((self.f[i:i+4] & mask2) == SC2):
+                if not self.f[i-6:i-1].tostring() == 'Video':
+                    self.frames['lengths'].append(i-first)
+            i += 1
