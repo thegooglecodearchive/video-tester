@@ -16,13 +16,17 @@ clean:
 	-rm -rf $(DIST)
 	-rm -f MANIFEST
 
-sdist:
+doc:
 	-svn remove $(DOC) --force
 	-rm -rf $(DIST)
 	-make -C $(MAKEFILE) html
 	-cp -rf $(BUILDDIR) .
 	-svn add $(DOC)
 	-make -C $(MAKEFILE) clean
+	@echo
+	@echo "Doc rebuilt."
+
+sdist:
 	-python setup.py sdist
 	@echo
 	@echo "Build finished."
