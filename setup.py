@@ -50,11 +50,27 @@ setup(name = "VideoTester",
     author = "Iñaki Úcar",
     author_email = "i.ucar86@gmail.com",
     url = "http://video-tester.googlecode.com",
+    #download_url = "",
     packages = ['VideoTester', 'VideoTester.measures'],
     scripts = ["VT"],
     data_files = files,
-    #long_description = """Really long text here.""" 
+    long_description = """Video Tester is a framework for the video quality assessment over a real or simulated IP network.""",
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Environment :: Console',
+        'Environment :: X11 Applications',
+        'Intended Audience :: Science/Research',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Telecommunications Industry',
+        'License :: OSI Approved :: GNU General Public License (GPL)',
+        'Natural Language :: English',
+        'Operating System :: POSIX :: Linux',
+        'Programming Language :: Python :: 2.7',
+        'Topic :: Multimedia :: Video',
+        'Topic :: Scientific/Engineering'
+        ],
+    keywords = ('video', 'tester', 'quality', 'assessment', 'measures', 'python', 'QoS', 'QoE'),
     platforms = ['Any'],
     license = "GPLv3",
-    requires = []
+    requires = ['scapy', 'wx', 'matplotlib', 'matplotlib.backends.backend_wxagg', 'pygst', 'gst', 'gobject', 'numpy', 'cv']
 ) 
