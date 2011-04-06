@@ -1,3 +1,2 @@
-include VT VT.conf README COPYING
+include VT.conf README COPYING
 recursive-include rtsp-server *
-recursive-include doc *
