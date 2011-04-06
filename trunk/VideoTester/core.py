@@ -91,7 +91,8 @@ class Server(VT):
         server.register_function(self.run)
         server.register_function(self.stop)
         try:
-            print 'Use Control-C to exit'
+            VTLOG.info('XMLRPC Server running at ' + ip + ':' + str(port))
+            VTLOG.info('Use Control-C to exit')
             server.serve_forever()
         except KeyboardInterrupt:
             pass
@@ -238,7 +239,7 @@ class Client(VT):
             | The path to the temporary directory plus files prefix: `<path-to-tempdir>/<prefix>`
         """
         VTLOG.info("Client running!")
-        VTLOG.info("Server at " + self.conf['ip'])
+        VTLOG.info("XMLRPC Server at " + self.conf['ip'] + ':' + self.conf['port'])
         VTLOG.info("Evaluating: " + self.conf['video'] + " + " + self.conf['codec'] + " at " + self.conf['bitrate'] + " kbps and " + self.conf['framerate'] + " fps under " + self.conf['protocols'])
         from xmlrpclib import ServerProxy
         from scapy.all import rdpcap

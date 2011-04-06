@@ -15,6 +15,6 @@ setup(name = "VideoTester",
     packages = ['VideoTester', 'VideoTester.measures'],
     scripts = ["VT"],
     #long_description = """Really long text here.""" 
-    platforms = ['i686', 'x86_64'],
+    platforms = ['Any'],
     license = "GPLv3"
 ) 
