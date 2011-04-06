@@ -130,7 +130,7 @@ class Server(VT):
                 exit()
             self.servers[key]['port'] = self.port
             self.servers[key]['clients'] = 1
-            VTLOG.info("Server running!")
+            VTLOG.info("RTSP Server running!")
         VTLOG.info("PID: " + str(self.servers[key]['server'].pid) + ", " + key + " server, connected clients: " + str(self.servers[key]['clients']))
         return self.servers[key]['port']
     
