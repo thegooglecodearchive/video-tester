@@ -19,8 +19,7 @@ class VT:
             This section MUST be present in the default configuration file (see :const:`VideoTester.config.CONF`)
             and MUST contain the same videos at the client and the server.
         
-        Raises:
-            | `Except`: Bad configuration file or path.
+        :raises: Bad configuration file or path.
         """
         from config import CONF
         try:
@@ -48,12 +47,11 @@ class VT:
         """
         Extract a section from a configuration file.
         
-        Args:
-            | `file` (string): Path to the configuration file.
-            | `section` (string): Section to be extracted.
+        :param string file: 
+        :param string section: Path to the configuration file.
         
-        Returns:
-            | A list of ``(name, value)`` pairs for each option in the given section.
+        :returns: A list of ``(name, value)`` pairs for each option in the given section.
+        :rtype: list of tuples
         """
         import ConfigParser
         config = ConfigParser.RawConfigParser()
@@ -82,9 +80,8 @@ class Server(VT):
         """
         Launch the XMLRPC server and offer the methods :meth:`VideoTester.core.Server.run` and :meth:`VideoTester.core.Server.stop`
         
-        Args:
-            | `ip` (string): The server IP address.
-            | `port` (string): The XMLRPC listen port.
+        :param string ip: The server IP address.
+        :param string port: The XMLRPC listen port.
         """
         from SimpleXMLRPCServer import SimpleXMLRPCServer
         server = SimpleXMLRPCServer((ip, port), logRequests=False)
@@ -102,15 +99,15 @@ class Server(VT):
         Run a subprocess for an RTSP server with a given bitrate and framerate (if not running)
         or add a client (if running).
         
-        Args:
-            | `bitrate` (string or integer): The bitrate (in kbps).
-            | `framerate` (string or integer): The framerate (in fps).
+        :param bitrate: The bitrate (in kbps).
+        :type bitrate: string or integer
+        :param framerate: The framerate (in fps).
+        :type framerate: string or integer
         
-        Returns:
-            | The RTSP server port in integer format.
+        :returns: The RTSP server port.
+        :rtype: integer
         
-        Raises:
-            | `OSError`: An error ocurred while running subprocess.
+        :raises OSError: An error ocurred while running subprocess.
         """
         from subprocess import Popen, PIPE
         from config import SERVERBIN
@@ -139,12 +136,13 @@ class Server(VT):
         Stop an RTSP server with a given bitrate and framerate (if no remaining clients)
         or remove a client (if remaining clients).
         
-        Args:
-            | `bitrate` (string or integer): The bitrate (in kbps).
-            | `framerate` (string or integer): The framerate (in fps).
+        :param bitrate: The bitrate (in kbps).
+        :type bitrate: string or integer
+        :param framerate: The framerate (in fps).
+        :type framerate: string or integer
         
-        Returns:
-            | True.
+        :returns: True.
+        :rtype: boolean
         """
         key = str(bitrate) + ' kbps - ' + str(framerate) + ' fps'
         self.servers[key]['clients'] = self.servers[key]['clients'] - 1
@@ -161,10 +159,8 @@ class Server(VT):
         """
         Check that the :attr:`VideoTester.core.Server.port` is unused.
         
-        Returns:
-            | Boolean:
-            |   True if port is unused.
-            |   False if port is in use.
+        :returns: True if port is unused. False if port is in use.
+        :rtype: boolean
         """
         from socket import socket
         try:
@@ -183,17 +179,14 @@ class Client(VT):
         """
         **On init:** Some initialization code.
         
-        Args:
-            | `file` (string or dictionary): Path to configuration file (string) or parsed configuration file (dictionary).
-            | `gui` (boolean):
-            |   True if :class:`VideoTester.core.Client` is called from GUI.
-            |   False otherwise.
+        :param file: Path to a configuration file (string) or parsed configuration file (dictionary).
+        :type file: string or dictionary
+        :param boolean gui: True if :class:`VideoTester.core.Client` is called from GUI. False otherwise.
+        
+        :raises: Bad configuration file or path.
         
         .. warning::
             If ``gui == True``, `file` MUST be a dictionary. Otherwise, `file` MUST be a string.
-        
-        Raises:
-            | `Exception`: Bad configuration file or path.
         """
         VT.__init__(self)
         from os.path import exists
@@ -234,9 +227,8 @@ class Client(VT):
          * Process data and extract information.
          * Run meters.
         
-        Returns:
-            | A list of measures (see [_]).
-            | The path to the temporary directory plus files prefix: `<path-to-tempdir>/<prefix>`
+        :returns: A list of measures (see [_]) and the path to the temporary directory plus files prefix: `<path-to-tempdir>/<prefix>`.
+        :rtype: tuple
         """
         VTLOG.info("Client running!")
         VTLOG.info("XMLRPC Server at " + self.conf['ip'] + ':' + self.conf['port'])
@@ -298,12 +290,10 @@ class Client(VT):
         """
         Load raw video data and coded video data.
         
-        Args:
-            | `videodata` (see :attr:`VideoTester.gstreamer.Gstreamer.files`):
+        :param videodata: (see :attr:`VideoTester.gstreamer.Gstreamer.files`)
         
-        Returns:
-            | Coded video data object (see :class:`VideoTester.video.YUVvideo`).
-            | Raw video data object (see :class:`VideoTester.video.CodedVideo`).
+        :returns: Coded video data object (see :class:`VideoTester.video.YUVvideo`) and raw video data object (see :class:`VideoTester.video.CodedVideo`).
+        :rtype: tuple
         """
         VTLOG.info("Loading videos...")
         from video import YUVvideo, CodedVideo
@@ -320,8 +310,7 @@ class Client(VT):
         """
         Save measures to disc (with standard module :mod:`pickle`).
         
-        Args:
-            | `measures`: List of measures.
+        :param list measures: List of measures.
         """
         VTLOG.info("Saving measures...")
         from pickle import dump

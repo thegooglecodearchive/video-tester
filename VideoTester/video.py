@@ -7,36 +7,70 @@
 from numpy import *
 
 class YUVvideo:
+    """
+    YUV reader.
+    """
     def __init__(self, file, framesize, format='I420'):
+        """
+        **On init:** Call the proper reader.
+        
+        :param string file: Path to the file.
+        :param tuple framesize: Frame size: ``(width, height)``.
+        :param string format: YUV format.
+        
+        .. note::
+            Supported formats: I420.
+        """
+        #: Frame size: ``(width, height)``.
         self.framesize = framesize
+        #: Number of frames in the video.
         self.frames = None
+        #: Dictionary of lists of frames. Each list is a component (Y, U, V) and each frame is a Numpy array.
         self.video = {'Y':[], 'U':[], 'V':[]}
+        f = open(file, "rb")
+        #: RAW data.
+        self.raw = f.read()
+        f.close()
         if format == 'I420':
             self.__readI420(file, framesize)
     
     def __readI420(self, file, (width, height)):
+        """
+        I420 format reader.
+        """
         yblock = width * height
         uvblock = width * height / 4
         frame = yblock + 2 * uvblock
-        f = open(file, "rb")
-        raw = f.read()
-        f.close()
-        self.frames = len(raw) / frame
+        self.frames = len(self.raw) / frame
         y = 0
         u = y + yblock
         v = y + yblock + uvblock
         count = 1
-        while y < len(raw):
-            self.video['Y'].append(frombuffer(raw[y:y+yblock], dtype=uint8).reshape(height, width))
+        while y < len(self.raw):
+            self.video['Y'].append(frombuffer(self.raw[y:y+yblock], dtype=uint8).reshape(height, width))
             y += frame
-            self.video['U'].append(frombuffer(raw[u:u+uvblock], dtype=uint8).reshape(height/2, width/2))
+            self.video['U'].append(frombuffer(self.raw[u:u+uvblock], dtype=uint8).reshape(height/2, width/2))
             u += frame
-            self.video['V'].append(frombuffer(raw[v:v+uvblock], dtype=uint8).reshape(height/2, width/2))
+            self.video['V'].append(frombuffer(self.raw[v:v+uvblock], dtype=uint8).reshape(height/2, width/2))
             v += frame
 
 class CodedVideo:
+    """
+    Coded video reader.
+    """
     def __init__(self, file, codec):
-        self.f = fromfile(file, dtype=uint8)
+        """
+        **On init:** Call the proper reader.
+        
+        :param string file: Path to the file.
+        :param string codec: Codec type.
+        
+        .. note::
+            Supported formats: H263, H264, MPEG4 and Theora.
+        """
+        #: Numpy array with all the data.
+        self.raw = fromfile(file, dtype=uint8)
+        #: Dictionary that contains the `types` and the `lengths` for all the frames found.
         self.frames = {'types':[], 'lengths':[]}
         if codec == 'h263':
             self.__readH263()
@@ -48,23 +82,29 @@ class CodedVideo:
             self.__readTheora()
     
     def __readH263(self):
+        """
+        H263 format reader.
+        """
         PSC = array([0x00, 0x00, 0x80], dtype=uint8)
         mask = array([0xff, 0xff, 0xfc], dtype=uint8)
         first = -1
         i = 0
-        while i < len(self.f)-3:
-            if all((self.f[i:i+3] & mask) == PSC):
+        while i < len(self.raw)-3:
+            if all((self.raw[i:i+3] & mask) == PSC):
                 if (i != 0) and (first > -1):
                     self.frames['lengths'].append(i-first)
                 first = i
                 i += 4
-                if (self.f[i] & 0x02) == 0:
+                if (self.raw[i] & 0x02) == 0:
                     self.frames['types'].append('I')
                 else:
                     self.frames['types'].append('P')
             i += 1
     
     def __readH264(self):
+        """
+        H264 format reader.
+        """
         def getType(byte):
             comp = byte & 0x7f
             if comp >= 0x40:
@@ -107,32 +147,35 @@ class CodedVideo:
         flag = True
         first = 0
         i = 0
-        while i < len(self.f)-4:
-            if all((self.f[i:i+4] & SCmask) == SC):
+        while i < len(self.raw)-4:
+            if all((self.raw[i:i+4] & SCmask) == SC):
                 if flag:
                     if i != 0:
                         self.frames['lengths'].append(i-first)
                     first = i
                     flag = False
                 i += 4
-                if ((self.f[i] & typemask) == typeI) or ((self.f[i] & typemask) == typePB):
+                if ((self.raw[i] & typemask) == typeI) or ((self.raw[i] & typemask) == typePB):
                     flag = True
                     i += 1
-                    self.frames['types'].append(getType(self.f[i:i+1]))
+                    self.frames['types'].append(getType(self.raw[i:i+1]))
             i += 1
     
     def __readMPEG4(self):
+        """
+        MPEG4 format reader.
+        """
         SC = array([0x00, 0x00, 0x01, 0xb6], dtype=uint8)
         mask = array([0xff, 0xff, 0xff, 0xff], dtype=uint8)
         first = -1
         i = 0
-        while i < len(self.f)-4:
-            if all((self.f[i:i+4] & mask) == SC):
+        while i < len(self.raw)-4:
+            if all((self.raw[i:i+4] & mask) == SC):
                 if (i != 0) and (first > -1):
                     self.frames['lengths'].append(i-first)
                 first = i
                 i += 4
-                comp = self.f[i] & 0xc0
+                comp = self.raw[i] & 0xc0
                 if comp == 0x00:
                     self.frames['types'].append('I')
                 elif comp == 0x40:
@@ -144,6 +187,9 @@ class CodedVideo:
             i += 1
     
     def __readTheora(self):
+        """
+        Theora over Matroska format reader.
+        """
         SC1 = [array([0xa3, 0x00, 0x00, 0x81, 0x00, 0x00, 0x00], dtype=uint8),
                 array([0xa3, 0x00, 0x00, 0x81, 0x00, 0x00, 0x80], dtype=uint8),
                 array([0xa3, 0x00, 0x81, 0x00, 0x00, 0x00], dtype=uint8)]
@@ -153,21 +199,21 @@ class CodedVideo:
         mask2 = array([0xff, 0xff, 0xff, 0xff], dtype=uint8)
         first = -1
         i = 0
-        while i < len(self.f)-7:
-            if all((self.f[i:i+7] & mask1[0]) == SC1[0]) or all((self.f[i:i+7] & mask1[0]) == SC1[1]) or all((self.f[i:i+6] & mask1[1]) == SC1[2]):
-                if not all((self.f[i:i+7] & mask1[0]) == SC1[1]):
+        while i < len(self.raw)-7:
+            if all((self.raw[i:i+7] & mask1[0]) == SC1[0]) or all((self.raw[i:i+7] & mask1[0]) == SC1[1]) or all((self.raw[i:i+6] & mask1[1]) == SC1[2]):
+                if not all((self.raw[i:i+7] & mask1[0]) == SC1[1]):
                     self.frames['lengths'].append(i-first)
-                if not all((self.f[i:i+6] & mask1[1]) == SC1[2]):
+                if not all((self.raw[i:i+6] & mask1[1]) == SC1[2]):
                     i += 7
                 else:
                     i += 6
                 first = i
-                if self.f[i] & 0x40 == 0:
+                if self.raw[i] & 0x40 == 0:
                     self.frames['types'].append('I')
                 else:
                     self.frames['types'].append('P')
                 i += 1
-            elif all((self.f[i:i+4] & mask2) == SC2):
-                if not self.f[i-6:i-1].tostring() == 'Video':
+            elif all((self.raw[i:i+4] & mask2) == SC2):
+                if not self.raw[i-6:i-1].tostring() == 'Video':
                     self.frames['lengths'].append(i-first)
             i += 1

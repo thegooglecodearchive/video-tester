@@ -13,17 +13,36 @@ from config import VTLOG
 from pickle import dump
 
 class Gstreamer:
+    """
+    Gstreamer library handler.
+    """
     def __init__(self, conf, video):
+        """
+        **On init:** Some initialization code.
+        
+        :param dictionary conf: Parsed configuration file.
+        :param string video: Path to the selected video.
+        """
+        #: Dictionary of configuration options (see :attr:`VideoTester.core.Client.conf`).
         self.conf = conf
+        #: Path to the selected video (see :attr:`VideoTester.core.Client.video`).
         self.video = video
+        #: Video size: ``(width, height)``.
         self.size = None
+        #: Dictionary of paths to the processed video files: ``{'original':[<compressed>, <yuv>], 'coded':[<compressed>, <yuv>], 'received':[<compressed>, <yuv>]}``.
         self.files = {'original':[], 'coded':[], 'received':[]}
+        #: Gstreamer pipeline.
         self.pipeline = None
+        #: Gstreamer loop.
         self.loop = None
-        self.uri = 'rtsp://' + self.conf['ip'] + ':' + self.conf['rtspport'] + '/' + self.conf['video'] + '.' + self.conf['codec']
+        #: Selected video URL.
+        self.url = 'rtsp://' + self.conf['ip'] + ':' + self.conf['rtspport'] + '/' + self.conf['video'] + '.' + self.conf['codec']
         if self.conf['codec'] == "h263":
+            #: Gstreamer encoder for the selected codec.
             self.encoder = "ffenc_h263"
+            #: Gstreamer depayloader for the selected codec.
             self.depay = "rtph263depay"
+            #: Video bitrate.
             self.bitrate = self.conf['bitrate'] + '000'
             self.add = ''
         elif self.conf['codec'] == "h264":
@@ -41,8 +60,23 @@ class Gstreamer:
             self.depay = "rtptheoradepay ! theoraparse"
             self.bitrate = self.conf['bitrate']
             self.add = ' ! matroskamux'
+            """
+            Little trick for Theora.
+            
+            .. note::
+                The Theora reader (in :class:`VideoTester.video.CodedVideo`) actually works with Matroska files only. This may change in future versions.
+            """
     
     def __events(self, bus, msg):
+        """
+        Event handler.
+        
+        :param bus: Gstreamer bus object.
+        :param msg: Gstreamer message object.
+        
+        :returns: True.
+        :rtype: boolean
+        """
         t = msg.type
         if t == MESSAGE_EOS:
             self.pipeline.set_state(STATE_PAUSED)
@@ -63,6 +97,9 @@ class Gstreamer:
         return True
     
     def __play(self):
+        """
+        Attach event handler, set state to *playing* and run the loop (see :attr:`loop`).
+        """
         self.pipeline.get_bus().add_watch(self.__events)
         self.pipeline.set_state(STATE_PLAYING)
         self.loop = MainLoop()
@@ -70,13 +107,16 @@ class Gstreamer:
         VTLOG.debug("GStreamer: Loop stopped")
     
     def receiver(self):
+        """
+        Connect to the RTSP server and receive the selected video (see :attr:`video`).
+        """
         VTLOG.info("Starting GStreamer receiver...")
         self.pipeline = parse_launch('rtspsrc name=source ! tee name=t ! queue ! ' + self.depay + self.add + ' ! filesink name=sink1 t. ! queue \
                 ! decodebin ! videorate skip-to-first=True ! video/x-raw-yuv,framerate=' + self.conf['framerate'] + '/1 ! filesink name=sink2')
         source = self.pipeline.get_by_name('source')
         sink1 = self.pipeline.get_by_name('sink1')
         sink2 = self.pipeline.get_by_name('sink2')
-        source.props.location = self.uri
+        source.props.location = self.url
         source.props.protocols = self.conf['protocols']
         location = self.conf['tempdir'] + self.conf['num'] + '.' + self.conf['codec']
         self.files['received'].append(location)
@@ -90,6 +130,12 @@ class Gstreamer:
         VTLOG.info("GStreamer receiver stopped")
     
     def reference(self):
+        """
+        Make the reference videos.
+        
+        :returns: Paths to video files (see :attr:`files`) and video size (see :attr:`size`).
+        :rtype: tuple
+        """
         VTLOG.info("Making reference...")
         self.pipeline = parse_launch('filesrc name=source ! decodebin ! videorate ! video/x-raw-yuv,framerate=' + self.conf['framerate'] + '/1  ! filesink name=sink1')
         source = self.pipeline.get_by_name('source')
@@ -119,6 +165,12 @@ class Gstreamer:
         return self.files, self.size
     
     def __notifyCaps(self, pad, args):
+        """
+        Write caps to a file.
+        
+        :param pad: Gstreamer pad object.
+        :param args: Other arguments.
+        """
         caps = pad.get_negotiated_caps()
         if caps:
             caps = caps.to_string()

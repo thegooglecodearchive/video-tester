@@ -6,7 +6,7 @@ DOC      = doc
 MAKEFILE = tools/sphinx/
 BUILDDIR = tools/sphinx/_build/doc
 
-.PHONY: help clean sdist
+.PHONY: help clean doc sdist
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"

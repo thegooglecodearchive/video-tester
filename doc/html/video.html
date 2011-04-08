@@ -56,6 +56,89 @@
             
   <div class="section" id="module-VideoTester.video">
 <span id="videotester-video-raw-and-coded-video-manipulation"></span><h1>5. <tt class="docutils literal"><span class="pre">VideoTester.video</span></tt> &#8212; Raw and coded video manipulation<a class="headerlink" href="#module-VideoTester.video" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="VideoTester.video.YUVvideo">
+<em class="property">class </em><tt class="descclassname">VideoTester.video.</tt><tt class="descname">YUVvideo</tt><big>(</big><em>file</em>, <em>framesize</em>, <em>format='I420'</em><big>)</big><a class="headerlink" href="#VideoTester.video.YUVvideo" title="Permalink to this definition">¶</a></dt>
+<dd><p>YUV reader.</p>
+<p><strong>On init:</strong> Call the proper reader.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>file</strong> (<em>string</em>) &#8211; Path to the file.</li>
+<li><strong>framesize</strong> (<em>tuple</em>) &#8211; Frame size: <tt class="docutils literal"><span class="pre">(width,</span> <span class="pre">height)</span></tt>.</li>
+<li><strong>format</strong> (<em>string</em>) &#8211; YUV format.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Supported formats: I420.</p>
+</div>
+<dl class="attribute">
+<dt id="VideoTester.video.YUVvideo.framesize">
+<tt class="descname">framesize</tt><a class="headerlink" href="#VideoTester.video.YUVvideo.framesize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frame size: <tt class="docutils literal"><span class="pre">(width,</span> <span class="pre">height)</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.video.YUVvideo.frames">
+<tt class="descname">frames</tt><a class="headerlink" href="#VideoTester.video.YUVvideo.frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of frames in the video.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.video.YUVvideo.video">
+<tt class="descname">video</tt><a class="headerlink" href="#VideoTester.video.YUVvideo.video" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of lists of frames. Each list is a component (Y, U, V) and each frame is a Numpy array.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.video.YUVvideo.raw">
+<tt class="descname">raw</tt><a class="headerlink" href="#VideoTester.video.YUVvideo.raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>RAW data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="VideoTester.video.CodedVideo">
+<em class="property">class </em><tt class="descclassname">VideoTester.video.</tt><tt class="descname">CodedVideo</tt><big>(</big><em>file</em>, <em>codec</em><big>)</big><a class="headerlink" href="#VideoTester.video.CodedVideo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coded video reader.</p>
+<p><strong>On init:</strong> Call the proper reader.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>file</strong> (<em>string</em>) &#8211; Path to the file.</li>
+<li><strong>codec</strong> (<em>string</em>) &#8211; Codec type.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Supported formats: H263, H264, MPEG4 and Theora.</p>
+</div>
+<dl class="attribute">
+<dt id="VideoTester.video.CodedVideo.raw">
+<tt class="descname">raw</tt><a class="headerlink" href="#VideoTester.video.CodedVideo.raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Numpy array with all the data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.video.CodedVideo.frames">
+<tt class="descname">frames</tt><a class="headerlink" href="#VideoTester.video.CodedVideo.frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary that contains the <cite>types</cite> and the <cite>lengths</cite> for all the frames found.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 

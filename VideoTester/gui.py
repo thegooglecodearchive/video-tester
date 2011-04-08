@@ -21,9 +21,9 @@ import gobject
 gobject.threads_init()
 
 class FuncLog(logging.Handler):
-   '''
-   A logging handler that sends logs to an update function
-   '''
+   """
+   A logging handler that sends logs to an update function.
+   """
    def __init__(self, update):
        logging.Handler.__init__(self)
        self.update = update
@@ -32,6 +32,9 @@ class FuncLog(logging.Handler):
        self.update(self.format(record))
 
 class VTframe(wx.Frame, VT):
+    """
+    Main window.
+    """
     def __init__(self, *args, **kwds):
         VT.__init__(self)
         # begin wxGlade: VTframe.__init__
@@ -249,6 +252,9 @@ class VTframe(wx.Frame, VT):
         self.Close(True)
     
     def onCloseWindow(self, event):
+        """
+        Show a dialog to verify exit.
+        """
         # dialog to verify exit (including menuExit)
         dlg = wx.MessageDialog(self, "Do you want to exit?", "Exit", wx.YES_NO | wx.ICON_QUESTION)
         result = dlg.ShowModal()
@@ -262,6 +268,9 @@ class VTframe(wx.Frame, VT):
             self.Destroy() # frame
     
     def onAbout(self, event):
+        """
+        Show *About* dialog.
+        """
         import textwrap
         dlg = wx.MessageDialog(self, textwrap.dedent('''
             VideoTester 0.1
@@ -276,6 +285,9 @@ class VTframe(wx.Frame, VT):
         dlg.Destroy()
 
     def onOpen(self, event): # wxGlade: VTframe.<event_handler>
+        """
+        Show *Open files* dialog.
+        """
         self.video_tab.Hide()
         wildcard = u'Pickle files (*.pkl)|*.pkl|'
         self.dirname = u''
@@ -293,6 +305,9 @@ class VTframe(wx.Frame, VT):
             self.results()
 
     def onRun(self, event): # wxGlade: VTframe.<event_handler>
+        """
+        Run VT Client.
+        """
         self.options_tab.Disable()
         self.vtmenubar.Disable()
         self.results_tab.Hide()
@@ -308,6 +323,9 @@ class VTframe(wx.Frame, VT):
         self.vtstatusbar.SetStatusText('Stopped')
     
     def onPlay(self, event):
+        """
+        Play video files.
+        """
         if self.play_video.GetLabel() == 'Play':
             self.pipeline = parse_launch('filesrc name=video1 filesrc name=video2 filesrc name=video3 \
                 videomixer name=mix sink_0::alpha=0 sink_2::xpos=' + str(self.width*2) + ' sink_3::xpos=' + str(self.width) + ' ! xvimagesink \
@@ -360,6 +378,9 @@ class VTframe(wx.Frame, VT):
             self.play_video.SetLabel('Play')
     
     def results(self):
+        """
+        Plot measures and show *Results* tab.
+        """
         self.results_tab.removePages()
         for measure in self.measures:
             axes = self.results_tab.add(measure['name']).gca()
@@ -393,6 +414,9 @@ class VTframe(wx.Frame, VT):
         self.results_tab.Show()
     
     def configureVideos(self):
+        """
+        Configure and show *Video* tab.
+        """
         f = open(self.path + '_caps.txt', 'rb')
         caps = f.read()
         f.close()
@@ -409,6 +433,9 @@ class VTframe(wx.Frame, VT):
         self.video_tab.Show()
     
     def getValues(self):
+        """
+        Get configuration options.
+        """
         conf = dict()
         conf['bitrate'] = str(self.bitrate.GetValue())
         conf['framerate'] = str(self.framerate.GetValue())
@@ -465,6 +492,9 @@ class VTframe(wx.Frame, VT):
 # end of class VTframe
 
 class Plot(wx.Panel):
+    """
+    Plot panel.
+    """
     def __init__(self, parent, id = -1, dpi = None, **kwargs):
         wx.Panel.__init__(self, parent, id=id, **kwargs)
         self.figure = mpl.figure.Figure(dpi=dpi, figsize=(2,2))
@@ -477,6 +507,9 @@ class Plot(wx.Panel):
         self.SetSizer(sizer)
 
 class PlotNotebook(wx.Panel):
+    """
+    Tab-style plotting panel.
+    """
     def __init__(self, parent, id = -1):
         wx.Panel.__init__(self, parent, id=id)
         self.nb = wx.aui.AuiNotebook(self)
@@ -486,16 +519,25 @@ class PlotNotebook(wx.Panel):
         self.pages = []
 
     def add(self, name="plot"):
+        """
+        Add a tab.
+        """
         page = Plot(self.nb)
         self.pages.append(page)
         self.nb.AddPage(page, name)
         return page.figure
     
     def removePages(self):
+        """
+        Remove all tabs.
+        """
         for page in self.pages:
             self.nb.DeletePage(0)
 
 class ClientGUI(wx.App):
+    """
+    WxPython application class.
+    """
     def OnInit(self):
         wx.InitAllImageHandlers()
         vtframe = VTframe(None, -1, "")

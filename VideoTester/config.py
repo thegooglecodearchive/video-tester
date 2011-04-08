@@ -23,8 +23,7 @@ def initLogger(args):
     """
     Initialize the VT logger: this function sets a formatter, the handlers and their logging levels.
     
-    Args:
-        | `args`: The command-line arguments returned by :func:`parseArgs()`.
+    :param args: The command-line arguments returned by :func:`parseArgs()`.
     """
     if args.mode == "server":
         formatter = logging.Formatter("[%(asctime)s VTServer] %(levelname)s : %(message)s")
@@ -47,8 +46,7 @@ def parseArgs():
     """
     Parse the command-line arguments with the standard module :mod:`argparse`.
     
-    Returns:
-        | An object with the argument strings as attributes.
+    :returns: An object with the argument strings as attributes.
     """
     import textwrap
     import argparse
@@ -74,11 +72,10 @@ def getIpAddress(ifname):
     """
     Get the IP address of a network interface.
     
-    Args:
-        | `ifname` (string): The interface name.
+    :param string ifname: The interface name.
     
-    Returns:
-        | A string with the IP address.
+    :returns: The IP address.
+    :rtype: string
     """
     import socket
     import fcntl
