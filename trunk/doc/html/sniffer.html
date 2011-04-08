@@ -56,6 +56,137 @@
             
   <div class="section" id="module-VideoTester.sniffer">
 <span id="videotester-sniffer-network-sniffing-and-packet-manipulation"></span><h1>4. <tt class="docutils literal"><span class="pre">VideoTester.sniffer</span></tt> &#8212; Network sniffing and packet manipulation<a class="headerlink" href="#module-VideoTester.sniffer" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="VideoTester.sniffer.RTSPi">
+<em class="property">class </em><tt class="descclassname">VideoTester.sniffer.</tt><tt class="descname">RTSPi</tt><big>(</big><em>_pkt=''</em>, <em>post_transform=None</em>, <em>_internal=0</em>, <em>_underlayer=None</em>, <em>**fields</em><big>)</big><a class="headerlink" href="#VideoTester.sniffer.RTSPi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">scapy.packet.Packet</span></tt></p>
+<p><em>RTSP interleaved</em> packet decoder.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="VideoTester.sniffer.Sniffer">
+<em class="property">class </em><tt class="descclassname">VideoTester.sniffer.</tt><tt class="descname">Sniffer</tt><big>(</big><em>conf</em><big>)</big><a class="headerlink" href="#VideoTester.sniffer.Sniffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Network sniffer and packet parser.</p>
+<p><strong>On init:</strong> Some initialization code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>conf</strong> (<em>dictionary</em>) &#8211; Parsed configuration file.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="VideoTester.sniffer.Sniffer.conf">
+<tt class="descname">conf</tt><a class="headerlink" href="#VideoTester.sniffer.Sniffer.conf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of configuration options (see <a class="reference internal" href="core.html#VideoTester.core.Client.conf" title="VideoTester.core.Client.conf"><tt class="xref py py-attr docutils literal"><span class="pre">VideoTester.core.Client.conf</span></tt></a>).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.sniffer.Sniffer.clock">
+<tt class="descname">clock</tt><a class="headerlink" href="#VideoTester.sniffer.Sniffer.clock" title="Permalink to this definition">¶</a></dt>
+<dd><p>SDP clock attribute.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.sniffer.Sniffer.ptype">
+<tt class="descname">ptype</tt><a class="headerlink" href="#VideoTester.sniffer.Sniffer.ptype" title="Permalink to this definition">¶</a></dt>
+<dd><p>RTP payload type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.sniffer.Sniffer.cap">
+<tt class="descname">cap</tt><a class="headerlink" href="#VideoTester.sniffer.Sniffer.cap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Capture file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.sniffer.Sniffer.lengths">
+<tt class="descname">lengths</tt><a class="headerlink" href="#VideoTester.sniffer.Sniffer.lengths" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of packet lengths.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.sniffer.Sniffer.times">
+<tt class="descname">times</tt><a class="headerlink" href="#VideoTester.sniffer.Sniffer.times" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of packet arrival times.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.sniffer.Sniffer.sequences">
+<tt class="descname">sequences</tt><a class="headerlink" href="#VideoTester.sniffer.Sniffer.sequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of RTP sequence numbers.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.sniffer.Sniffer.timestamps">
+<tt class="descname">timestamps</tt><a class="headerlink" href="#VideoTester.sniffer.Sniffer.timestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of RTP timestamps.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.sniffer.Sniffer.ping">
+<tt class="descname">ping</tt><a class="headerlink" href="#VideoTester.sniffer.Sniffer.ping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ping information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoTester.sniffer.Sniffer.run">
+<tt class="descname">run</tt><big>(</big><em>q</em><big>)</big><a class="headerlink" href="#VideoTester.sniffer.Sniffer.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start packet sniffing and save the capture.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>q</strong> (<em>Queue</em>) &#8211; Queue to communicate with the main thread.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoTester.sniffer.Sniffer.sniff">
+<tt class="descname">sniff</tt><big>(</big><em>count=0</em>, <em>prn=None</em>, <em>lfilter=None</em>, <em>*arg</em>, <em>**karg</em><big>)</big><a class="headerlink" href="#VideoTester.sniffer.Sniffer.sniff" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">scapy.sendrecv.sniff()</span></tt> Scapy function modification. This one stops when a RTSP <em>TEARDOWN</em> packet is found.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>count</strong> (<em>integer</em>) &#8211; Number of packets to capture (0 means infinity).</li>
+<li><strong>prn</strong> &#8211; Function to apply to each packet. If something is returned, it is displayed.</li>
+<li><strong>lfilter</strong> &#8211; Python function applied to each packet to determine if further action may be done.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of packets.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoTester.sniffer.Sniffer.parsePkts">
+<tt class="descname">parsePkts</tt><big>(</big><big>)</big><a class="headerlink" href="#VideoTester.sniffer.Sniffer.parsePkts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse packets and extract <a class="reference internal" href="#VideoTester.sniffer.Sniffer.lengths" title="VideoTester.sniffer.Sniffer.lengths"><tt class="xref py py-attr docutils literal"><span class="pre">lengths</span></tt></a>, <a class="reference internal" href="#VideoTester.sniffer.Sniffer.times" title="VideoTester.sniffer.Sniffer.times"><tt class="xref py py-attr docutils literal"><span class="pre">times</span></tt></a>, <a class="reference internal" href="#VideoTester.sniffer.Sniffer.sequences" title="VideoTester.sniffer.Sniffer.sequences"><tt class="xref py py-attr docutils literal"><span class="pre">sequences</span></tt></a>, <a class="reference internal" href="#VideoTester.sniffer.Sniffer.timestamps" title="VideoTester.sniffer.Sniffer.timestamps"><tt class="xref py py-attr docutils literal"><span class="pre">timestamps</span></tt></a> and <a class="reference internal" href="#VideoTester.sniffer.Sniffer.ping" title="VideoTester.sniffer.Sniffer.ping"><tt class="xref py py-attr docutils literal"><span class="pre">ping</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#VideoTester.sniffer.Sniffer.lengths" title="VideoTester.sniffer.Sniffer.lengths"><tt class="xref py py-attr docutils literal"><span class="pre">lengths</span></tt></a>, <a class="reference internal" href="#VideoTester.sniffer.Sniffer.times" title="VideoTester.sniffer.Sniffer.times"><tt class="xref py py-attr docutils literal"><span class="pre">times</span></tt></a>, <a class="reference internal" href="#VideoTester.sniffer.Sniffer.sequences" title="VideoTester.sniffer.Sniffer.sequences"><tt class="xref py py-attr docutils literal"><span class="pre">sequences</span></tt></a>, <a class="reference internal" href="#VideoTester.sniffer.Sniffer.timestamps" title="VideoTester.sniffer.Sniffer.timestamps"><tt class="xref py py-attr docutils literal"><span class="pre">timestamps</span></tt></a> and <a class="reference internal" href="#VideoTester.sniffer.Sniffer.ping" title="VideoTester.sniffer.Sniffer.ping"><tt class="xref py py-attr docutils literal"><span class="pre">ping</span></tt></a>.</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 

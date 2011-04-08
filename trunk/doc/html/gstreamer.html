@@ -56,6 +56,117 @@
             
   <div class="section" id="module-VideoTester.gstreamer">
 <span id="videotester-gstreamer-video-processing-with-gstreamer-bindings"></span><h1>3. <tt class="docutils literal"><span class="pre">VideoTester.gstreamer</span></tt> &#8212; Video processing with GStreamer bindings<a class="headerlink" href="#module-VideoTester.gstreamer" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="VideoTester.gstreamer.Gstreamer">
+<em class="property">class </em><tt class="descclassname">VideoTester.gstreamer.</tt><tt class="descname">Gstreamer</tt><big>(</big><em>conf</em>, <em>video</em><big>)</big><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gstreamer library handler.</p>
+<p><strong>On init:</strong> Some initialization code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>conf</strong> (<em>dictionary</em>) &#8211; Parsed configuration file.</li>
+<li><strong>video</strong> (<em>string</em>) &#8211; Path to the selected video.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="VideoTester.gstreamer.Gstreamer.conf">
+<tt class="descname">conf</tt><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer.conf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of configuration options (see <a class="reference internal" href="core.html#VideoTester.core.Client.conf" title="VideoTester.core.Client.conf"><tt class="xref py py-attr docutils literal"><span class="pre">VideoTester.core.Client.conf</span></tt></a>).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.gstreamer.Gstreamer.video">
+<tt class="descname">video</tt><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer.video" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the selected video (see <a class="reference internal" href="core.html#VideoTester.core.Client.video" title="VideoTester.core.Client.video"><tt class="xref py py-attr docutils literal"><span class="pre">VideoTester.core.Client.video</span></tt></a>).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.gstreamer.Gstreamer.size">
+<tt class="descname">size</tt><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Video size: <tt class="docutils literal"><span class="pre">(width,</span> <span class="pre">height)</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.gstreamer.Gstreamer.files">
+<tt class="descname">files</tt><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer.files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of paths to the processed video files: <tt class="docutils literal"><span class="pre">{'original':[&lt;compressed&gt;,</span> <span class="pre">&lt;yuv&gt;],</span> <span class="pre">'coded':[&lt;compressed&gt;,</span> <span class="pre">&lt;yuv&gt;],</span> <span class="pre">'received':[&lt;compressed&gt;,</span> <span class="pre">&lt;yuv&gt;]}</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.gstreamer.Gstreamer.pipeline">
+<tt class="descname">pipeline</tt><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer.pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gstreamer pipeline.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.gstreamer.Gstreamer.loop">
+<tt class="descname">loop</tt><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer.loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gstreamer loop.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.gstreamer.Gstreamer.url">
+<tt class="descname">url</tt><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selected video URL.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.gstreamer.Gstreamer.encoder">
+<tt class="descname">encoder</tt><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer.encoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gstreamer encoder for the selected codec.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.gstreamer.Gstreamer.depay">
+<tt class="descname">depay</tt><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer.depay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gstreamer depayloader for the selected codec.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.gstreamer.Gstreamer.bitrate">
+<tt class="descname">bitrate</tt><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer.bitrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Video bitrate.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.gstreamer.Gstreamer.add">
+<tt class="descname">add</tt><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Little trick for Theora.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Theora reader (in <a class="reference internal" href="video.html#VideoTester.video.CodedVideo" title="VideoTester.video.CodedVideo"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.video.CodedVideo</span></tt></a>) actually works with Matroska files only. This may change in future versions.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoTester.gstreamer.Gstreamer.receiver">
+<tt class="descname">receiver</tt><big>(</big><big>)</big><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer.receiver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to the RTSP server and receive the selected video (see <a class="reference internal" href="#VideoTester.gstreamer.Gstreamer.video" title="VideoTester.gstreamer.Gstreamer.video"><tt class="xref py py-attr docutils literal"><span class="pre">video</span></tt></a>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoTester.gstreamer.Gstreamer.reference">
+<tt class="descname">reference</tt><big>(</big><big>)</big><a class="headerlink" href="#VideoTester.gstreamer.Gstreamer.reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the reference videos.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Paths to video files (see <a class="reference internal" href="#VideoTester.gstreamer.Gstreamer.files" title="VideoTester.gstreamer.Gstreamer.files"><tt class="xref py py-attr docutils literal"><span class="pre">files</span></tt></a>) and video size (see <a class="reference internal" href="#VideoTester.gstreamer.Gstreamer.size" title="VideoTester.gstreamer.Gstreamer.size"><tt class="xref py py-attr docutils literal"><span class="pre">size</span></tt></a>).</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
