@@ -10,8 +10,9 @@ class Meter:
     """
     Generic meter.
     """
-    #: List of measures.
-    measures = []
+    def __init__(self):
+        #: List of measures.
+        self.measures = []
     
     def run(self):
         """
@@ -22,33 +23,40 @@ class Meter:
         """
         measures = []
         for measure in self.measures:
-            VTLOG.info("- Measuring: " + measure.name)
-            measure.calculate()
-        return self.measures
+            VTLOG.info("- Measuring: " + measure.data['name'])
+            try:
+                measures.append(measure.calculate())
+            except Exception, e:
+                VTLOG.error(e)
+        return measures
 
 class Measure:
     """
     Generic measure.
     """
-    #: The name.
-    name = None
-    #: The type: `plot`, `bar`, `value` or `videoframes`.
-    type = None
-    #: The units (e.g.: ``'ms'``, ``['time (s)', 'kbps']``, etc.).
-    units = None
-    data = dict()
-    """
-    Dictionary of results. Contents:
-    
-    * If ``type = 'plot'``: `axes`, `max`, `min`, `mean`.
-    * If ``type = 'bar'``: `axes`, `max`, `min`, `mean`, `width`.
-    * If ``type = 'value'``: `value`.
-    * If ``type = 'videoframes'``: `axes`.
-    """
+    def __init__(self):
+        self.data = dict()
+        """
+        Dictionary of results. Contents:
+        
+        * `name`: The name.
+        * `units`: The units (e.g.: ``'ms'``, ``['time (s)', 'kbps']``, etc.).
+        * `type`: The type: `plot`, `bar`, `value` or `videoframes`.
+            * If ``type = 'plot'``: `axes`, `max`, `min`, `mean`.
+            * If ``type = 'bar'``: `axes`, `max`, `min`, `mean`, `width`.
+            * If ``type = 'value'``: `value`.
+            * If ``type = 'videoframes'``: `axes`.
+        """
+        self.data['name'] = None
+        self.data['type'] = None
+        self.data['units'] = None
     
     def calculate(self):
         """
-        Do nothing.
+        Make the measure.
+        
+        :returns: Results (see :attr:`data`).
+        :rtype: dictionary
         
         .. note::
             This method MUST be overwritten by the subclasses.
