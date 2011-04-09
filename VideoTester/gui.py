@@ -92,6 +92,8 @@ class VTframe(wx.Frame, VT):
         self.psnr = wx.CheckBox(self.options_tab, -1, "PSNR")
         self.ssim = wx.CheckBox(self.options_tab, -1, "SSIM")
         self.g1070 = wx.CheckBox(self.options_tab, -1, "G.1070")
+        self.psnrtomos = wx.CheckBox(self.options_tab, -1, "PSNRtoMOS")
+        self.miv = wx.CheckBox(self.options_tab, -1, "MIV")
         self.sizer_5_staticbox = wx.StaticBox(self.options_tab, -1, "Video quality measures:")
         self.log_tab = wx.Panel(self.tabs, -1)
         self.log = wx.TextCtrl(self.log_tab, -1, "Log messages:\n----------------\n", style=wx.TE_MULTILINE|wx.TE_READONLY)
@@ -228,6 +230,8 @@ class VTframe(wx.Frame, VT):
         grid_sizer_4.Add(self.psnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.ssim, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.g1070, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+        grid_sizer_4.Add(self.psnrtomos, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+        grid_sizer_4.Add(self.miv, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         sizer_5.Add(grid_sizer_4, 1, wx.EXPAND, 0)
         sizer_1.Add(sizer_5, 1, wx.EXPAND, 0)
         self.options_tab.SetSizer(sizer_1)
@@ -476,6 +480,10 @@ class VTframe(wx.Frame, VT):
             vq.append('ssim')
         if self.g1070.GetValue():
             vq.append('g1070')
+        if self.psnrtomos.GetValue():
+            vq.append('psnrtomos')
+        if self.miv.GetValue():
+            vq.append('miv')
         conf['vq'] = vq
         return conf
     
