@@ -265,7 +265,7 @@ class Client(VT):
             exit()
         server.stop(self.conf['bitrate'], self.conf['framerate'])
         videodata, size = gstreamer.reference()
-        conf = {'codec':self.conf['codec'], 'bitrate':self.conf['bitrate'], 'framerate':self.conf['framerate'], 'size':size}
+        conf = {'codec':self.conf['codec'], 'bitrate':float(self.conf['bitrate']), 'framerate':float(self.conf['framerate']), 'size':size}
         packetdata = sniffer.parsePkts()
         codecdata, rawdata = self.__loadData(videodata, size, self.conf['codec'])
         qosm = QoSmeter(self.conf['qos'], packetdata).run()

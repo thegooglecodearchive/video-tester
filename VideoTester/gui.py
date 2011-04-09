@@ -89,10 +89,9 @@ class VTframe(wx.Frame, VT):
         self.gop = wx.CheckBox(self.options_tab, -1, "GOP size")
         self.iflr = wx.CheckBox(self.options_tab, -1, "I Frame Loss Rate")
         self.sizer_16_staticbox = wx.StaticBox(self.options_tab, -1, "BitStream measures:")
-        self.ypsnr = wx.CheckBox(self.options_tab, -1, "Y-PSNR")
-        self.upsnr = wx.CheckBox(self.options_tab, -1, "U-PSNR")
-        self.vpsnr = wx.CheckBox(self.options_tab, -1, "V-PSNR")
+        self.psnr = wx.CheckBox(self.options_tab, -1, "PSNR")
         self.ssim = wx.CheckBox(self.options_tab, -1, "SSIM")
+        self.g1070 = wx.CheckBox(self.options_tab, -1, "G.1070")
         self.sizer_5_staticbox = wx.StaticBox(self.options_tab, -1, "Video quality measures:")
         self.log_tab = wx.Panel(self.tabs, -1)
         self.log = wx.TextCtrl(self.log_tab, -1, "Log messages:\n----------------\n", style=wx.TE_MULTILINE|wx.TE_READONLY)
@@ -226,10 +225,9 @@ class VTframe(wx.Frame, VT):
         sizer_16.Add(grid_sizer_6, 1, wx.EXPAND, 0)
         sizer_14.Add(sizer_16, 1, wx.EXPAND, 0)
         sizer_1.Add(sizer_14, 1, wx.EXPAND, 0)
-        grid_sizer_4.Add(self.ypsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-        grid_sizer_4.Add(self.upsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-        grid_sizer_4.Add(self.vpsnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+        grid_sizer_4.Add(self.psnr, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         grid_sizer_4.Add(self.ssim, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+        grid_sizer_4.Add(self.g1070, 0, wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
         sizer_5.Add(grid_sizer_4, 1, wx.EXPAND, 0)
         sizer_1.Add(sizer_5, 1, wx.EXPAND, 0)
         self.options_tab.SetSizer(sizer_1)
@@ -472,14 +470,12 @@ class VTframe(wx.Frame, VT):
             bs.append('iflr')
         conf['bs'] = bs
         vq = []
-        if self.ypsnr.GetValue():
-            vq.append('ypsnr')
-        if self.upsnr.GetValue():
-            vq.append('upsnr')
-        if self.vpsnr.GetValue():
-            vq.append('vpsnr')
+        if self.psnr.GetValue():
+            vq.append('psnr')
         if self.ssim.GetValue():
             vq.append('ssim')
+        if self.g1070.GetValue():
+            vq.append('g1070')
         conf['vq'] = vq
         return conf
     
