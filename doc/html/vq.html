@@ -75,7 +75,7 @@
 
 <dl class="class">
 <dt id="VideoTester.measures.vq.VQmeasure">
-<em class="property">class </em><tt class="descclassname">VideoTester.measures.vq.</tt><tt class="descname">VQmeasure</tt><big>(</big><em>(rawdata</em>, <em>codecdata</em>, <em>packetdata)</em><big>)</big><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.vq.</tt><tt class="descname">VQmeasure</tt><big>(</big><em>(conf</em>, <em>rawdata</em>, <em>codecdata</em>, <em>packetdata)</em><big>)</big><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="m-core.html#VideoTester.measures.core.Measure" title="VideoTester.measures.core.Measure"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.core.Measure</span></tt></a></p>
 <p>Video quality measure type.</p>
 <p><strong>On init:</strong> Register QoS + bit-stream + video parameters.</p>
@@ -84,6 +84,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>conf</strong> (<em>string</em>) &#8211; Video parameters: <cite>codec</cite>, <cite>bitrate</cite>, <cite>framerate</cite> and <cite>size</cite>.</li>
 <li><strong>rawdata</strong> (<em>dictionary</em>) &#8211; Frame information from YUV videos (<cite>original</cite>, <cite>received</cite> and <cite>coded</cite>).</li>
 <li><strong>codecdata</strong> (<em>dictionary</em>) &#8211; Frame information from compressed videos (<cite>received</cite> and <cite>coded</cite>).</li>
 <li><strong>packetdata</strong> (<em>tuple</em>) &#8211; QoS parameters.</li>
@@ -93,15 +94,9 @@
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="VideoTester.measures.vq.VQmeasure.packetdata">
-<tt class="descname">packetdata</tt><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure.packetdata" title="Permalink to this definition">¶</a></dt>
-<dd><p>QoS parameters.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="VideoTester.measures.vq.VQmeasure.codecdata">
-<tt class="descname">codecdata</tt><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure.codecdata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Frame information from compressed videos (<cite>received</cite> and <cite>coded</cite>).</p>
+<dt id="VideoTester.measures.vq.VQmeasure.conf">
+<tt class="descname">conf</tt><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure.conf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Video parameters: <cite>codec</cite>, <cite>bitrate</cite>, <cite>framerate</cite> and <cite>size</cite>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -114,6 +109,18 @@
 <dt id="VideoTester.measures.vq.VQmeasure.yuvref">
 <tt class="descname">yuvref</tt><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure.yuvref" title="Permalink to this definition">¶</a></dt>
 <dd><p>Frame information from original or coded YUV.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.measures.vq.VQmeasure.codecdata">
+<tt class="descname">codecdata</tt><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure.codecdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frame information from compressed videos (<cite>received</cite> and <cite>coded</cite>).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.measures.vq.VQmeasure.packetdata">
+<tt class="descname">packetdata</tt><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure.packetdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>QoS parameters.</p>
 </dd></dl>
 
 <dl class="method">

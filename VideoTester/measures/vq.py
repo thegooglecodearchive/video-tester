@@ -38,23 +38,26 @@ class VQmeasure(Measure):
     """
     Video quality measure type.
     """
-    def __init__(self, (rawdata, codecdata, packetdata)):
+    def __init__(self, (conf, rawdata, codecdata, packetdata)):
         """
         **On init:** Register QoS + bit-stream + video parameters.
         
+        :param string conf: Video parameters: `codec`, `bitrate`, `framerate` and `size`.
         :param dictionary rawdata: Frame information from YUV videos (`original`, `received` and `coded`).
         :param dictionary codecdata: Frame information from compressed videos (`received` and `coded`).
         :param tuple packetdata: QoS parameters.
         """
         Measure.__init__(self)
-        #: QoS parameters.
-        self.packetdata = packetdata
-        #: Frame information from compressed videos (`received` and `coded`).
-        self.codecdata = codecdata
+        #: Video parameters: `codec`, `bitrate`, `framerate` and `size`.
+        self.conf = conf
         #: Frame information from received YUV.
         self.yuv = rawdata['received']
         #: Frame information from original or coded YUV.
         self.yuvref = rawdata['original']
+        #: Frame information from compressed videos (`received` and `coded`).
+        self.codecdata = codecdata
+        #: QoS parameters.
+        self.packetdata = packetdata
     
     def getQoSm(self, measures):
         """

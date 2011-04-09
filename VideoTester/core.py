@@ -265,11 +265,12 @@ class Client(VT):
             exit()
         server.stop(self.conf['bitrate'], self.conf['framerate'])
         videodata, size = gstreamer.reference()
+        conf = {'codec':self.conf['codec'], 'bitrate':self.conf['bitrate'], 'framerate':self.conf['framerate'], 'size':size}
         packetdata = sniffer.parsePkts()
         codecdata, rawdata = self.__loadData(videodata, size, self.conf['codec'])
         qosm = QoSmeter(self.conf['qos'], packetdata).run()
         bsm = BSmeter(self.conf['bs'], codecdata).run()
-        vqm = VQmeter(self.conf['vq'], (rawdata, codecdata, packetdata)).run()
+        vqm = VQmeter(self.conf['vq'], (conf, rawdata, codecdata, packetdata)).run()
         self.__saveMeasures(qosm + bsm + vqm)
         VTLOG.info("Client stopped!")
         return qosm + bsm + vqm, self.conf['tempdir'] + self.conf['num']
