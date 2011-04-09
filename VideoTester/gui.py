@@ -10,9 +10,9 @@ import wx.aui
 import matplotlib as mpl
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
 from matplotlib.backends.backend_wxagg import NavigationToolbar2Wx as Toolbar
-from core import VT, Client
+from VideoTester.core import VT, Client
 import pickle
-from config import VTLOG
+from VideoTester.config import VTLOG
 import logging
 import pygst
 pygst.require("0.10")
@@ -383,34 +383,34 @@ class VTframe(wx.Frame, VT):
         """
         self.results_tab.removePages()
         for measure in self.measures:
-            axes = self.results_tab.add(measure['name']).gca()
-            if measure['type'] == 'plot':
-                axes.plot(measure['axes'][0], measure['axes'][1], 'b')
-                axes.plot(measure['axes'][0], [measure['mean'] for i in measure['axes'][0]], 'g')
-                axes.plot(measure['axes'][0], [measure['max'][1] for i in measure['axes'][0]], 'r')
-                axes.plot(measure['axes'][0], [measure['min'][1] for i in measure['axes'][0]], 'r')
-                axes.set_xlabel(measure['units'][0])
-                axes.set_ylabel(measure['units'][1])
-            elif measure['type'] == 'value':
+            axes = self.results_tab.add(measure.name).gca()
+            if measure.type == 'plot':
+                axes.plot(measure.data['axes'][0], measure.data['axes'][1], 'b')
+                axes.plot(measure.data['axes'][0], [measure.data['mean'] for i in measure.data['axes'][0]], 'g')
+                axes.plot(measure.data['axes'][0], [measure.data['max'][1] for i in measure.data['axes'][0]], 'r')
+                axes.plot(measure.data['axes'][0], [measure.data['min'][1] for i in measure.data['axes'][0]], 'r')
+                axes.set_xlabel(measure.units[0])
+                axes.set_ylabel(measure.units[1])
+            elif measure.type == 'value':
                 width = 1
-                axes.bar([0.5], measure['value'], width=width)
-                axes.set_ylabel(measure['units'])
+                axes.bar([0.5], measure.data['value'], width=width)
+                axes.set_ylabel(measure.units)
                 axes.set_xticks([1])
                 axes.set_xlim(0, 2)
-                axes.set_xticklabels([measure['name']])
-            elif measure['type'] == 'bar':
-                axes.bar(measure['axes'][0], measure['axes'][1], width=measure['width'])
-                axes.plot(measure['axes'][0], [measure['mean'] for i in measure['axes'][0]], 'g')
-                axes.plot(measure['axes'][0], [measure['max'][1] for i in measure['axes'][0]], 'r')
-                axes.plot(measure['axes'][0], [measure['min'][1] for i in measure['axes'][0]], 'r')
-                axes.set_xlabel(measure['units'][0])
-                axes.set_ylabel(measure['units'][1])
-            elif measure['type'] == 'videoframes':
-                axes.bar(measure['axes'][0], measure['axes'][1]['B'], width=1, color='g')
-                axes.bar(measure['axes'][0], measure['axes'][1]['P'], width=1, color='b')
-                axes.bar(measure['axes'][0], measure['axes'][1]['I'], width=1, color='r')
-                axes.set_xlabel(measure['units'][0])
-                axes.set_ylabel(measure['units'][1])
+                axes.set_xticklabels([measure.name])
+            elif measure.type == 'bar':
+                axes.bar(measure.data['axes'][0], measure.data['axes'][1], width=measure.data['width'])
+                axes.plot(measure.data['axes'][0], [measure.data['mean'] for i in measure.data['axes'][0]], 'g')
+                axes.plot(measure.data['axes'][0], [measure.data['max'][1] for i in measure.data['axes'][0]], 'r')
+                axes.plot(measure.data['axes'][0], [measure.data['min'][1] for i in measure.data['axes'][0]], 'r')
+                axes.set_xlabel(measure.units[0])
+                axes.set_ylabel(measure.units[1])
+            elif measure.type == 'videoframes':
+                axes.bar(measure.data['axes'][0], measure.data['axes'][1]['B'], width=1, color='g')
+                axes.bar(measure.data['axes'][0], measure.data['axes'][1]['P'], width=1, color='b')
+                axes.bar(measure.data['axes'][0], measure.data['axes'][1]['I'], width=1, color='r')
+                axes.set_xlabel(measure.units[0])
+                axes.set_ylabel(measure.units[1])
         self.results_tab.Show()
     
     def configureVideos(self):

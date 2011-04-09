@@ -4,15 +4,25 @@
 ## Copyright 2011 Iñaki Úcar <i.ucar86@gmail.com>
 ## This program is published under a GPLv3 license
 
-from measures import Meter, Measure
-from qos import QoSmeter
-from bs import BSmeter
+from VideoTester.measures.core import Meter, Measure
+from VideoTester.measures.qos import QoSmeter
+from VideoTester.measures.bs import BSmeter
 from VideoTester.config import VTLOG
 import math
 import cv
 
 class VQmeter(Meter):
+    """
+    Video quality meter.
+    """
     def __init__(self, selected, data):
+        """
+        **On init:** Register selected video quality measures.
+        
+        :param selected: Selected video quality measures.
+        :type selected: string or list
+        :param tuple data: Collected QoS + bit-stream + video parameters.
+        """
         Meter.__init__(self)
         VTLOG.info("Starting VQmeter...")
         if 'ypsnr' in selected:
@@ -25,26 +35,60 @@ class VQmeter(Meter):
             self.measures.append(SSIM(data))
 
 class VQmeasure(Measure):
+    """
+    Video quality measure type.
+    """
     def __init__(self, (rawdata, codecdata, packetdata)):
+        """
+        **On init:** Register QoS + bit-stream + video parameters.
+        
+        :param dictionary rawdata: Frame information from YUV videos (`original`, `received` and `coded`).
+        :param dictionary codecdata: Frame information from compressed videos (`received` and `coded`).
+        :param tuple packetdata: QoS parameters.
+        """
         Measure.__init__(self)
+        #: QoS parameters.
         self.packetdata = packetdata
+        #: Frame information from compressed videos (`received` and `coded`).
         self.codecdata = codecdata
+        #: Frame information from received YUV.
         self.yuv = rawdata['received']
+        #: Frame information from original or coded YUV.
         self.yuvref = rawdata['original']
     
-    def getQoSm(self, measure):
-        return QoSmeter(measure, self.packetdata).run()
+    def getQoSm(self, measures):
+        """
+        Get QoS measures.
+        
+        :param measures: Selected QoS measures.
+        :type measures: string or list
+        
+        :returns: Calculated QoS measures.
+        :rtype: list
+        """
+        return QoSmeter(measures, self.packetdata).run()
     
-    def getBSm(self, measure):
-        return BSmeter(measure, self.codecdata).run()
+    def getBSm(self, measures):
+        """
+        Get bit-stream measures.
+        
+        :param measures: Selected bit-stream measures.
+        :type measures: string or list
+        
+        :returns: Calculated bit-stream measures.
+        :rtype: list
+        """
+        return BSmeter(measures, self.codecdata).run()
 
 class PSNR(VQmeasure):
+    name = 'PSNR'
+    type = 'plot'
+    units = ['frame', 'dB']
+    
     def __init__(self, data, component='Y'):
         VQmeasure.__init__(self, data)
         self.cmp = component
-        self.measure['name'] = self.cmp + '-PSNR'
-        self.measure['units'] = ['frame', 'dB']
-        self.measure['type'] = 'plot'
+        self.name = self.cmp + self.name
     
     def calculate(self):
         L = 255
@@ -72,11 +116,9 @@ class VPSNR(PSNR):
         PSNR.__init__(self, data, 'V')
 
 class SSIM(VQmeasure):
-    def __init__(self, data):
-        VQmeasure.__init__(self, data)
-        self.measure['name'] = 'SSIM'
-        self.measure['units'] = ['frame', 'SSIM index']
-        self.measure['type'] = 'plot'
+    name = 'SSIM'
+    type = 'plot'
+    units = ['frame', 'SSIM index']
     
     def __array2cv(self, a):
         dtype2depth = {

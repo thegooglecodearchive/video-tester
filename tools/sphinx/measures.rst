@@ -1,6 +1,13 @@
-``VideoTester.measures.measures`` --- Generic superclasses
-==========================================================
+``VideoTester.measures`` --- Measures package
+=============================================
 
-.. automodule:: VideoTester.measures.measures
-    :members:
-    :show-inheritance:
+.. toctree::
+   :maxdepth: 2
+
+   m-core
+
+   qos
+
+   bs
+ 
+   vq

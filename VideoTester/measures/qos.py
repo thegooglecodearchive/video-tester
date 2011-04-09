@@ -4,11 +4,21 @@
 ## Copyright 2011 Iñaki Úcar <i.ucar86@gmail.com>
 ## This program is published under a GPLv3 license
 
-from measures import Meter, Measure
+from VideoTester.measures.core import Meter, Measure
 from VideoTester.config import VTLOG
 
 class QoSmeter(Meter):
+    """
+    QoS meter.
+    """
     def __init__(self, selected, data):
+        """
+        **On init:** Register selected QoS measures.
+        
+        :param selected: Selected QoS measures.
+        :type selected: string or list
+        :param tuple data: Collected QoS parameters.
+        """
         Meter.__init__(self)
         VTLOG.info("Starting QoSmeter...")
         if 'latency' in selected:
@@ -27,20 +37,35 @@ class QoSmeter(Meter):
             self.measures.append(PacketLossDist(data))
 
 class QoSmeasure(Measure):
+    """
+    QoS measure type.
+    """
     def __init__(self, (lengths, times, sequences, timestamps, ping)):
+        """
+        **On init:** Register QoS parameters.
+        
+        :param list lengths: List of packet lengths.
+        :param list times: List of packet arrival times.
+        :param list sequences: List of RTP sequence numbers.
+        :param list timestamps: List of RTP timestamps.
+        :param dictionary ping: Ping information.
+        """
         Measure.__init__(self)
+        #: List of packet lengths (see :attr:`VideoTester.sniffer.Sniffer.lengths`).
         self.lengths = lengths
+        #: List of packet arrival times (see :attr:`VideoTester.sniffer.Sniffer.times`).
         self.times = times
+        #: List of RTP sequence numbers (see :attr:`VideoTester.sniffer.Sniffer.sequences`).
         self.sequences = sequences
+        #: List of RTP timestamps (see :attr:`VideoTester.sniffer.Sniffer.timestamps`).
         self.timestamps = timestamps
+        #: Ping information (see :attr:`VideoTester.sniffer.Sniffer.ping`).
         self.ping = ping
 
 class Latency(QoSmeasure):
-    def __init__(self, data):
-        QoSmeasure.__init__(self, data)
-        self.measure['name'] = 'Latency'
-        self.measure['units'] = 'ms'
-        self.measure['type'] = 'value'
+    name = 'Latency'
+    type = 'value'
+    units = 'ms'
     
     def calculate(self):
         sum = 0
@@ -49,15 +74,13 @@ class Latency(QoSmeasure):
             if len(self.ping[i]) == 2:
                 sum = sum + (self.ping[i][0] - self.ping[i][8]) * 500
                 count = count + 1
-        self.measure['value'] = sum / count
+        self.data['value'] = sum / count
         return self.measure
 
 class Delta(QoSmeasure):
-    def __init__(self, data):
-        QoSmeasure.__init__(self, data)
-        self.measure['name'] = 'Delta'
-        self.measure['units'] = ['RTP packet', 'ms']
-        self.measure['type'] = 'plot'
+    name = 'Delta'
+    type = 'plot'
+    units = ['RTP packet', 'ms']
     
     def calculate(self):
         x = self.sequences
@@ -68,11 +91,9 @@ class Delta(QoSmeasure):
         return self.measure
 
 class Jitter(QoSmeasure):
-    def __init__(self, data):
-        QoSmeasure.__init__(self, data)
-        self.measure['name'] = 'Jitter'
-        self.measure['units'] = ['RTP packet', 'ms']
-        self.measure['type'] = 'plot'
+    name = 'Jitter'
+    type = 'plot'
+    units = ['RTP packet', 'ms']
     
     def calculate(self):
         #ms (see RFC 3550)
@@ -85,11 +106,9 @@ class Jitter(QoSmeasure):
         return self.measure
 
 class Skew(QoSmeasure):
-    def __init__(self, data):
-        QoSmeasure.__init__(self, data)
-        self.measure['name'] = 'Skew'
-        self.measure['units'] = ['RTP packet', 'ms']
-        self.measure['type'] = 'plot'
+    name = 'Skew'
+    type = 'plot'
+    units = ['RTP packet', 'ms']
     
     def calculate(self):
         x = self.sequences
@@ -100,11 +119,9 @@ class Skew(QoSmeasure):
         return self.measure
 
 class Bandwidth(QoSmeasure):
-    def __init__(self, data):
-        QoSmeasure.__init__(self, data)
-        self.measure['name'] = 'Bandwidth'
-        self.measure['units'] = ['time (s)', 'kbps']
-        self.measure['type'] = 'plot'
+    name = 'Bandwidth'
+    type = 'plot'
+    units = ['time (s)', 'kbps']
     
     def calculate(self):
         x = self.times
@@ -131,37 +148,33 @@ class Bandwidth(QoSmeasure):
         return self.measure
 
 class PacketLossRate(QoSmeasure):
-    def __init__(self, data):
-        QoSmeasure.__init__(self, data)
-        self.measure['name'] = 'PLR'
-        self.measure['units'] = 'rate'
-        self.measure['type'] = 'value'
+    name = 'PLR'
+    type = 'value'
+    units = 'rate'
     
     def calculate(self):
         loss = 0
         for i in range(1, len(self.sequences)):
             loss = loss + self.sequences[i] - self.sequences[i-1] - 1
         rate = float(loss) / float(self.sequences[-1] + 1)
-        self.measure['value'] = rate
+        self.data['value'] = rate
         return self.measure
 
 class PacketLossDist(QoSmeasure):
-    def __init__(self, data):
-        QoSmeasure.__init__(self, data)
-        self.measure['name'] = 'PLD'
-        self.measure['units'] = ['time (s)', 'Packet Loss Rate']
-        self.measure['type'] = 'bar'
-        self.measure['width'] = 1 #seconds
+    name = 'PLD'
+    type = 'bar'
+    units = ['time (s)', 'Packet Loss Rate']
     
     def calculate(self):
-        edge = self.measure['width']
+        self.data['width'] = 1 #seconds
+        edge = self.data['width']
         x = []
         y = []
         i = 1
         j = 1
         count = 1
         while i < len(self.times):
-            x.append((j-1) * self.measure['width'])
+            x.append((j-1) * self.data['width'])
             loss = 0
             while i < len(self.times) and self.times[i] < edge:
                 count = count + 1
@@ -169,7 +182,7 @@ class PacketLossDist(QoSmeasure):
                 i = i + 1
             y.append(float(loss) / count)
             count = 0
-            edge = edge + self.measure['width']
+            edge = edge + self.data['width']
             j = j + 1
         self.graph(x, y)
         return self.measure

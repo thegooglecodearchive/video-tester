@@ -6,7 +6,7 @@
 
 from scapy.all import *
 from time import time
-from config import VTLOG
+from VideoTester.config import VTLOG
 
 class RTSPi(Packet):
     """
@@ -125,7 +125,7 @@ class Sniffer:
     
     def __prepare(self, p):
         """
-        Pre-process capture file. This function parses RTSP information and extracts :attr:`ping`, :attr:`ptype` and :attr:`clock`.
+        Pre-process capture file. This method parses RTSP information and extracts :attr:`ping`, :attr:`ptype` and :attr:`clock`.
         
         :returns: True when a RTSP *PLAY* packet is found.
         :rtype: boolean

@@ -4,12 +4,22 @@
 ## Copyright 2011 Iñaki Úcar <i.ucar86@gmail.com>
 ## This program is published under a GPLv3 license
 
-from measures import Meter, Measure
+from VideoTester.measures.core import Meter, Measure
 from VideoTester.config import VTLOG
 from numpy import *
 
 class BSmeter(Meter):
+    """
+    Bit-stream meter.
+    """
     def __init__(self, selected, data):
+        """
+        **On init:** Register selected bit-stream measures.
+        
+        :param selected: Selected bit-stream measures.
+        :type selected: string or list
+        :param tuple data: Collected bit-stream parameters.
+        """
         Meter.__init__(self)
         VTLOG.info("Starting BSmeter...")
         if 'streameye' in selected:
@@ -22,21 +32,33 @@ class BSmeter(Meter):
             self.measures.append(IFrameLossRate(data))
 
 class BSmeasure(Measure):
+    """
+    Bit-stream measure type.
+    """
     def __init__(self, codecdata):
+        """
+        **On init:** Register bit-stream parameters.
+        
+        :param dictionary codecdata: Frame information from compressed videos (`received` and `coded`).
+        """
         Measure.__init__(self)
+        #: Frame information from received video.
         self.coded = codecdata['received']
+        #: Frame information from coded video.
         self.codedref = codecdata['coded']
 
 class StreamEye(BSmeasure):
+    name = 'StreamEye'
+    type = 'videoframes'
+    units = ['frame', 'bytes']
+    
     def __init__(self, data, video=''):
         BSmeasure.__init__(self, data)
         if video == 'ref':
             self.v = self.codedref
         elif video == '':
             self.v = self.coded
-        self.measure['name'] = video + 'StreamEye'
-        self.measure['units'] = ['frame', 'bytes']
-        self.measure['type'] = 'videoframes'
+        self.name = video + self.name
     
     def calculate(self):
         x = range(len(self.v.frames['lengths']))
@@ -52,7 +74,7 @@ class StreamEye(BSmeasure):
             elif type == 'B':
                 Bframes[i] = self.v.frames['lengths'][i]
         y = {'I':Iframes, 'P':Pframes, 'B':Bframes}
-        self.measure['axes'] = [x, y]
+        self.data['axes'] = [x, y]
         return self.measure
 
 class RefStreamEye(StreamEye):
@@ -60,11 +82,9 @@ class RefStreamEye(StreamEye):
         StreamEye.__init__(self, data, 'ref')
 
 class GOP(BSmeasure):
-    def __init__(self, data):
-        BSmeasure.__init__(self, data)
-        self.measure['name'] = 'GOP'
-        self.measure['units'] = 'GOP size'
-        self.measure['type'] = 'value'
+    name = 'GOP'
+    type = 'value'
+    units = 'GOP size'
     
     def calculate(self):
         gops = []
@@ -84,15 +104,13 @@ class GOP(BSmeasure):
             if (gops[i] < lim1) or (gops[i] > lim2):
                 loss.append(i)
         gops = delete(gops, loss)
-        self.measure['value'] = int(round(mean(gops)))
+        self.data['value'] = int(round(mean(gops)))
         return self.measure
 
 class IFrameLossRate(BSmeasure):
-    def __init__(self, data):
-        BSmeasure.__init__(self, data)
-        self.measure['name'] = 'IFLR'
-        self.measure['units'] = 'rate'
-        self.measure['type'] = 'value'
+    name = 'IFLR'
+    type = 'value'
+    units = 'rate'
     
     def calculate(self):
         count = 0
@@ -113,5 +131,5 @@ class IFrameLossRate(BSmeasure):
             if gops[i] > lim:
                 loss.append(i)
         rate = float(len(loss)) / float(count + len(loss))
-        self.measure['value'] = rate
+        self.data['value'] = rate
         return self.measure

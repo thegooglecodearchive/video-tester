@@ -24,9 +24,9 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/VTfavicon.png"/>
     <link rel="top" title="VideoTester v0.1 documentation" href="index.html" />
-    <link rel="up" title="7. VideoTester.measures — Measures package" href="measures-package.html" />
+    <link rel="up" title="7. VideoTester.measures — Measures package" href="measures.html" />
     <link rel="next" title="7.3. VideoTester.measures.bs — Bitstream measures" href="bs.html" />
-    <link rel="prev" title="7.1. VideoTester.measures.measures — Generic superclasses" href="measures.html" /> 
+    <link rel="prev" title="7.1. VideoTester.measures.core — Generic superclasses" href="m-core.html" /> 
   </head>
   <body>
     <div class="related">
@@ -42,11 +42,11 @@
           <a href="bs.html" title="7.3. VideoTester.measures.bs — Bitstream measures"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="measures.html" title="7.1. VideoTester.measures.measures — Generic superclasses"
+          <a href="m-core.html" title="7.1. VideoTester.measures.core — Generic superclasses"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">VideoTester v0.1 documentation</a> &raquo;</li>
           <li><a href="modules.html" >Module Reference</a> &raquo;</li>
-          <li><a href="measures-package.html" accesskey="U">7. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">VideoTester.measures</span></tt> &#8212; Measures package</a> &raquo;</li> 
+          <li><a href="measures.html" accesskey="U">7. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">VideoTester.measures</span></tt> &#8212; Measures package</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -57,6 +57,79 @@
             
   <div class="section" id="module-VideoTester.measures.qos">
 <span id="videotester-measures-qos-qos-measures"></span><h1>7.2. <tt class="docutils literal"><span class="pre">VideoTester.measures.qos</span></tt> &#8212; QoS measures<a class="headerlink" href="#module-VideoTester.measures.qos" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="VideoTester.measures.qos.QoSmeter">
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.qos.</tt><tt class="descname">QoSmeter</tt><big>(</big><em>selected</em>, <em>data</em><big>)</big><a class="headerlink" href="#VideoTester.measures.qos.QoSmeter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="m-core.html#VideoTester.measures.core.Meter" title="VideoTester.measures.core.Meter"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.core.Meter</span></tt></a></p>
+<p>QoS meter.</p>
+<p><strong>On init:</strong> Register selected QoS measures.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>selected</strong> (<em>string or list</em>) &#8211; Selected QoS measures.</li>
+<li><strong>data</strong> (<em>tuple</em>) &#8211; Collected QoS parameters.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="VideoTester.measures.qos.QoSmeasure">
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.qos.</tt><tt class="descname">QoSmeasure</tt><big>(</big><em>(lengths</em>, <em>times</em>, <em>sequences</em>, <em>timestamps</em>, <em>ping)</em><big>)</big><a class="headerlink" href="#VideoTester.measures.qos.QoSmeasure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="m-core.html#VideoTester.measures.core.Measure" title="VideoTester.measures.core.Measure"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.core.Measure</span></tt></a></p>
+<p>QoS measure type.</p>
+<p><strong>On init:</strong> Register QoS parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lengths</strong> (<em>list</em>) &#8211; List of packet lengths.</li>
+<li><strong>times</strong> (<em>list</em>) &#8211; List of packet arrival times.</li>
+<li><strong>sequences</strong> (<em>list</em>) &#8211; List of RTP sequence numbers.</li>
+<li><strong>timestamps</strong> (<em>list</em>) &#8211; List of RTP timestamps.</li>
+<li><strong>ping</strong> (<em>dictionary</em>) &#8211; Ping information.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="VideoTester.measures.qos.QoSmeasure.lengths">
+<tt class="descname">lengths</tt><a class="headerlink" href="#VideoTester.measures.qos.QoSmeasure.lengths" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of packet lengths (see <a class="reference internal" href="sniffer.html#VideoTester.sniffer.Sniffer.lengths" title="VideoTester.sniffer.Sniffer.lengths"><tt class="xref py py-attr docutils literal"><span class="pre">VideoTester.sniffer.Sniffer.lengths</span></tt></a>).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.measures.qos.QoSmeasure.times">
+<tt class="descname">times</tt><a class="headerlink" href="#VideoTester.measures.qos.QoSmeasure.times" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of packet arrival times (see <a class="reference internal" href="sniffer.html#VideoTester.sniffer.Sniffer.times" title="VideoTester.sniffer.Sniffer.times"><tt class="xref py py-attr docutils literal"><span class="pre">VideoTester.sniffer.Sniffer.times</span></tt></a>).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.measures.qos.QoSmeasure.sequences">
+<tt class="descname">sequences</tt><a class="headerlink" href="#VideoTester.measures.qos.QoSmeasure.sequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of RTP sequence numbers (see <a class="reference internal" href="sniffer.html#VideoTester.sniffer.Sniffer.sequences" title="VideoTester.sniffer.Sniffer.sequences"><tt class="xref py py-attr docutils literal"><span class="pre">VideoTester.sniffer.Sniffer.sequences</span></tt></a>).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.measures.qos.QoSmeasure.timestamps">
+<tt class="descname">timestamps</tt><a class="headerlink" href="#VideoTester.measures.qos.QoSmeasure.timestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of RTP timestamps (see <a class="reference internal" href="sniffer.html#VideoTester.sniffer.Sniffer.timestamps" title="VideoTester.sniffer.Sniffer.timestamps"><tt class="xref py py-attr docutils literal"><span class="pre">VideoTester.sniffer.Sniffer.timestamps</span></tt></a>).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.measures.qos.QoSmeasure.ping">
+<tt class="descname">ping</tt><a class="headerlink" href="#VideoTester.measures.qos.QoSmeasure.ping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ping information (see <a class="reference internal" href="sniffer.html#VideoTester.sniffer.Sniffer.ping" title="VideoTester.sniffer.Sniffer.ping"><tt class="xref py py-attr docutils literal"><span class="pre">VideoTester.sniffer.Sniffer.ping</span></tt></a>).</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -69,8 +142,8 @@
               <img class="logo" src="_static/VT200x170.png" alt="Logo"/>
             </a></p>
   <h4>Previous topic</h4>
-  <p class="topless"><a href="measures.html"
-                        title="previous chapter">7.1. <tt class="docutils literal docutils literal docutils literal"><span class="pre">VideoTester.measures.measures</span></tt> &#8212; Generic superclasses</a></p>
+  <p class="topless"><a href="m-core.html"
+                        title="previous chapter">7.1. <tt class="docutils literal docutils literal docutils literal"><span class="pre">VideoTester.measures.core</span></tt> &#8212; Generic superclasses</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="bs.html"
                         title="next chapter">7.3. <tt class="docutils literal docutils literal"><span class="pre">VideoTester.measures.bs</span></tt> &#8212; Bitstream measures</a></p>
@@ -109,11 +182,11 @@
           <a href="bs.html" title="7.3. VideoTester.measures.bs — Bitstream measures"
              >next</a> |</li>
         <li class="right" >
-          <a href="measures.html" title="7.1. VideoTester.measures.measures — Generic superclasses"
+          <a href="m-core.html" title="7.1. VideoTester.measures.core — Generic superclasses"
              >previous</a> |</li>
         <li><a href="index.html">VideoTester v0.1 documentation</a> &raquo;</li>
           <li><a href="modules.html" >Module Reference</a> &raquo;</li>
-          <li><a href="measures-package.html" >7. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">VideoTester.measures</span></tt> &#8212; Measures package</a> &raquo;</li> 
+          <li><a href="measures.html" >7. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">VideoTester.measures</span></tt> &#8212; Measures package</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
