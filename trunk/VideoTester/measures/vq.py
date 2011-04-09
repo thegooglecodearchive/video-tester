@@ -25,14 +25,12 @@ class VQmeter(Meter):
         """
         Meter.__init__(self)
         VTLOG.info("Starting VQmeter...")
-        if 'ypsnr' in selected:
+        if 'psnr' in selected:
             self.measures.append(PSNR(data))
-        if 'upsnr' in selected:
-            self.measures.append(UPSNR(data))
-        if 'vpsnr' in selected:
-            self.measures.append(VPSNR(data))
         if 'ssim' in selected:
             self.measures.append(SSIM(data))
+        if 'g1070' in selected:
+            self.measures.append(G1070(data))
 
 class VQmeasure(Measure):
     """
@@ -90,23 +88,21 @@ class PSNR(VQmeasure):
     * Type: `plot`.
     * Units: `dB per frame`.
     """
-    def __init__(self, data, component='Y'):
+    def __init__(self, data):
         VQmeasure.__init__(self, data)
         self.data['name'] = 'PSNR'
         self.data['type'] = 'plot'
         self.data['units'] = ('frame', 'dB')
-        self.cmp = component
-        self.data['name'] = self.cmp + self.data['name']
     
     def calculate(self):
         L = 255
-        width = self.yuv.video[self.cmp][0].shape[0]
-        height = self.yuv.video[self.cmp][0].shape[1]
+        width = self.yuv.video['Y'][0].shape[0]
+        height = self.yuv.video['Y'][0].shape[1]
         fin = min(self.yuv.frames, self.yuvref.frames)
         x = range(0, fin)
         y = []
         for i in x:
-            sum = (self.yuv.video[self.cmp][i].astype(int) - self.yuvref.video[self.cmp][i].astype(int))**2
+            sum = (self.yuv.video['Y'][i].astype(int) - self.yuvref.video['Y'][i].astype(int))**2
             mse = sum.sum() / width / height
             if mse != 0:
                 y.append(20 * math.log(L / math.sqrt(mse), 10))
@@ -114,26 +110,6 @@ class PSNR(VQmeasure):
                 y.append(100)
         self.graph(x, y)
         return self.data
-
-class UPSNR(PSNR):
-    """
-    PSNR: Peak Signal to Noise Ratio (U component).
-    
-    * Type: `plot`.
-    * Units: `dB per frame`.
-    """
-    def __init__(self, data):
-        PSNR.__init__(self, data, 'U')
-
-class VPSNR(PSNR):
-    """
-    PSNR: Peak Signal to Noise Ratio (V component).
-    
-    * Type: `plot`.
-    * Units: `dB per frame`.
-    """
-    def __init__(self, data):
-        PSNR.__init__(self, data, 'V')
 
 class SSIM(VQmeasure):
     """
@@ -250,4 +226,30 @@ class SSIM(VQmeasure):
         for i in x:
             y.append(self.__SSIM(self.yuv.video['Y'][i], self.yuvref.video['Y'][i]))
         self.graph(x, y)
+        return self.data
+
+class G1070(VQmeasure):
+    """
+    ITU-T G.1070 video quality estimation.
+    
+    * Type: `value`.
+    * Units: `-`.
+    """
+    def __init__(self, data):
+        VQmeasure.__init__(self, data)
+        self.data['name'] = 'G.1070'
+        self.data['type'] = 'value'
+        self.data['units'] = ''
+    
+    def calculate(self):
+        v = [0, 1.431, 2.228e-2, 3.759, 184.1, 1.161, 1.446, 3.881e-4, 2.116, 467.4, 2.736, 15.28, 4.170]
+        
+        Dfrv = v[6] + v[7] * self.conf['bitrate']
+        Iofr = v[3] - v[3] / (1 + (self.conf['bitrate'] / v[4])**v[5])
+        Ofr = v[1] + v[2] * self.conf['bitrate']
+        
+        Ic = Iofr * math.exp(-(math.log(self.conf['framerate']) - math.log(Ofr))**2 / (2 * Dfrv**2))
+        Dpplv = v[10] + v[11] * math.exp(-self.conf['framerate'] / v[8]) + v[12] * math.exp(-self.conf['bitrate'] / v[9])
+        
+        self.data['value'] = 1 + Ic * math.exp(-self.getQoSm('plr')[0]['value'] * 100 / Dpplv)
         return self.data

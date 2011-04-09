@@ -1,4 +1,4 @@
-# coding=UTF8
+cod# coding=UTF8
 ## This file is part of VideoTester
 ## See http://video-tester.googlecode.com for more information
 ## Copyright 2011 Iñaki Úcar <i.ucar86@gmail.com>
