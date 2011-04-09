@@ -273,9 +273,8 @@ class VTframe(wx.Frame, VT):
         """
         import textwrap
         dlg = wx.MessageDialog(self, textwrap.dedent('''
-            VideoTester 0.1
+            VideoTester 0.1 - Video Quality Assessment Tool
             
-            Video Quality Assessment Tool
             Visit http://video-tester.googlecode.com for support and updates
               
             Copyright 2011 Iñaki Úcar <i.ucar86@gmail.com>
