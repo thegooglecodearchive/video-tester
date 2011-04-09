@@ -317,8 +317,6 @@ class MIV(VQmeasure):
     def calculate(self):
         x, refmos = PSNRtoMOS((None, self.rawdata, None, None), yuv=True).calculate()['axes']
         x, mos = PSNRtoMOS((None, self.rawdata, None, None)).calculate()['axes']
-        print refmos
-        print mos
         y = []
         worst = 0
         for i in range(0, self.interval):
