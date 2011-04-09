@@ -48,17 +48,22 @@ class BSmeasure(Measure):
         self.codedref = codecdata['coded']
 
 class StreamEye(BSmeasure):
-    name = 'StreamEye'
-    type = 'videoframes'
-    units = ['frame', 'bytes']
+    """
+    Stream Eye: visualization of the compressed frames (received video).
     
+    * Type: `videoframes`.
+    * Units: `bytes per frame`.
+    """
     def __init__(self, data, video=''):
         BSmeasure.__init__(self, data)
+        self.data['name'] = 'StreamEye'
+        self.data['type'] = 'videoframes'
+        self.data['units'] = ('frame', 'bytes')
         if video == 'ref':
             self.v = self.codedref
         elif video == '':
             self.v = self.coded
-        self.name = video + self.name
+        self.data['name'] = video + self.data['name']
     
     def calculate(self):
         x = range(len(self.v.frames['lengths']))
@@ -75,16 +80,30 @@ class StreamEye(BSmeasure):
                 Bframes[i] = self.v.frames['lengths'][i]
         y = {'I':Iframes, 'P':Pframes, 'B':Bframes}
         self.data['axes'] = [x, y]
-        return self.measure
+        return self.data
 
 class RefStreamEye(StreamEye):
+    """
+    ref Stream Eye: visualization of the compressed frames (reference video).
+    
+    * Type: `videoframes`.
+    * Units: `bytes per frame`.
+    """
     def __init__(self, data):
         StreamEye.__init__(self, data, 'ref')
 
 class GOP(BSmeasure):
-    name = 'GOP'
-    type = 'value'
-    units = 'GOP size'
+    """
+    GOP: estimation of *Group Of Pictures* size for received video.
+    
+    * Type: `value`.
+    * Units: `GOP size`.
+    """
+    def __init__(self, data):
+        BSmeasure.__init__(self, data)
+        self.data['name'] = 'GOP'
+        self.data['type'] = 'value'
+        self.data['units'] = 'GOP size'
     
     def calculate(self):
         gops = []
@@ -105,12 +124,20 @@ class GOP(BSmeasure):
                 loss.append(i)
         gops = delete(gops, loss)
         self.data['value'] = int(round(mean(gops)))
-        return self.measure
+        return self.data
 
 class IFrameLossRate(BSmeasure):
-    name = 'IFLR'
-    type = 'value'
-    units = 'rate'
+    """
+    I-Frame Loss Rate.
+    
+    * Type: `value`.
+    * Units: `rate`.
+    """
+    def __init__(self, data):
+        BSmeasure.__init__(self, data)
+        self.data['name'] = 'IFLR'
+        self.data['type'] = 'value'
+        self.data['units'] = 'rate'
     
     def calculate(self):
         count = 0
@@ -132,4 +159,4 @@ class IFrameLossRate(BSmeasure):
                 loss.append(i)
         rate = float(len(loss)) / float(count + len(loss))
         self.data['value'] = rate
-        return self.measure
+        return self.data

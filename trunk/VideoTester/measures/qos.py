@@ -63,9 +63,17 @@ class QoSmeasure(Measure):
         self.ping = ping
 
 class Latency(QoSmeasure):
-    name = 'Latency'
-    type = 'value'
-    units = 'ms'
+    """
+    Latency: end-to-end delay.
+    
+    * Type: `value`.
+    * Units: `ms`.
+    """
+    def __init__(self, data):
+        QoSmeasure.__init__(self, data)
+        self.data['name'] = 'Latency'
+        self.data['type'] = 'value'
+        self.data['units'] = 'ms'
     
     def calculate(self):
         sum = 0
@@ -75,12 +83,20 @@ class Latency(QoSmeasure):
                 sum = sum + (self.ping[i][0] - self.ping[i][8]) * 500
                 count = count + 1
         self.data['value'] = sum / count
-        return self.measure
+        return self.data
 
 class Delta(QoSmeasure):
-    name = 'Delta'
-    type = 'plot'
-    units = ['RTP packet', 'ms']
+    """
+    Delta: gap between two consecutive packets.
+    
+    * Type: `plot`.
+    * Units: `ms per RTP packet`.
+    """
+    def __init__(self, data):
+        QoSmeasure.__init__(self, data)
+        self.data['name'] = 'Delta'
+        self.data['type'] = 'plot'
+        self.data['units'] = ('RTP packet', 'ms')
     
     def calculate(self):
         x = self.sequences
@@ -88,27 +104,42 @@ class Delta(QoSmeasure):
         for i in range(1, len(self.times)):
             y[i] = (self.times[i] - self.times[i-1]) * 1000
         self.graph(x, y)
-        return self.measure
+        return self.data
 
 class Jitter(QoSmeasure):
-    name = 'Jitter'
-    type = 'plot'
-    units = ['RTP packet', 'ms']
+    """
+    Jitter: latency deviation (see :rfc:`3550#page-94`).
+    
+    * Type: `plot`.
+    * Units: `ms per RTP packet`.
+    """
+    def __init__(self, data):
+        QoSmeasure.__init__(self, data)
+        self.data['name'] = 'Jitter'
+        self.data['type'] = 'plot'
+        self.data['units'] = ('RTP packet', 'ms')
     
     def calculate(self):
-        #ms (see RFC 3550)
         x = self.sequences
         y = [0 for i in range(0, len(self.times))]
         for i in range(1, len(self.times)):
             d = ((self.times[i] - self.timestamps[i]) - (self.times[i-1] - self.timestamps[i-1])) * 1000
             y[i] = y[i-1] + (abs(d) - y[i-1]) / 16
         self.graph(x, y)
-        return self.measure
+        return self.data
 
 class Skew(QoSmeasure):
-    name = 'Skew'
-    type = 'plot'
-    units = ['RTP packet', 'ms']
+    """
+    Skew: time deviation from RTP timestamp.
+    
+    * Type: `plot`.
+    * Units: `ms per RTP packet`.
+    """
+    def __init__(self, data):
+        QoSmeasure.__init__(self, data)
+        self.data['name'] = 'Skew'
+        self.data['type'] = 'plot'
+        self.data['units'] = ('RTP packet', 'ms')
     
     def calculate(self):
         x = self.sequences
@@ -116,12 +147,20 @@ class Skew(QoSmeasure):
         for i in range(1, len(self.times)):
             y[i] = (self.timestamps[i] - self.times[i]) * 1000
         self.graph(x, y)
-        return self.measure
+        return self.data
 
 class Bandwidth(QoSmeasure):
-    name = 'Bandwidth'
-    type = 'plot'
-    units = ['time (s)', 'kbps']
+    """
+    Instantaneous bandwidth: data received in the last second.
+    
+    * Type: `plot`.
+    * Units: `kbps per second`.
+    """
+    def __init__(self, data):
+        QoSmeasure.__init__(self, data)
+        self.data['name'] = 'Bandwidth'
+        self.data['type'] = 'plot'
+        self.data['units'] = ('time (s)', 'kbps')
     
     def calculate(self):
         x = self.times
@@ -145,12 +184,20 @@ class Bandwidth(QoSmeasure):
                 j = j - 1
             y[i] = length
         self.graph(x, y)
-        return self.measure
+        return self.data
 
 class PacketLossRate(QoSmeasure):
-    name = 'PLR'
-    type = 'value'
-    units = 'rate'
+    """
+    Packet Loss Rate.
+    
+    * Type: `value`.
+    * Units: `rate`.
+    """
+    def __init__(self, data):
+        QoSmeasure.__init__(self, data)
+        self.data['name'] = 'PLR'
+        self.data['type'] = 'value'
+        self.data['units'] = 'rate'
     
     def calculate(self):
         loss = 0
@@ -158,15 +205,23 @@ class PacketLossRate(QoSmeasure):
             loss = loss + self.sequences[i] - self.sequences[i-1] - 1
         rate = float(loss) / float(self.sequences[-1] + 1)
         self.data['value'] = rate
-        return self.measure
+        return self.data
 
 class PacketLossDist(QoSmeasure):
-    name = 'PLD'
-    type = 'bar'
-    units = ['time (s)', 'Packet Loss Rate']
+    """
+    Packet Loss Distribution: loss rate distribution.
+    
+    * Type: `bar`.
+    * Units: `Packet Loss Rate per time`.
+    """
+    def __init__(self, data):
+        QoSmeasure.__init__(self, data)
+        self.data['name'] = 'PLD'
+        self.data['type'] = 'bar'
+        self.data['units'] = ('time (s)', 'Packet Loss Rate')
+        self.data['width'] = 1 #seconds
     
     def calculate(self):
-        self.data['width'] = 1 #seconds
         edge = self.data['width']
         x = []
         y = []
@@ -185,4 +240,4 @@ class PacketLossDist(QoSmeasure):
             edge = edge + self.data['width']
             j = j + 1
         self.graph(x, y)
-        return self.measure
+        return self.data

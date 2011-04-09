@@ -81,14 +81,19 @@ class VQmeasure(Measure):
         return BSmeter(measures, self.codecdata).run()
 
 class PSNR(VQmeasure):
-    name = 'PSNR'
-    type = 'plot'
-    units = ['frame', 'dB']
+    """
+    PSNR: Peak Signal to Noise Ratio (Y component).
     
+    * Type: `plot`.
+    * Units: `dB per frame`.
+    """
     def __init__(self, data, component='Y'):
         VQmeasure.__init__(self, data)
+        self.data['name'] = 'PSNR'
+        self.data['type'] = 'plot'
+        self.data['units'] = ('frame', 'dB')
         self.cmp = component
-        self.name = self.cmp + self.name
+        self.data['name'] = self.cmp + self.data['name']
     
     def calculate(self):
         L = 255
@@ -105,20 +110,40 @@ class PSNR(VQmeasure):
             else:
                 y.append(100)
         self.graph(x, y)
-        return self.measure
+        return self.data
 
 class UPSNR(PSNR):
+    """
+    PSNR: Peak Signal to Noise Ratio (U component).
+    
+    * Type: `plot`.
+    * Units: `dB per frame`.
+    """
     def __init__(self, data):
         PSNR.__init__(self, data, 'U')
 
 class VPSNR(PSNR):
+    """
+    PSNR: Peak Signal to Noise Ratio (V component).
+    
+    * Type: `plot`.
+    * Units: `dB per frame`.
+    """
     def __init__(self, data):
         PSNR.__init__(self, data, 'V')
 
 class SSIM(VQmeasure):
-    name = 'SSIM'
-    type = 'plot'
-    units = ['frame', 'SSIM index']
+    """
+    SSIM: Structural Similarity index (Y component).
+    
+    * Type: `plot`.
+    * Units: `SSIM index per frame`.
+    """
+    def __init__(self, data):
+        VQmeasure.__init__(self, data)
+        self.data['name'] = 'SSIM'
+        self.data['type'] = 'plot'
+        self.data['units'] = ('frame', 'SSIM index')
     
     def __array2cv(self, a):
         dtype2depth = {
@@ -222,4 +247,4 @@ class SSIM(VQmeasure):
         for i in x:
             y.append(self.__SSIM(self.yuv.video['Y'][i], self.yuvref.video['Y'][i]))
         self.graph(x, y)
-        return self.measure
+        return self.data

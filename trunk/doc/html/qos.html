@@ -130,6 +130,83 @@
 
 </dd></dl>
 
+<dl class="class">
+<dt id="VideoTester.measures.qos.Latency">
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.qos.</tt><tt class="descname">Latency</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#VideoTester.measures.qos.Latency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoTester.measures.qos.QoSmeasure" title="VideoTester.measures.qos.QoSmeasure"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.qos.QoSmeasure</span></tt></a></p>
+<p>Latency: end-to-end delay.</p>
+<ul class="simple">
+<li>Type: <cite>value</cite>.</li>
+<li>Units: <cite>ms</cite>.</li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="VideoTester.measures.qos.Delta">
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.qos.</tt><tt class="descname">Delta</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#VideoTester.measures.qos.Delta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoTester.measures.qos.QoSmeasure" title="VideoTester.measures.qos.QoSmeasure"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.qos.QoSmeasure</span></tt></a></p>
+<p>Delta: gap between two consecutive packets.</p>
+<ul class="simple">
+<li>Type: <cite>plot</cite>.</li>
+<li>Units: <cite>ms per RTP packet</cite>.</li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="VideoTester.measures.qos.Jitter">
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.qos.</tt><tt class="descname">Jitter</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#VideoTester.measures.qos.Jitter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoTester.measures.qos.QoSmeasure" title="VideoTester.measures.qos.QoSmeasure"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.qos.QoSmeasure</span></tt></a></p>
+<p>Jitter: latency deviation (see <span class="target" id="index-0"></span><a class="rfc reference external" href="http://tools.ietf.org/html/rfc3550.html#page-94"><strong>RFC 3550</strong></a>).</p>
+<ul class="simple">
+<li>Type: <cite>plot</cite>.</li>
+<li>Units: <cite>ms per RTP packet</cite>.</li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="VideoTester.measures.qos.Skew">
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.qos.</tt><tt class="descname">Skew</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#VideoTester.measures.qos.Skew" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoTester.measures.qos.QoSmeasure" title="VideoTester.measures.qos.QoSmeasure"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.qos.QoSmeasure</span></tt></a></p>
+<p>Skew: time deviation from RTP timestamp.</p>
+<ul class="simple">
+<li>Type: <cite>plot</cite>.</li>
+<li>Units: <cite>ms per RTP packet</cite>.</li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="VideoTester.measures.qos.Bandwidth">
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.qos.</tt><tt class="descname">Bandwidth</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#VideoTester.measures.qos.Bandwidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoTester.measures.qos.QoSmeasure" title="VideoTester.measures.qos.QoSmeasure"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.qos.QoSmeasure</span></tt></a></p>
+<p>Instantaneous bandwidth: data received in the last second.</p>
+<ul class="simple">
+<li>Type: <cite>plot</cite>.</li>
+<li>Units: <cite>kbps per second</cite>.</li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="VideoTester.measures.qos.PacketLossRate">
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.qos.</tt><tt class="descname">PacketLossRate</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#VideoTester.measures.qos.PacketLossRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoTester.measures.qos.QoSmeasure" title="VideoTester.measures.qos.QoSmeasure"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.qos.QoSmeasure</span></tt></a></p>
+<p>Packet Loss Rate.</p>
+<ul class="simple">
+<li>Type: <cite>value</cite>.</li>
+<li>Units: <cite>rate</cite>.</li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="VideoTester.measures.qos.PacketLossDist">
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.qos.</tt><tt class="descname">PacketLossDist</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#VideoTester.measures.qos.PacketLossDist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoTester.measures.qos.QoSmeasure" title="VideoTester.measures.qos.QoSmeasure"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.qos.QoSmeasure</span></tt></a></p>
+<p>Packet Loss Distribution: loss rate distribution.</p>
+<ul class="simple">
+<li>Type: <cite>bar</cite>.</li>
+<li>Units: <cite>Packet Loss Rate per time</cite>.</li>
+</ul>
+</dd></dl>
+
 </div>
 
 
