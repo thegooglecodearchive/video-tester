@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/VTfavicon.png"/>
     <link rel="top" title="VideoTester v0.1 documentation" href="index.html" />
-    <link rel="up" title="7. VideoTester.measures — Measures package" href="measures-package.html" />
+    <link rel="up" title="7. VideoTester.measures — Measures package" href="measures.html" />
     <link rel="prev" title="7.3. VideoTester.measures.bs — Bitstream measures" href="bs.html" /> 
   </head>
   <body>
@@ -42,7 +42,7 @@
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">VideoTester v0.1 documentation</a> &raquo;</li>
           <li><a href="modules.html" >Module Reference</a> &raquo;</li>
-          <li><a href="measures-package.html" accesskey="U">7. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">VideoTester.measures</span></tt> &#8212; Measures package</a> &raquo;</li> 
+          <li><a href="measures.html" accesskey="U">7. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">VideoTester.measures</span></tt> &#8212; Measures package</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -53,6 +53,107 @@
             
   <div class="section" id="module-VideoTester.measures.vq">
 <span id="videotester-measures-vq-video-quality-measures"></span><h1>7.4. <tt class="docutils literal"><span class="pre">VideoTester.measures.vq</span></tt> &#8212; Video Quality measures<a class="headerlink" href="#module-VideoTester.measures.vq" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="VideoTester.measures.vq.VQmeter">
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.vq.</tt><tt class="descname">VQmeter</tt><big>(</big><em>selected</em>, <em>data</em><big>)</big><a class="headerlink" href="#VideoTester.measures.vq.VQmeter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="m-core.html#VideoTester.measures.core.Meter" title="VideoTester.measures.core.Meter"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.core.Meter</span></tt></a></p>
+<p>Video quality meter.</p>
+<p><strong>On init:</strong> Register selected video quality measures.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>selected</strong> (<em>string or list</em>) &#8211; Selected video quality measures.</li>
+<li><strong>data</strong> (<em>tuple</em>) &#8211; Collected QoS + bit-stream + video parameters.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="VideoTester.measures.vq.VQmeasure">
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.vq.</tt><tt class="descname">VQmeasure</tt><big>(</big><em>(rawdata</em>, <em>codecdata</em>, <em>packetdata)</em><big>)</big><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="m-core.html#VideoTester.measures.core.Measure" title="VideoTester.measures.core.Measure"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.core.Measure</span></tt></a></p>
+<p>Video quality measure type.</p>
+<p><strong>On init:</strong> Register QoS + bit-stream + video parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rawdata</strong> (<em>dictionary</em>) &#8211; Frame information from YUV videos (<cite>original</cite>, <cite>received</cite> and <cite>coded</cite>).</li>
+<li><strong>codecdata</strong> (<em>dictionary</em>) &#8211; Frame information from compressed videos (<cite>received</cite> and <cite>coded</cite>).</li>
+<li><strong>packetdata</strong> (<em>tuple</em>) &#8211; QoS parameters.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="VideoTester.measures.vq.VQmeasure.packetdata">
+<tt class="descname">packetdata</tt><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure.packetdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>QoS parameters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.measures.vq.VQmeasure.codecdata">
+<tt class="descname">codecdata</tt><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure.codecdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frame information from compressed videos (<cite>received</cite> and <cite>coded</cite>).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.measures.vq.VQmeasure.yuv">
+<tt class="descname">yuv</tt><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure.yuv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frame information from received YUV.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.measures.vq.VQmeasure.yuvref">
+<tt class="descname">yuvref</tt><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure.yuvref" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frame information from original or coded YUV.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoTester.measures.vq.VQmeasure.getQoSm">
+<tt class="descname">getQoSm</tt><big>(</big><em>measures</em><big>)</big><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure.getQoSm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get QoS measures.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>measures</strong> (<em>string or list</em>) &#8211; Selected QoS measures.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Calculated QoS measures.</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoTester.measures.vq.VQmeasure.getBSm">
+<tt class="descname">getBSm</tt><big>(</big><em>measures</em><big>)</big><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure.getBSm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get bit-stream measures.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>measures</strong> (<em>string or list</em>) &#8211; Selected bit-stream measures.</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Calculated bit-stream measures.</td>
+</tr>
+<tr class="field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -103,7 +204,7 @@
              >previous</a> |</li>
         <li><a href="index.html">VideoTester v0.1 documentation</a> &raquo;</li>
           <li><a href="modules.html" >Module Reference</a> &raquo;</li>
-          <li><a href="measures-package.html" >7. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">VideoTester.measures</span></tt> &#8212; Measures package</a> &raquo;</li> 
+          <li><a href="measures.html" >7. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">VideoTester.measures</span></tt> &#8212; Measures package</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

@@ -17,4 +17,4 @@ Module Reference
 
    gui
 
-   measures-package
+   measures

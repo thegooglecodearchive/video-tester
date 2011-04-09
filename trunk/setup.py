@@ -7,9 +7,9 @@
 from distutils.core import setup
 import os, fnmatch
 
-## Code borrowed from wxPython's setup and config files
-## Thanks to Robin Dunn for the suggestion.
-## I am not 100% sure what's going on, but it works!
+# Code borrowed from wxPython's setup and config files
+# Thanks to Robin Dunn for the suggestion.
+# I am not 100% sure what's going on, but it works!
 def opj(*args):
     path = os.path.join(*args)
     return os.path.normpath(path)

@@ -9,7 +9,7 @@ import pygst
 pygst.require("0.10")
 from gst import parse_launch, MESSAGE_EOS, MESSAGE_ERROR, STATE_PAUSED, STATE_READY, STATE_NULL, STATE_PLAYING
 from time import sleep
-from config import VTLOG
+from VideoTester.config import VTLOG
 from pickle import dump
 
 class Gstreamer:

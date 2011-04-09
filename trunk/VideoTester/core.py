@@ -4,7 +4,7 @@
 ## Copyright 2011 Iñaki Úcar <i.ucar86@gmail.com>
 ## This program is published under a GPLv3 license
 
-from config import VTLOG
+from VideoTester.config import VTLOG
 from sys import exit
 
 class VT:
@@ -21,7 +21,7 @@ class VT:
         
         :raises: Bad configuration file or path.
         """
-        from config import CONF
+        from VideoTester.config import CONF
         try:
             #: List of ``(id, name)`` pairs for each available video.
             self.videos = self.parseConf(CONF, "video")
@@ -67,7 +67,7 @@ class Server(VT):
         **On init:** Some initialization code.
         """
         VT.__init__(self)
-        from config import SERVERIP, SERVERPORT
+        from VideoTester.config import SERVERIP, SERVERPORT
         #: List of available videos (complete path).
         self.videos = [''.join([self.path, x[1]]) for x in self.videos]
         #: Dictionary of running RTSP servers.
@@ -110,7 +110,7 @@ class Server(VT):
         :raises OSError: An error ocurred while running subprocess.
         """
         from subprocess import Popen, PIPE
-        from config import SERVERBIN
+        from VideoTester.config import SERVERBIN
         key = str(bitrate) + ' kbps - ' + str(framerate) + ' fps'
         if key in self.servers:
             self.servers[key]['clients'] = self.servers[key]['clients'] + 1
@@ -181,7 +181,7 @@ class Client(VT):
         
         :param file: Path to a configuration file (string) or parsed configuration file (dictionary).
         :type file: string or dictionary
-        :param boolean gui: True if :class:`VideoTester.core.Client` is called from GUI. False otherwise.
+        :param boolean gui: True if :class:`Client` is called from GUI. False otherwise.
         
         :raises: Bad configuration file or path.
         
@@ -190,7 +190,7 @@ class Client(VT):
         """
         VT.__init__(self)
         from os.path import exists
-        from config import TEMP, makeDir
+        from VideoTester.config import TEMP, makeDir
         if gui:
             self.conf = file
         else:
@@ -227,7 +227,7 @@ class Client(VT):
          * Process data and extract information.
          * Run meters.
         
-        :returns: A list of measures (see [_]) and the path to the temporary directory plus files prefix: `<path-to-tempdir>/<prefix>`.
+        :returns: A list of measures (see :attr:`VideoTester.measures.core.Meter.measures`) and the path to the temporary directory plus files prefix: `<path-to-tempdir>/<prefix>`.
         :rtype: tuple
         """
         VTLOG.info("Client running!")
@@ -236,11 +236,11 @@ class Client(VT):
         from xmlrpclib import ServerProxy
         from scapy.all import rdpcap
         from multiprocessing import Process, Queue
-        from gstreamer import Gstreamer
-        from sniffer import Sniffer
-        from measures.qos import QoSmeter
-        from measures.bs import BSmeter
-        from measures.vq import VQmeter
+        from VideoTester.gstreamer import Gstreamer
+        from VideoTester.sniffer import Sniffer
+        from VideoTester.measures.qos import QoSmeter
+        from VideoTester.measures.bs import BSmeter
+        from VideoTester.measures.vq import VQmeter
         try:
             server = ServerProxy('http://' + self.conf['ip'] + ':' + self.conf['port'])
             self.conf['rtspport'] = str(server.run(self.conf['bitrate'], self.conf['framerate']))
@@ -296,7 +296,7 @@ class Client(VT):
         :rtype: tuple
         """
         VTLOG.info("Loading videos...")
-        from video import YUVvideo, CodedVideo
+        from VideoTester.video import YUVvideo, CodedVideo
         codecdata = {}
         rawdata = {}
         for x in videodata.keys():
