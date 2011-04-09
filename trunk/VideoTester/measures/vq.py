@@ -31,6 +31,10 @@ class VQmeter(Meter):
             self.measures.append(SSIM(data))
         if 'g1070' in selected:
             self.measures.append(G1070(data))
+        if 'psnrtomos' in selected:
+            self.measures.append(PSNRtoMOS(data))
+        if 'miv' in selected:
+            self.measures.append(MIV(data))
 
 class VQmeasure(Measure):
     """
@@ -48,9 +52,10 @@ class VQmeasure(Measure):
         Measure.__init__(self)
         #: Video parameters: `codec`, `bitrate`, `framerate` and `size`.
         self.conf = conf
+        self.rawdata = rawdata
         #: Frame information from received YUV.
         self.yuv = rawdata['received']
-        #: Frame information from original or coded YUV.
+        #: Frame information from original YUV.
         self.yuvref = rawdata['original']
         #: Frame information from compressed videos (`received` and `coded`).
         self.codecdata = codecdata
@@ -67,7 +72,10 @@ class VQmeasure(Measure):
         :returns: Calculated QoS measures.
         :rtype: list
         """
-        return QoSmeter(measures, self.packetdata).run()
+        VTLOG.info("----------getQoSm----------")
+        measures = QoSmeter(measures, self.packetdata).run()
+        VTLOG.info("---------------------------")
+        return measures
     
     def getBSm(self, measures):
         """
@@ -79,7 +87,10 @@ class VQmeasure(Measure):
         :returns: Calculated bit-stream measures.
         :rtype: list
         """
-        return BSmeter(measures, self.codecdata).run()
+        VTLOG.info("----------getBSm-----------")
+        measures = BSmeter(measures, self.codecdata).run()
+        VTLOG.info("---------------------------")
+        return measures
 
 class PSNR(VQmeasure):
     """
@@ -88,11 +99,15 @@ class PSNR(VQmeasure):
     * Type: `plot`.
     * Units: `dB per frame`.
     """
-    def __init__(self, data):
+    def __init__(self, data, yuv=False, yuvref=False):
         VQmeasure.__init__(self, data)
         self.data['name'] = 'PSNR'
         self.data['type'] = 'plot'
         self.data['units'] = ('frame', 'dB')
+        if yuv:
+            self.yuv = self.rawdata['coded']
+        if yuvref:
+            self.yuvref = self.rawdata['coded']
     
     def calculate(self):
         L = 255
@@ -252,4 +267,70 @@ class G1070(VQmeasure):
         Dpplv = v[10] + v[11] * math.exp(-self.conf['framerate'] / v[8]) + v[12] * math.exp(-self.conf['bitrate'] / v[9])
         
         self.data['value'] = 1 + Ic * math.exp(-self.getQoSm('plr')[0]['value'] * 100 / Dpplv)
+        return self.data
+
+class PSNRtoMOS(VQmeasure):
+    """
+    PSNR to MOS mapping used on `Evalvid <http://www.tkn.tu-berlin.de/research/evalvid/>`.
+    
+    * Type: `plot`.
+    * Units: `MOS per frame`.
+    """
+    def __init__(self, data, yuv=False, yuvref=False):
+        VQmeasure.__init__(self, data)
+        self.data['name'] = 'PSNRtoMOS'
+        self.data['type'] = 'plot'
+        self.data['units'] = ('frame', 'MOS')
+        self.yuv = yuv
+        self.yuvref = yuvref
+    
+    def calculate(self):
+        x, y = PSNR((None, self.rawdata, None, None), yuv=self.yuv, yuvref=self.yuvref).calculate()['axes']
+        for i in range(0, len(y)):
+            if y[i] < 20:
+                y[i] = 1
+            elif 20 <= y[i] < 25:
+                y[i] = 2
+            elif 25 <= y[i] < 31:
+                y[i] = 3
+            elif 31 <= y[i] < 37:
+                y[i] = 4
+            else:
+                y[i] = 5
+        self.graph(x, y)
+        return self.data
+
+class MIV(VQmeasure):
+    """
+    MIV metric used on `Evalvid <http://www.tkn.tu-berlin.de/research/evalvid/>`.
+    
+    * Type: `plot`.
+    * Units: `MIV per interval`.
+    """
+    def __init__(self, data):
+        VQmeasure.__init__(self, data)
+        self.data['name'] = 'MIV'
+        self.data['type'] = 'plot'
+        self.interval = 25
+        self.data['units'] = ('interval (' + str(self.interval) + ' frames)', '% of frames with a MOS worse than the reference')
+    
+    def calculate(self):
+        x, refmos = PSNRtoMOS((None, self.rawdata, None, None), yuv=True).calculate()['axes']
+        x, mos = PSNRtoMOS((None, self.rawdata, None, None)).calculate()['axes']
+        print refmos
+        print mos
+        y = []
+        worst = 0
+        for i in range(0, self.interval):
+            if mos[i] < refmos[i]:
+                worst += 1
+        y.append(100 * float(worst) / self.interval)
+        for i in range(self.interval, min(len(refmos), len(mos))):
+            if mos[i] < refmos[i]:
+                worst += 1
+            if mos[i-self.interval] < refmos[i-self.interval]:
+                worst -= 1
+            y.append(100 * float(worst) / self.interval)
+        x = [x for x in range(0, len(y))]
+        self.graph(x, y)
         return self.data

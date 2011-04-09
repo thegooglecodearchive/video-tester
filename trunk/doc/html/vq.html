@@ -108,7 +108,7 @@
 <dl class="attribute">
 <dt id="VideoTester.measures.vq.VQmeasure.yuvref">
 <tt class="descname">yuvref</tt><a class="headerlink" href="#VideoTester.measures.vq.VQmeasure.yuvref" title="Permalink to this definition">¶</a></dt>
-<dd><p>Frame information from original or coded YUV.</p>
+<dd><p>Frame information from original YUV.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -163,7 +163,7 @@
 
 <dl class="class">
 <dt id="VideoTester.measures.vq.PSNR">
-<em class="property">class </em><tt class="descclassname">VideoTester.measures.vq.</tt><tt class="descname">PSNR</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#VideoTester.measures.vq.PSNR" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.vq.</tt><tt class="descname">PSNR</tt><big>(</big><em>data</em>, <em>yuv=False</em>, <em>yuvref=False</em><big>)</big><a class="headerlink" href="#VideoTester.measures.vq.PSNR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#VideoTester.measures.vq.VQmeasure" title="VideoTester.measures.vq.VQmeasure"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.vq.VQmeasure</span></tt></a></p>
 <p>PSNR: Peak Signal to Noise Ratio (Y component).</p>
 <ul class="simple">
@@ -191,6 +191,28 @@
 <ul class="simple">
 <li>Type: <cite>value</cite>.</li>
 <li>Units: <cite>-</cite>.</li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="VideoTester.measures.vq.PSNRtoMOS">
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.vq.</tt><tt class="descname">PSNRtoMOS</tt><big>(</big><em>data</em>, <em>yuv=False</em>, <em>yuvref=False</em><big>)</big><a class="headerlink" href="#VideoTester.measures.vq.PSNRtoMOS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoTester.measures.vq.VQmeasure" title="VideoTester.measures.vq.VQmeasure"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.vq.VQmeasure</span></tt></a></p>
+<p>PSNR to MOS mapping used on <cite>Evalvid &lt;http://www.tkn.tu-berlin.de/research/evalvid/&gt;</cite>.</p>
+<ul class="simple">
+<li>Type: <cite>plot</cite>.</li>
+<li>Units: <cite>MOS per frame</cite>.</li>
+</ul>
+</dd></dl>
+
+<dl class="class">
+<dt id="VideoTester.measures.vq.MIV">
+<em class="property">class </em><tt class="descclassname">VideoTester.measures.vq.</tt><tt class="descname">MIV</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#VideoTester.measures.vq.MIV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoTester.measures.vq.VQmeasure" title="VideoTester.measures.vq.VQmeasure"><tt class="xref py py-class docutils literal"><span class="pre">VideoTester.measures.vq.VQmeasure</span></tt></a></p>
+<p>MIV metric used on <cite>Evalvid &lt;http://www.tkn.tu-berlin.de/research/evalvid/&gt;</cite>.</p>
+<ul class="simple">
+<li>Type: <cite>plot</cite>.</li>
+<li>Units: <cite>MIV per interval</cite>.</li>
 </ul>
 </dd></dl>
 
