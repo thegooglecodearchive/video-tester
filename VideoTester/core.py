@@ -190,13 +190,13 @@ class Client(VT):
         """
         VT.__init__(self)
         from os.path import exists
-        from VideoTester.config import TEMP, makeDir
+        from VideoTester.config import TEMP, makeDir, USERPATH
         if gui:
             self.conf = file
         else:
             try:
                 #: Dictionary of configuration options.
-                self.conf = dict(self.parseConf(file, "client"))
+                self.conf = dict(self.parseConf(USERPATH + '/' + file, "client"))
             except:
                 VTLOG.error("Bad configuration file or path")
                 exit()

@@ -28,7 +28,7 @@ if __name__ == '__main__':
             from VideoTester.config import CONF
             from VideoTester.core import Client
             if args.conf:
-                CONF = args.conf
+                CONF = args.conf[0]
             client = Client(CONF)
             client.run()
         VTLOG.info("Exiting...")
