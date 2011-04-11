@@ -11,8 +11,9 @@ import matplotlib as mpl
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
 from matplotlib.backends.backend_wxagg import NavigationToolbar2Wx as Toolbar
 from VideoTester.core import VT, Client
-import pickle
+from VideoTester.resources import getVTIcon, getVTBitmap
 from VideoTester.config import VTLOG
+import pickle
 import logging
 import pygst
 pygst.require("0.10")
@@ -40,6 +41,7 @@ class VTframe(wx.Frame, VT):
         # begin wxGlade: VTframe.__init__
         kwds["style"] = wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, *args, **kwds)
+        self.SetIcon(getVTIcon())
         
         # Menu Bar
         self.vtmenubar = wx.MenuBar()
@@ -274,16 +276,30 @@ class VTframe(wx.Frame, VT):
         Show *About* dialog.
         """
         import textwrap
-        dlg = wx.MessageDialog(self, textwrap.dedent('''
-            VideoTester 0.1 - Video Quality Assessment Tool
-            
-            Visit http://video-tester.googlecode.com for support and updates
-              
-            Copyright 2011 Iñaki Úcar <i.ucar86@gmail.com>
-            This program is published under a GPLv3 license
-            '''), "About", wx.OK | wx.ICON_INFORMATION)
-        dlg.ShowModal()
-        dlg.Destroy()
+        license = textwrap.dedent('''\
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+        
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+        
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see <http://www.gnu.org/licenses/>.''')
+        info = wx.AboutDialogInfo()
+        info.SetIcon(getVTIcon())
+        info.SetName('Video Tester')
+        info.SetVersion('0.1')
+        info.SetDescription('Video Quality Assessment Tool')
+        info.SetCopyright('(C) 2011 Iñaki Úcar')
+        info.SetWebSite('http://video-tester.googlecode.com')
+        info.SetLicense(license)
+        info.AddDeveloper('Iñaki Úcar')
+        info.AddDocWriter('Iñaki Úcar')
+        wx.AboutBox(info)
 
     def onOpen(self, event): # wxGlade: VTframe.<event_handler>
         """
