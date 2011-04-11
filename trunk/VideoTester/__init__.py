@@ -4,7 +4,7 @@
 ## Copyright 2011 Iñaki Úcar <i.ucar86@gmail.com>
 ## This program is published under a GPLv3 license
 
-__all__ = ['config' , 'core', 'gui', 'gstreamer', 'sniffer', 'video', 'measures']
+__all__ = ['config' , 'core', 'gui', 'resources', 'gstreamer', 'sniffer', 'video', 'measures']
 
 import measures
 from measures import *
