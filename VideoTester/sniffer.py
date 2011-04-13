@@ -33,6 +33,12 @@ class Sniffer:
         self.clock = None
         #: RTP payload type.
         self.ptype = None
+        #: RTP source port (server).
+        self.sport = None
+        #: RTP destination port (client).
+        self.dport = None
+        #: RTSP PLAY packet found (boolean).
+        self.play = False
         #: Capture file.
         self.cap = None
         #: List of packet lengths.
@@ -130,7 +136,6 @@ class Sniffer:
         :returns: True when a RTSP *PLAY* packet is found.
         :rtype: boolean
         """
-        play = False
         if p.haslayer(ICMP):
             self.ping[p[ICMP].seq][p[ICMP].type] = p.time
         elif str(p).find("Content-Type: application/sdp") != -1:
@@ -139,15 +144,34 @@ class Sniffer:
                 if line.find("m=video") != -1:
                     fields = line.split(" ")
                     self.ptype = int(fields[-1])
-                    VTLOG.debug("Payload type found!")
+                    VTLOG.debug("Payload type found! Value: " + str(self.ptype))
             for line in lines:
                 if line.find("rtpmap:" + str(self.ptype)) != -1:
                     fields = line.split("/")
                     self.clock = int(fields[-1])
-                    VTLOG.debug("Clock rate found!")
+                    VTLOG.debug("Clock rate found! Value: " + str(self.clock))
+        elif (str(p).find("Transport: RTP") != -1) and (str(p).find('mode="PLAY"') != -1):
+            if str(p).find("RTP/AVP/TCP") != -1:
+                self.sport = p.sport
+                VTLOG.debug("Source port found! Value: " + str(self.sport))
+                self.dport = p.dport
+                VTLOG.debug("Destination port found! Value: " + str(self.dport))
+            else:
+                fields = str(p[TCP].payload).split(";")
+                for field in fields:
+                    if field.find("server_port=") != -1:
+                        self.sport = int(field[12:field.index('-')])
+                        VTLOG.debug("Source port found! Value: " + str(self.sport))
+                    elif field.find("client_port=") != -1:
+                        self.dport = int(field[12:field.index('-')])
+                        VTLOG.debug("Destination port found! Value: " + str(self.dport))
         elif (str(p).find("PLAY") != -1) and (str(p).find("Public:") == -1):
-            play = True
+            self.play = True
             VTLOG.debug("PLAY found!")
+        if self.play and self.sport and self.dport:
+            play = True
+        else:
+            play = False
         return play
     
     def __bubbleSort(self, list, list1=None, list2=None):
@@ -205,7 +229,8 @@ class Sniffer:
                 if not play:
                     play = self.__prepare(p)
                 elif play and (p[IP].src == self.conf['ip']) and (p.haslayer(UDP)) and (str(p).find("GStreamer") == -1):
-                    extract(p)
+                    if (p.sport == self.sport) and (p.dport == self.dport):
+                        extract(p)
         self.__bubbleSort(self.sequences, self.times, self.timestamps)
         VTLOG.debug("Sequence list sorted")
     
@@ -291,10 +316,11 @@ class Sniffer:
                     play = self.__prepare(p)
                 #Packets from server, with TCP layer. Avoid ACK's. Avoid RTSP packets
                 elif play and (p[IP].src == self.conf['ip']) and p.haslayer(TCP) and (len(p) > 66) and (str(p).find("RTSP/1.0") == -1):
-                    packetlist.append(p)
-                    seqlist.append(p[TCP].seq)
-                    lenlist.append(len(p[TCP].payload))
-                    VTLOG.debug("TCP packet appended. Sequence: " + str(p[TCP].seq))
+                    if (p.sport == self.sport) and (p.dport == self.dport):
+                        packetlist.append(p)
+                        seqlist.append(p[TCP].seq)
+                        lenlist.append(len(p[TCP].payload))
+                        VTLOG.debug("TCP packet appended. Sequence: " + str(p[TCP].seq))
         seqlist, packetlist, lenlist = self.__bubbleSort(seqlist, packetlist, lenlist)
         VTLOG.debug("Sequence list sorted")
         #Locate packet losses
