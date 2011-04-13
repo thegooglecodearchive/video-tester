@@ -17,4 +17,4 @@ Functions
 ---------
 
 .. automodule:: VideoTester.config
-    :members: makeDir, initLogger, parseArgs, getIpAddress
+    :members: makeDir, initLogger, parseArgs, getIpAddress, bubbleSort
