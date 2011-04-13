@@ -88,25 +88,25 @@ def getIpAddress(ifname):
     )[20:24])
 
 def bubbleSort(list, list1=None, list2=None):
-        """
-        Bubble sort algorithm modification.
-        
-        :param list list: One list.
-        :param list1 list: Other list.
-        :param list2 list: Other list.
-        """
-        def swap(a, b):
-            return b, a
-        
-        n = len(list)
-        for i in range(0, n):
-            for j in range(n-1, i, -1):
-                if list[j-1] > list[j]:
-                    list[j-1], list[j] = swap(list[j-1], list[j])
-                    if list1:
-                        list1[j-1], list1[j] = swap(list1[j-1], list1[j])
-                    if list2:
-                        list2[j-1], list2[j] = swap(list2[j-1], list2[j])
+    """
+    Bubble sort algorithm modification.
+    
+    :param list list: One list.
+    :param list1 list: Other list.
+    :param list2 list: Other list.
+    """
+    def swap(a, b):
+        return b, a
+    
+    n = len(list)
+    for i in range(0, n):
+        for j in range(n-1, i, -1):
+            if list[j-1] > list[j]:
+                list[j-1], list[j] = swap(list[j-1], list[j])
+                if list1:
+                    list1[j-1], list1[j] = swap(list1[j-1], list1[j])
+                if list2:
+                    list2[j-1], list2[j] = swap(list2[j-1], list2[j])
 
 #: VT logger.
 VTLOG = logging.getLogger("VT")
