@@ -87,26 +87,26 @@ def getIpAddress(ifname):
         struct.pack('256s', ifname[:15])
     )[20:24])
 
-def bubbleSort(list, list1=None, list2=None):
+def bubbleSort(l, l1=None, l2=None):
     """
     Bubble sort algorithm modification.
     
-    :param list list: One list.
-    :param list1 list: Other list.
-    :param list2 list: Other list.
+    :param list l: One list.
+    :param list l1: Other list.
+    :param list l2: Other list.
     """
     def swap(a, b):
         return b, a
     
-    n = len(list)
+    n = len(l)
     for i in range(0, n):
         for j in range(n-1, i, -1):
-            if list[j-1] > list[j]:
-                list[j-1], list[j] = swap(list[j-1], list[j])
-                if list1:
-                    list1[j-1], list1[j] = swap(list1[j-1], list1[j])
-                if list2:
-                    list2[j-1], list2[j] = swap(list2[j-1], list2[j])
+            if l[j-1] > l[j]:
+                l[j-1], l[j] = swap(l[j-1], l[j])
+                if l1:
+                    l1[j-1], l1[j] = swap(l1[j-1], l1[j])
+                if l2:
+                    l2[j-1], l2[j] = swap(l2[j-1], l2[j])
 
 #: VT logger.
 VTLOG = logging.getLogger("VT")
