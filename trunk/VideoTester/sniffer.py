@@ -6,7 +6,7 @@
 
 from scapy.all import *
 from time import time
-from VideoTester.config import VTLOG
+from VideoTester.config import VTLOG, bubbleSort
 
 class RTSPi(Packet):
     """
@@ -152,9 +152,9 @@ class Sniffer:
                     VTLOG.debug("Clock rate found! Value: " + str(self.clock))
         elif (str(p).find("Transport: RTP") != -1) and (str(p).find('mode="PLAY"') != -1):
             if str(p).find("RTP/AVP/TCP") != -1:
-                self.sport = p.sport
+                self.sport = int(p.sport)
                 VTLOG.debug("Source port found! Value: " + str(self.sport))
-                self.dport = p.dport
+                self.dport = int(p.dport)
                 VTLOG.debug("Destination port found! Value: " + str(self.dport))
             else:
                 fields = str(p[TCP].payload).split(";")
@@ -173,31 +173,6 @@ class Sniffer:
         else:
             play = False
         return play
-    
-    def __bubbleSort(self, list, list1=None, list2=None):
-        """
-        Bubble sort algorithm modification.
-        
-        :param list list: One list.
-        :param list1 list: Other list.
-        :param list2 list: Other list.
-        
-        :returns: Sorted list. Second and third lists, if present, are ordered with the same pattern.
-        :rtype: list
-        """
-        def swap(a, b):
-            return b, a
-        
-        n = len(list)
-        for i in range(0, n):
-            for j in range(n-1, i, -1):
-                if list[j-1] > list[j]:
-                    list[j-1], list[j] = swap(list[j-1], list[j])
-                    if list1:
-                        list1[j-1], list1[j] = swap(list1[j-1], list1[j])
-                    if list2:
-                        list2[j-1], list2[j] = swap(list2[j-1], list2[j])
-        return list, list1, list2
     
     def __parseUDP(self):
         """
@@ -231,7 +206,7 @@ class Sniffer:
                 elif play and (p[IP].src == self.conf['ip']) and (p.haslayer(UDP)) and (str(p).find("GStreamer") == -1):
                     if (p.sport == self.sport) and (p.dport == self.dport):
                         extract(p)
-        self.__bubbleSort(self.sequences, self.times, self.timestamps)
+        bubbleSort(self.sequences, self.times, self.timestamps)
         VTLOG.debug("Sequence list sorted")
     
     def __parseTCP(self):
@@ -321,7 +296,7 @@ class Sniffer:
                         seqlist.append(p[TCP].seq)
                         lenlist.append(len(p[TCP].payload))
                         VTLOG.debug("TCP packet appended. Sequence: " + str(p[TCP].seq))
-        seqlist, packetlist, lenlist = self.__bubbleSort(seqlist, packetlist, lenlist)
+        bubbleSort(seqlist, packetlist, lenlist)
         VTLOG.debug("Sequence list sorted")
         #Locate packet losses
         fill = fillGaps(seqlist, lenlist)

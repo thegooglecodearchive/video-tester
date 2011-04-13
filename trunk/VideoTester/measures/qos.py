@@ -5,7 +5,7 @@
 ## This program is published under a GPLv3 license
 
 from VideoTester.measures.core import Meter, Measure
-from VideoTester.config import VTLOG
+from VideoTester.config import VTLOG, bubbleSort
 
 class QoSmeter(Meter):
     """
@@ -163,6 +163,7 @@ class Bandwidth(QoSmeasure):
         self.data['units'] = ('time (s)', 'kbps')
     
     def calculate(self):
+        bubbleSort(self.times, self.lengths)
         x = self.times
         y = [0 for i in range(0, len(x))]
         for i in range(1, len(x)):
