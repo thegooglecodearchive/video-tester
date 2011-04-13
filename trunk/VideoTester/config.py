@@ -89,7 +89,7 @@ def getIpAddress(ifname):
 
 def bubbleSort(l, l1=None, l2=None):
     """
-    Bubble sort algorithm modification.
+    Bubble sort algorithm modification. This function sorts the first list. Optionally, it sorts two more lists with the same pattern than the first.
     
     :param list l: One list.
     :param list l1: Other list.
