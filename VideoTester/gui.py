@@ -290,15 +290,16 @@ class VTframe(wx.Frame, VT):
         You should have received a copy of the GNU General Public License
         along with this program.  If not, see <http://www.gnu.org/licenses/>.''')
         info = wx.AboutDialogInfo()
-        info.SetIcon(getVTIcon())
+        #info.SetIcon(getVTIcon())
         info.SetName('Video Tester')
         info.SetVersion('0.1')
         info.SetDescription('Video Quality Assessment Tool')
         info.SetCopyright('(C) 2011 Iñaki Úcar')
         info.SetWebSite('http://video-tester.googlecode.com')
         info.SetLicense(license)
-        info.AddDeveloper('Iñaki Úcar')
-        info.AddDocWriter('Iñaki Úcar')
+        info.AddDeveloper('Iñaki Úcar <i.ucar86@gmail.com>')
+        info.AddDocWriter('Iñaki Úcar <i.ucar86@gmail.com>')
+        info.AddArtist('Almudena M. Castro <puraturadesign@gmail.com>')
         wx.AboutBox(info)
 
     def onOpen(self, event): # wxGlade: VTframe.<event_handler>

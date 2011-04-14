@@ -51,6 +51,7 @@ class Sniffer:
         self.timestamps = []
         #: Ping information.
         self.ping = {0:{}, 1:{}, 2:{}, 3:{}}
+        self.__add = 0
     
     def run(self, q):
         """
@@ -191,9 +192,11 @@ class Sniffer:
                 if p[RTP].sequence not in self.sequences:
                     self.lengths.append(p.len)
                     self.times.append(p.time)
-                    self.sequences.append(p[RTP].sequence)
+                    self.sequences.append(p[RTP].sequence + self.__add)
                     self.timestamps.append(p[RTP].timestamp)
                     VTLOG.debug("UDP/RTP packet found. Sequence: " + str(p[RTP].sequence))
+                    if p[RTP].sequence == 65535:
+                        self.__add = 65536
         
         play = False
         for p in self.cap:
@@ -234,9 +237,11 @@ class Sniffer:
                     if p[RTP].sequence not in self.sequences:
                         self.lengths.append(int(aux[2]))
                         self.times.append(float(aux[1]) / 1000000)
-                        self.sequences.append(p[RTP].sequence)
+                        self.sequences.append(p[RTP].sequence + self.__add)
                         self.timestamps.append(p[RTP].timestamp)
                         VTLOG.debug("TCP/RTP packet found. Sequence: " + str(p[RTP].sequence))
+                        if p[RTP].sequence == 65535:
+                            self.__add = 65536
             else:
                 #Avoid PACKETLOSS
                 a = loss + len('PACKETLOSS')
