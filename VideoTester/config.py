@@ -116,8 +116,10 @@ USERPATH = os.getcwd()
 CONF = USERPATH + '/VT.conf'
 #: Path to the temporal directory (relative to :const:`VideoTester.config.USERPATH`).
 TEMP = USERPATH + '/temp/'
-#: Path to the RTSP server binaries (relative to :const:`VideoTester.config.USERPATH`).
-SERVERBIN = USERPATH + '/rtsp-server/' + processor() + '/server'
+thispath = os.path.realpath(__file__)
+thispath = thispath[0:thispath.rfind('/')]
+#: Path to the RTSP server binaries.
+SERVERBIN = thispath + '/rtsp-server/' + processor() + '/server'
 #: Server interface.
 SERVERIFACE = 'eth0'
 #: Server IP.
