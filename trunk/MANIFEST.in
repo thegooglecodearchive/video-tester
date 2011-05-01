@@ -1,2 +1,2 @@
 include VT.conf README COPYING
-recursive-include rtsp-server *
+recursive-include VideoTester/rtsp-server *
