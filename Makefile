@@ -18,15 +18,20 @@ clean:
 
 doc:
 	-svn remove $(DOC) --force
-	-rm -rf $(DIST)
 	-make -C $(MAKEFILE) html
-	-cp -rf $(BUILDDIR) .
+	-cp -rf $(BUILDDIR)/* $(DOC)
 	-svn add $(DOC)
 	-make -C $(MAKEFILE) clean
 	@echo
 	@echo "Doc rebuilt."
 
 sdist:
+	-cp VT.conf doc
+	-cp README doc/README.txt
+	-cp COPYING doc/COPYING.txt
+	-cp -rf test doc
 	-python setup.py sdist
+	-rm doc/VT.conf doc/README.txt doc/COPYING.txt
+	-rm -rf doc/test
 	@echo
 	@echo "Build finished."
