@@ -5,7 +5,38 @@
 ## This program is published under a GPLv3 license
 
 from distutils.core import setup
+from distutils.command.build import build as _build
+from distutils import log
 import os, fnmatch
+from stat import ST_MODE
+
+class build(_build):
+    def run(self):
+        _build.run(self)
+        path = self.build_purelib + '/VideoTester/rtsp-server/'
+        files = (path + 'i686/server', path + 'x86_64/server')
+        for file in files:
+            oldmode = os.stat(file)[ST_MODE] & 07777
+            newmode = (oldmode | 0775) & 07777
+            if newmode != oldmode:
+                log.info("changing mode of %s from %o to %o",
+                            file, oldmode, newmode)
+                os.chmod(file, newmode)
+        file = self.build_purelib + '/VideoTester/config.py'
+        buffer = open(file).read()
+        iface = raw_input('Select server interface [eth0]: ')
+        port = raw_input('Select server port [8000]: ')
+        if iface != '':
+            log.info("changing SERVERIFACE of %s from eth0 to %s",
+                        file, iface)
+            buffer = buffer.replace("SERVERIFACE = 'eth0'", "SERVERIFACE = '" + iface + "'")
+        if port != '':
+            log.info("changing SERVERPORT of %s from 8000 to %s",
+                        file, port)
+            buffer = buffer.replace("SERVERPORT = 8000", "SERVERPORT = " + port)
+        f = open(file, 'w')
+        f.write(buffer)
+        f.close()
 
 # Code borrowed from wxPython's setup and config files
 # Thanks to Robin Dunn for the suggestion.
@@ -73,5 +104,6 @@ setup(name = "VideoTester",
     keywords = ('video', 'tester', 'quality', 'assessment', 'measures', 'python', 'QoS', 'QoE'),
     platforms = ['Any'],
     license = "GPLv3",
-    requires = ['scapy', 'wx', 'matplotlib', 'matplotlib.backends.backend_wxagg', 'pygst', 'gst', 'gobject', 'numpy', 'cv']
-) 
+    requires = ['scapy', 'wx', 'matplotlib', 'matplotlib.backends.backend_wxagg', 'pygst', 'gst', 'gobject', 'numpy', 'cv'],
+    cmdclass = {'build': build}
+)
