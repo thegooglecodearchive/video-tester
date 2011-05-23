@@ -54,14 +54,25 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="videotester-config-common-constants-and-functions">
-<h1>1. <tt class="docutils literal"><span class="pre">VideoTester.config</span></tt> &#8212; Common constants and functions<a class="headerlink" href="#videotester-config-common-constants-and-functions" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-VideoTester.config">
-<span id="constants"></span><h2>1.2. Constants<a class="headerlink" href="#module-VideoTester.config" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="module-VideoTester.config">
+<span id="videotester-config-common-constants-and-functions"></span><h1>1. <tt class="docutils literal"><span class="pre">VideoTester.config</span></tt> &#8212; Common constants and functions<a class="headerlink" href="#module-VideoTester.config" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="constants">
+<h2>1.1. Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h2>
 <dl class="data">
 <dt id="VideoTester.config.VTLOG">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">VTLOG</tt><a class="headerlink" href="#VideoTester.config.VTLOG" title="Permalink to this definition">¶</a></dt>
-<dd><p>VT logger.</p>
+<dd><p>Instances of the Logger class represent a single logging channel. A
+&#8220;logging channel&#8221; indicates an area of an application. Exactly how an
+&#8220;area&#8221; is defined is up to the application developer. Since an
+application can have any number of areas, logging channels are identified
+by a unique string. Application areas can be nested (e.g. an area
+of &#8220;input processing&#8221; might include sub-areas &#8220;read CSV files&#8221;, &#8220;read
+XLS files&#8221; and &#8220;read Gnumeric files&#8221;). To cater for this natural nesting,
+channel names are organized into a namespace hierarchy where levels are
+separated by periods, much like the Java or Python package namespace. So
+in the instance given above, channel names might be &#8220;input&#8221; for the upper
+level, and &#8220;input.csv&#8221;, &#8220;input.xls&#8221; and &#8220;input.gnu&#8221; for the sub-levels.
+There is no arbitrary limit to the depth of nesting.</p>
 </dd></dl>
 
 <dl class="data">
@@ -73,13 +84,13 @@
 <dl class="data">
 <dt id="VideoTester.config.CONF">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">CONF</tt><a class="headerlink" href="#VideoTester.config.CONF" title="Permalink to this definition">¶</a></dt>
-<dd><p>Path to the default configuration file (relative to <a class="reference internal" href="#VideoTester.config.USERPATH" title="VideoTester.config.USERPATH"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.USERPATH</span></tt></a>).</p>
+<dd><p>Path to the default configuration file (relative to <a class="reference internal" href="#VideoTester.config.USERPATH" title="VideoTester.config.USERPATH"><tt class="xref py py-const docutils literal"><span class="pre">USERPATH</span></tt></a>).</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="VideoTester.config.TEMP">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">TEMP</tt><a class="headerlink" href="#VideoTester.config.TEMP" title="Permalink to this definition">¶</a></dt>
-<dd><p>Path to the temporal directory (relative to <a class="reference internal" href="#VideoTester.config.USERPATH" title="VideoTester.config.USERPATH"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.USERPATH</span></tt></a>).</p>
+<dd><p>Path to the temporary directory (relative to <a class="reference internal" href="#VideoTester.config.USERPATH" title="VideoTester.config.USERPATH"><tt class="xref py py-const docutils literal"><span class="pre">USERPATH</span></tt></a>).</p>
 </dd></dl>
 
 <dl class="data">
@@ -97,7 +108,7 @@
 <dl class="data">
 <dt id="VideoTester.config.SERVERIP">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">SERVERIP</tt><a class="headerlink" href="#VideoTester.config.SERVERIP" title="Permalink to this definition">¶</a></dt>
-<dd><p>Server IP.</p>
+<dd><p>Server IP address.</p>
 </dd></dl>
 
 <dl class="data">
@@ -108,15 +119,15 @@
 
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><a class="reference internal" href="#VideoTester.config.CONF" title="VideoTester.config.CONF"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.CONF</span></tt></a>, <a class="reference internal" href="#VideoTester.config.TEMP" title="VideoTester.config.TEMP"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.TEMP</span></tt></a>, <a class="reference internal" href="#VideoTester.config.SERVERBIN" title="VideoTester.config.SERVERBIN"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.SERVERBIN</span></tt></a> and <a class="reference internal" href="#VideoTester.config.SERVERPORT" title="VideoTester.config.SERVERPORT"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.SERVERPORT</span></tt></a> MAY be replaced by more suitable values.</p>
+<p class="last"><a class="reference internal" href="#VideoTester.config.CONF" title="VideoTester.config.CONF"><tt class="xref py py-const docutils literal"><span class="pre">CONF</span></tt></a>, <a class="reference internal" href="#VideoTester.config.TEMP" title="VideoTester.config.TEMP"><tt class="xref py py-const docutils literal"><span class="pre">TEMP</span></tt></a>, <a class="reference internal" href="#VideoTester.config.SERVERBIN" title="VideoTester.config.SERVERBIN"><tt class="xref py py-const docutils literal"><span class="pre">SERVERBIN</span></tt></a> and <a class="reference internal" href="#VideoTester.config.SERVERPORT" title="VideoTester.config.SERVERPORT"><tt class="xref py py-const docutils literal"><span class="pre">SERVERPORT</span></tt></a> MAY be replaced by more suitable values.</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last"><a class="reference internal" href="#VideoTester.config.SERVERIFACE" title="VideoTester.config.SERVERIFACE"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.SERVERIFACE</span></tt></a> MUST be replaced according to your network configuration, and <a class="reference internal" href="#VideoTester.config.SERVERIP" title="VideoTester.config.SERVERIP"><tt class="xref py py-const docutils literal"><span class="pre">VideoTester.config.SERVERIP</span></tt></a> will be set automatically.</p>
+<p class="last"><a class="reference internal" href="#VideoTester.config.SERVERIFACE" title="VideoTester.config.SERVERIFACE"><tt class="xref py py-const docutils literal"><span class="pre">SERVERIFACE</span></tt></a> MUST be replaced according to your network configuration, and <a class="reference internal" href="#VideoTester.config.SERVERIP" title="VideoTester.config.SERVERIP"><tt class="xref py py-const docutils literal"><span class="pre">SERVERIP</span></tt></a> will be set automatically.</p>
 </div>
 </div>
-<div class="section" id="module-VideoTester.config">
-<span id="functions"></span><h2>1.2. Functions<a class="headerlink" href="#module-VideoTester.config" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="functions">
+<h2>1.2. Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="VideoTester.config.makeDir">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">makeDir</tt><big>(</big><em>dir</em><big>)</big><a class="headerlink" href="#VideoTester.config.makeDir" title="Permalink to this definition">¶</a></dt>
@@ -172,7 +183,7 @@
 <dl class="function">
 <dt id="VideoTester.config.bubbleSort">
 <tt class="descclassname">VideoTester.config.</tt><tt class="descname">bubbleSort</tt><big>(</big><em>l</em>, <em>l1=None</em>, <em>l2=None</em><big>)</big><a class="headerlink" href="#VideoTester.config.bubbleSort" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bubble sort algorithm modification. This function sorts the first list. Optionally, it sorts two more lists with the same pattern than the first.</p>
+<dd><p>Bubble sort algorithm modification. This function sorts the first list. Optionally, it sorts two additional lists with the same pattern than the first.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -203,8 +214,8 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">1. <tt class="docutils literal"><span class="pre">VideoTester.config</span></tt> &#8212; Common constants and functions</a><ul>
-<li><a class="reference internal" href="#module-VideoTester.config">1.1. Constants</a></li>
-<li><a class="reference internal" href="#module-VideoTester.config">1.2. Functions</a></li>
+<li><a class="reference internal" href="#constants">1.1. Constants</a></li>
+<li><a class="reference internal" href="#functions">1.2. Functions</a></li>
 </ul>
 </li>
 </ul>

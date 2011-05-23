@@ -165,15 +165,15 @@
 <dl class="method">
 <dt id="VideoTester.sniffer.Sniffer.sniff">
 <tt class="descname">sniff</tt><big>(</big><em>count=0</em>, <em>prn=None</em>, <em>lfilter=None</em>, <em>*arg</em>, <em>**karg</em><big>)</big><a class="headerlink" href="#VideoTester.sniffer.Sniffer.sniff" title="Permalink to this definition">¶</a></dt>
-<dd><p><tt class="docutils literal"><span class="pre">scapy.sendrecv.sniff()</span></tt> Scapy function modification. This one stops when a RTSP <em>TEARDOWN</em> packet is found.</p>
+<dd><p><tt class="docutils literal"><span class="pre">scapy.sendrecv.sniff()</span></tt> Scapy function modification. It stops when an RTSP <em>TEARDOWN</em> packet is found.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>count</strong> (<em>integer</em>) &#8211; Number of packets to capture (0 means infinity).</li>
+<li><strong>count</strong> (<em>integer</em>) &#8211; Number of packets to capture (0 means infinite).</li>
 <li><strong>prn</strong> &#8211; Function to apply to each packet. If something is returned, it is displayed.</li>
-<li><strong>lfilter</strong> &#8211; Python function applied to each packet to determine if further action may be done.</li>
+<li><strong>lfilter</strong> &#8211; Python function applied to each packet to determine if any further action is requireds.</li>
 </ul>
 </td>
 </tr>

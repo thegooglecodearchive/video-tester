@@ -53,7 +53,7 @@ class Measure:
     
     def calculate(self):
         """
-        Make the measure.
+        Compute the measure.
         
         :returns: Results (see :attr:`data`).
         :rtype: dictionary

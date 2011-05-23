@@ -89,7 +89,7 @@ def getIpAddress(ifname):
 
 def bubbleSort(l, l1=None, l2=None):
     """
-    Bubble sort algorithm modification. This function sorts the first list. Optionally, it sorts two more lists with the same pattern than the first.
+    Bubble sort algorithm modification. This function sorts the first list. Optionally, it sorts two additional lists with the same pattern than the first.
     
     :param list l: One list.
     :param list l1: Other list.
@@ -112,9 +112,9 @@ def bubbleSort(l, l1=None, l2=None):
 VTLOG = logging.getLogger("VT")
 #: Current working path (result of :func:`os.getcwd()` function).
 USERPATH = os.getcwd()
-#: Path to the default configuration file (relative to :const:`VideoTester.config.USERPATH`).
+#: Path to the default configuration file (relative to :const:`USERPATH`).
 CONF = USERPATH + '/VT.conf'
-#: Path to the temporal directory (relative to :const:`VideoTester.config.USERPATH`).
+#: Path to the temporary directory (relative to :const:`USERPATH`).
 TEMP = USERPATH + '/temp/'
 thispath = os.path.realpath(__file__)
 thispath = thispath[0:thispath.rfind('/')]
@@ -122,7 +122,7 @@ thispath = thispath[0:thispath.rfind('/')]
 SERVERBIN = thispath + '/rtsp-server/' + processor() + '/server'
 #: Server interface.
 SERVERIFACE = 'eth0'
-#: Server IP.
+#: Server IP address.
 SERVERIP = getIpAddress(SERVERIFACE)
 #: Server base port.
 SERVERPORT = 8000

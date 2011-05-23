@@ -220,7 +220,7 @@ class Client(VT):
 
     def run(self):
         """
-        Run client and perform all the operations:
+        Run the client and perform all the operations:
          * Connect to the server.
          * Receive video while sniffing packets.
          * Close connection.
