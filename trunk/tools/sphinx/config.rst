@@ -1,20 +1,31 @@
 ``VideoTester.config`` --- Common constants and functions
 =========================================================
 
+.. module:: VideoTester.config
+
 Constants
 ---------
 
-.. automodule:: VideoTester.config
-    :members: VTLOG, USERPATH, CONF, TEMP, SERVERBIN, SERVERIFACE, SERVERIP, SERVERPORT
+.. autodata:: VTLOG
+.. autodata:: USERPATH
+.. autodata:: CONF
+.. autodata:: TEMP
+.. autodata:: SERVERBIN
+.. autodata:: SERVERIFACE
+.. autodata:: SERVERIP
+.. autodata:: SERVERPORT
 
 .. note::
-    :const:`VideoTester.config.CONF`, :const:`VideoTester.config.TEMP`, :const:`VideoTester.config.SERVERBIN` and :const:`VideoTester.config.SERVERPORT` MAY be replaced by more suitable values.
+    :const:`CONF`, :const:`TEMP`, :const:`SERVERBIN` and :const:`SERVERPORT` MAY be replaced by more suitable values.
 
 .. warning::
-    :const:`VideoTester.config.SERVERIFACE` MUST be replaced according to your network configuration, and :const:`VideoTester.config.SERVERIP` will be set automatically.
+    :const:`SERVERIFACE` MUST be replaced according to your network configuration, and :const:`SERVERIP` will be set automatically.
 
 Functions
 ---------
 
-.. automodule:: VideoTester.config
-    :members: makeDir, initLogger, parseArgs, getIpAddress, bubbleSort
+.. autofunction:: makeDir
+.. autofunction:: initLogger
+.. autofunction:: parseArgs
+.. autofunction:: getIpAddress
+.. autofunction:: bubbleSort

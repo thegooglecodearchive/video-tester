@@ -69,11 +69,11 @@ class Sniffer:
 
     def sniff(count=0, prn = None, lfilter=None, *arg, **karg):
         """
-        ``scapy.sendrecv.sniff()`` Scapy function modification. This one stops when a RTSP *TEARDOWN* packet is found.
+        ``scapy.sendrecv.sniff()`` Scapy function modification. It stops when an RTSP *TEARDOWN* packet is found.
         
-        :param integer count: Number of packets to capture (0 means infinity).
+        :param integer count: Number of packets to capture (0 means infinite).
         :param prn: Function to apply to each packet. If something is returned, it is displayed.
-        :param lfilter: Python function applied to each packet to determine if further action may be done.
+        :param lfilter: Python function applied to each packet to determine if any further action is requireds.
         
         :returns: A list of packets.
         :rtype: list
