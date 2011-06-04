@@ -3,3 +3,7 @@ Installation:
 $ tar xzf VideoTester-0.1.tar.gz
 $ cd VideoTester-0.1
 $ sudo python setup.py install
+
+server.c compilation:
+
+$ gcc server.c -o server $(pkg-config --libs --cflags gstreamer-0.10 gst-rtsp-server-0.10)
