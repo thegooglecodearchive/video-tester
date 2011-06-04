@@ -31,7 +31,7 @@ def initLogger(args):
         logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
         formatter = logging.Formatter("[%(asctime)s VTClient] %(levelname)s : %(message)s")
     makeDir(TEMP)
-    fh = logging.FileHandler(TEMP + 'client.log')
+    fh = logging.FileHandler(TEMP + 'VT.log')
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
     VTLOG.addHandler(fh)
