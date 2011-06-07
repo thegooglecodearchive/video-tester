@@ -12,9 +12,16 @@ if __name__ == '__main__':
     args = parseArgs()
     initLogger(args)
     if args.mode == "server":
+        from VideoTester.config import SERVERIP, SERVERPORT
         from VideoTester.core import Server
-        server = Server()
-        VTLOG.info("Exiting...")
+        server = Server((SERVERIP, SERVERPORT), logRequests=False)
+        try:
+            VTLOG.info('XMLRPC Server running at ' + SERVERIP + ':' + str(SERVERPORT))
+            VTLOG.info('Use Control-C to exit')
+            server.serve_forever()
+            VTLOG.info("Exiting...")
+        except KeyboardInterrupt:
+            pass
     else:
         from os import getuid
         if getuid() != 0:
