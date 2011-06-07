@@ -19,9 +19,9 @@ if __name__ == '__main__':
             VTLOG.info('XMLRPC Server running at ' + SERVERIP + ':' + str(SERVERPORT))
             VTLOG.info('Use Control-C to exit')
             server.serve_forever()
-            VTLOG.info("Exiting...")
         except KeyboardInterrupt:
             pass
+        VTLOG.info("Exiting...")
     else:
         from os import getuid
         if getuid() != 0:
