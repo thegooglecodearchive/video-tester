@@ -69,7 +69,7 @@ class Server(VT, SimpleXMLRPCServer):
         """
         from VideoTester.config import SERVERIP, SERVERPORT
         VT.__init__(self)
-        SimpleXMLRPCServer.__init__((SERVERIP, SERVERPORT), logRequests=False)
+        SimpleXMLRPCServer.__init__(self, (SERVERIP, SERVERPORT), logRequests=False)
         #: List of available videos (complete path).
         self.videos = [''.join([self.path, x[1]]) for x in self.videos]
         #: Dictionary of running RTSP servers.
