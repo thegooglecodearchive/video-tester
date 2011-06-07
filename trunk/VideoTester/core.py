@@ -5,6 +5,7 @@
 ## This program is published under a GPLv3 license
 
 from VideoTester.config import VTLOG
+from SimpleXMLRPCServer import SimpleXMLRPCServer
 from sys import exit
 
 class VT:
@@ -58,42 +59,35 @@ class VT:
         config.read(file)
         return config.items(section)
 
-class Server(VT):
+class Server(VT, SimpleXMLRPCServer):
     """
     VT Server class.
     """
-    def __init__(self):
+    def __init__(self, (ip, port), *args, **kwargs):
         """
         **On init:** Some initialization code.
         """
         VT.__init__(self)
-        from VideoTester.config import SERVERIP, SERVERPORT
+        SimpleXMLRPCServer.__init__(self, (ip, port), *args, **kwargs)
         #: List of available videos (complete path).
         self.videos = [''.join([self.path, x[1]]) for x in self.videos]
         #: Dictionary of running RTSP servers.
         self.servers = dict()
         #: Next RTSP port (integer). It increases each time by one.
-        self.port = SERVERPORT + 1
-        self.__launch(SERVERIP, SERVERPORT)
+        self.port = port + 1
+        #: List of exported methods.
+        self.exports = ['run', 'stop']
     
-    def __launch(self, ip, port):
+    def _dispatch(self, method, params):
         """
-        Launch the XMLRPC server and offer the methods :meth:`VideoTester.core.Server.run` and :meth:`VideoTester.core.Server.stop`
-        
-        :param string ip: The server IP address.
-        :param string port: The XMLRPC listen port.
+        Dispatch remote calls only if they are in :attr:`exports`.
         """
-        from SimpleXMLRPCServer import SimpleXMLRPCServer
-        server = SimpleXMLRPCServer((ip, port), logRequests=False)
-        server.register_function(self.run)
-        server.register_function(self.stop)
-        try:
-            VTLOG.info('XMLRPC Server running at ' + ip + ':' + str(port))
-            VTLOG.info('Use Control-C to exit')
-            server.serve_forever()
-        except KeyboardInterrupt:
-            pass
-        
+        if method in self.exports:
+            func = getattr(self, method)
+            return func(*params)
+        else:
+            raise Exception('method "%s" is not supported' % method)
+    
     def run(self, bitrate, framerate):
         """
         Run a subprocess for an RTSP server with a given bitrate and framerate (if not running)

@@ -1,9 +1,19 @@
-Installation:
+Video Tester - Video Quality Assessment Tool
+============================================
+
+Video Tester is a framework for the video quality assessment over a real or simulated IP network. 
+
+Dependencies
+------------
+
+ - gstreamer, gst-plugins-base, gst-plugins-good, gst-plugins-ugly, gst-plugins-bad
+ - gst-python, gst-ffmpeg, gst-rtsp-server (at least 0.10.7)
+ - scapy, numpy, python-matplotlib, python-matplotlib-wx, wxpython, opencv-python
+
+
+Installation
+------------
 
 $ tar xzf VideoTester-0.1.tar.gz
 $ cd VideoTester-0.1
 $ sudo python setup.py install
-
-server.c compilation:
-
-$ gcc server.c -o server $(pkg-config --libs --cflags gstreamer-0.10 gst-rtsp-server-0.10)
