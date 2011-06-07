@@ -76,7 +76,7 @@ class Server(VT, SimpleXMLRPCServer):
         self.servers = dict()
         #: Next RTSP port (integer). It increases each time by one.
         self.port = SERVERPORT + 1
-        #: List of exported methods.
+        #: List of exported methods (basically, :method:`run` and :method:`stop`).
         self.exports = ['run', 'stop']
     
     def _dispatch(self, method, params):
