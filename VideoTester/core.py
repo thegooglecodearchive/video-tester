@@ -63,18 +63,19 @@ class Server(VT, SimpleXMLRPCServer):
     """
     VT Server class.
     """
-    def __init__(self, (ip, port), *args, **kwargs):
+    def __init__(self):
         """
         **On init:** Some initialization code.
         """
+        from VideoTester.config import SERVERIP, SERVERPORT
         VT.__init__(self)
-        SimpleXMLRPCServer.__init__(self, (ip, port), *args, **kwargs)
+        SimpleXMLRPCServer.__init__((SERVERIP, SERVERPORT), logRequests=False)
         #: List of available videos (complete path).
         self.videos = [''.join([self.path, x[1]]) for x in self.videos]
         #: Dictionary of running RTSP servers.
         self.servers = dict()
         #: Next RTSP port (integer). It increases each time by one.
-        self.port = port + 1
+        self.port = SERVERPORT + 1
         #: List of exported methods.
         self.exports = ['run', 'stop']
     
