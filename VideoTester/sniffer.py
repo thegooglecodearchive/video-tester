@@ -196,7 +196,7 @@ class Sniffer:
                     self.timestamps.append(p[RTP].timestamp)
                     VTLOG.debug("UDP/RTP packet found. Sequence: " + str(p[RTP].sequence))
                     if p[RTP].sequence == 65535:
-                        self.__add = 65536
+                        self.__add += 65536
         
         play = False
         for p in self.cap:
@@ -241,7 +241,7 @@ class Sniffer:
                         self.timestamps.append(p[RTP].timestamp)
                         VTLOG.debug("TCP/RTP packet found. Sequence: " + str(p[RTP].sequence))
                         if p[RTP].sequence == 65535:
-                            self.__add = 65536
+                            self.__add += 65536
             else:
                 #Avoid PACKETLOSS
                 a = loss + len('PACKETLOSS')
