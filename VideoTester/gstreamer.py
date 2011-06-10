@@ -44,22 +44,22 @@ class Gstreamer:
             self.depay = "rtph263depay"
             #: Video bitrate.
             self.bitrate = self.conf['bitrate'] + '000'
-            self.add = ''
+            self.__add = ''
         elif self.conf['codec'] == "h264":
             self.encoder = "x264enc"
             self.depay = "rtph264depay"
             self.bitrate = self.conf['bitrate']
-            self.add = ''
+            self.__add = ''
         elif self.conf['codec'] == "mpeg4":
             self.encoder = "ffenc_mpeg4"
             self.depay = "rtpmp4vdepay"
             self.bitrate = self.conf['bitrate'] + '000'
-            self.add = ''
+            self.__add = ''
         elif self.conf['codec'] == "theora":
             self.encoder = "theoraenc"
             self.depay = "rtptheoradepay ! theoraparse"
             self.bitrate = self.conf['bitrate']
-            self.add = ' ! matroskamux'
+            self.__add = ' ! matroskamux'
             """
             Little trick for Theora.
             
@@ -111,7 +111,7 @@ class Gstreamer:
         Connect to the RTSP server and receive the selected video (see :attr:`video`).
         """
         VTLOG.info("Starting GStreamer receiver...")
-        self.pipeline = parse_launch('rtspsrc name=source ! tee name=t ! queue ! ' + self.depay + self.add + ' ! filesink name=sink1 t. ! queue \
+        self.pipeline = parse_launch('rtspsrc name=source ! tee name=t ! queue ! ' + self.depay + self.__add + ' ! filesink name=sink1 t. ! queue \
                 ! decodebin ! videorate skip-to-first=True ! video/x-raw-yuv,framerate=' + self.conf['framerate'] + '/1 ! filesink name=sink2')
         source = self.pipeline.get_by_name('source')
         sink1 = self.pipeline.get_by_name('sink1')
@@ -148,7 +148,7 @@ class Gstreamer:
         sink1.props.location = location
         self.__play()
         self.pipeline = parse_launch('filesrc name=source ! decodebin ! videorate ! video/x-raw-yuv,framerate=' + self.conf['framerate'] + '/1  ! ' + self.encoder + ' bitrate=' + self.bitrate \
-                + ' ! tee name=t ! queue' + self.add + ' ! filesink name=sink2 t. ! queue ! decodebin ! filesink name=sink3')
+                + ' ! tee name=t ! queue' + self.__add + ' ! filesink name=sink2 t. ! queue ! decodebin ! filesink name=sink3')
         source = self.pipeline.get_by_name('source')
         sink2 = self.pipeline.get_by_name('sink2')
         sink3 = self.pipeline.get_by_name('sink3')
