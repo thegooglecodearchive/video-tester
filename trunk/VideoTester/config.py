@@ -40,7 +40,7 @@ def initLogger(args):
         ch.setLevel(logging.INFO)
         ch.setFormatter(formatter)
         VTLOG.addHandler(ch)
-    VTLOG.setLevel(logging.DEBUG)
+    VTLOG.setLevel(logging.INFO)
 
 def parseArgs():
     """
