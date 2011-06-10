@@ -166,6 +166,10 @@ class Sniffer:
                     elif field.find("client_port=") != -1:
                         self.dport = int(field[12:field.index('-')])
                         VTLOG.debug("Destination port found! Value: " + str(self.dport))
+                    elif field.find("port=") != -1:
+                        self.sport = int(field[5:field.index('-')])
+                        self.dport = self.sport
+                        VTLOG.debug("Source/destination port found! Value: " + str(self.sport))
         elif (str(p).find("PLAY") != -1) and (str(p).find("Public:") == -1):
             self.play = True
             VTLOG.debug("PLAY found!")
