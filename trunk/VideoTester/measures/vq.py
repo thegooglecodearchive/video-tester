@@ -305,30 +305,25 @@ class MIV(VQmeasure):
     MIV metric used on `Evalvid <http://www.tkn.tu-berlin.de/research/evalvid/>`.
     
     * Type: `plot`.
-    * Units: `MIV per interval`.
+    * Units: `Distortion in Interval`.
     """
     def __init__(self, data):
         VQmeasure.__init__(self, data)
         self.data['name'] = 'MIV'
         self.data['type'] = 'plot'
         self.interval = 25
-        self.data['units'] = ('interval (' + str(self.interval) + ' frames)', '% of frames with a MOS worse than the reference')
+        self.data['units'] = ('frame', '% of frames with a MOS worse than the reference')
     
     def calculate(self):
         x, refmos = PSNRtoMOS((None, self.rawdata, None, None), yuv=True).calculate()['axes']
         x, mos = PSNRtoMOS((None, self.rawdata, None, None)).calculate()['axes']
-        y = []
-        worst = 0
-        for i in range(0, self.interval):
-            if mos[i] < refmos[i]:
-                worst += 1
-        y.append(100 * float(worst) / self.interval)
-        for i in range(self.interval, min(len(refmos), len(mos))):
-            if mos[i] < refmos[i]:
-                worst += 1
-            if mos[i-self.interval] < refmos[i-self.interval]:
-                worst -= 1
-            y.append(100 * float(worst) / self.interval)
+        y = [0 for i in range(0, self.interval)]
+        for l in range(0, min(len(refmos), len(mos)) - self.interval):
+            i = 0
+            for j in range(l, l + self.interval):
+                if mos[j] < refmos[j] and mos[j] < 4:
+                    i += 1
+            y.append(100 * float(i) / self.interval)
         x = [x for x in range(0, len(y))]
         self.graph(x, y)
         return self.data
