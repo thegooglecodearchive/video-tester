@@ -76,7 +76,7 @@ class Server(VT, SimpleXMLRPCServer):
         self.servers = dict()
         #: Next RTSP port (integer). It increases each time by one.
         self.port = SERVERPORT + 1
-        #: List of exported methods (basically, :meth:`run` and :meth:`stop`).
+        #: List of exported methods (:meth:`run` and :meth:`stop`).
         self.exports = ['run', 'stop']
     
     def _dispatch(self, method, params):
@@ -222,7 +222,7 @@ class Client(VT):
          * Process data and extract information.
          * Run meters.
         
-        :returns: A list of measures (see :attr:`VideoTester.measures.core.Meter.measures`) and the path to the temporary directory plus files prefix: `<path-to-tempdir>/<prefix>`.
+        :returns: A list of measures (see :attr:`VideoTester.measures.core.Meter.measures`) and the path to the temporary directory plus files prefix: ``<path-to-tempdir>/<prefix>``.
         :rtype: tuple
         """
         VTLOG.info("Client running!")

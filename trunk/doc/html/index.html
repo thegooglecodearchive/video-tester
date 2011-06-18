@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/VTfavicon.png"/>
     <link rel="top" title="VideoTester v0.1 documentation" href="#" />
-    <link rel="next" title="Module Reference" href="modules.html" /> 
+    <link rel="next" title="Installation" href="installation.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,7 +37,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="modules.html" title="Module Reference"
+          <a href="installation.html" title="Installation"
              accesskey="N">next</a> |</li>
         <li><a href="#">VideoTester v0.1 documentation</a> &raquo;</li> 
       </ul>
@@ -50,9 +50,41 @@
             
   <div class="section" id="welcome-to-videotester-s-documentation">
 <h1>Welcome to VideoTester&#8217;s documentation!<a class="headerlink" href="#welcome-to-videotester-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>Contents:</p>
+<div class="section" id="what-s-this">
+<h2>What&#8217;s this?<a class="headerlink" href="#what-s-this" title="Permalink to this headline">¶</a></h2>
+<p>Video Tester is a framework for the video quality assessment over a real or simulated IP network. Parameter extraction is performed on the three levels involved in the video processing and transmission &#8212;packet level, bitstream level and picture level&#8212; in order to gather as much information as possible. Therefore, it&#8217;s suitable to implement any kind of metric: data metrics, picture metrics, packet-based metrics, bitstream-based metrics or hybrid metrics; with full-reference, reduced-reference or no-reference.</p>
+<p>It&#8217;s a Linux application programmed in Python with the aim of promoting extensibility, and the election of the GStreamer framework for video processing is due to its broad support in this area. Video Tester covers EvalVid &lt;<a class="reference external" href="http://www.tkn.tu-berlin.de/research/evalvid/">http://www.tkn.tu-berlin.de/research/evalvid/</a>&gt; features and adds further improvements in terms of usability, extensibility, codec support, support of transmission methods and reliability in case of losses.</p>
+<p>Features:</p>
+<ul class="simple">
+<li>Codec support: H.263, H.264, MPEG-4 part 2, Theora.</li>
+<li>Implemented metrics:</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>QoS metrics: latency, delta, jitter, skew, bandwidth, packet loss rate, packet loss distribution.</li>
+<li>Bitstream metrics: stream eye, reference stream eye, gop size, I-frame loss rate.</li>
+<li>Video quality metrics: PSNR, SSIM, ITU-T G.1070, MOS (PSNR to MOS mapping from EvalVid), MIV (from EvalVid).</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#videos">Videos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#configuration-files">Configuration files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#server-mode">Server mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#client-mode">Client mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#generated-files">Generated files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#measures-output">Measures output</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="howto.html">HOWTO: Implementing new metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Module Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="config.html">1. <tt class="docutils literal"><span class="pre">VideoTester.config</span></tt> &#8212; Common constants and functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html">2. <tt class="docutils literal"><span class="pre">VideoTester.core</span></tt> &#8212; Client and server base classes</a></li>
@@ -67,12 +99,13 @@
 </div>
 </div>
 <div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
 <li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
 <li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
 </ul>
+</div>
 </div>
 
 
@@ -87,14 +120,18 @@
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Welcome to VideoTester&#8217;s documentation!</a><ul>
+<li><a class="reference internal" href="#what-s-this">What&#8217;s this?</a></li>
+<li><a class="reference internal" href="#contents">Contents</a><ul>
 </ul>
 </li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
+</li>
+</ul>
 
   <h4>Next topic</h4>
-  <p class="topless"><a href="modules.html"
-                        title="next chapter">Module Reference</a></p>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">Installation</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/index.txt"
@@ -127,7 +164,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="modules.html" title="Module Reference"
+          <a href="installation.html" title="Installation"
              >next</a> |</li>
         <li><a href="#">VideoTester v0.1 documentation</a> &raquo;</li> 
       </ul>
