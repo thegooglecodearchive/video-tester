@@ -181,7 +181,7 @@ class Bandwidth(QoSmeasure):
             length = 0
             j = i
             while x[j] + 1 > x[i] and j >= 0:
-                length = length + self.lengths[i] * 8 / 1000
+                length = length + self.lengths[j] * 8 / 1000
                 j = j - 1
             y[i] = length
         self.graph(x, y)
