@@ -41,7 +41,7 @@ class RTSPserver:
 		Add media to server.
 		"""
 		for i, video in enumerate(self.videos):
-			for j in range(0, 3):
+			for j in range(0, 4):
 				launch = "filesrc location="+self.path+"/"+video+" ! decodebin ! videorate ! video/x-raw-yuv,framerate="+str(self.framerate)+"/1 ! "
 				launch += {
 					0: "ffenc_h263 bitrate="+str(self.bitrate)+"000 ! rtph263pay name=pay0",
@@ -60,6 +60,7 @@ class RTSPserver:
 					2: "/video"+str(i)+".mpeg4",
 					3: "/video"+str(i)+".theora"
 				}[j]
+				print name
 				mmap.add_factory(name, self.factory[-1])
 				self.server.set_media_mapping(mmap)
 	
