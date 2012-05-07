@@ -197,7 +197,7 @@ class Client(VT):
                 VTLOG.error("Bad configuration file or path")
                 exit()
         #: Path to the selected video.
-        self.video = ''.join([self.path, dict(self.videos)[self.conf['video']]])
+        self.video = '/'.join([self.path, dict(self.videos)[self.conf['video']]])
         self.conf['tempdir'] = TEMP + self.conf['video'] + '_' + self.conf['codec'] + '_' + self.conf['bitrate'] + '_' + self.conf['framerate'] + '_' + self.conf['protocols'] + '/'
         makeDir(self.conf['tempdir'])
         i , j = 0, True
