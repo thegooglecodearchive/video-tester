@@ -1,2 +1,2 @@
-- Update RTSP server with python bindings for gstreamer-rtsp 
 - IPv6 support?
+- Make VideoTester compilable (Scapy's hidden imports prevent this)

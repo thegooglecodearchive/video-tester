@@ -21,18 +21,29 @@ class RTSPserver:
 		"""
 		**On init:** Some initialization code.
 		
-		:param integer port: RTSP server port.
-		:param integer bitrate: Video bitrate.
-		:param integer framerate: Video framerate.
-		:param string path: Path to the video database.
+		:param port: RTSP server port.
+		:type port: string or integer
+		:param bitrate: The bitrate (in kbps).
+		:type bitrate: string or integer
+		:param framerate: The framerate (in fps).
+		:type framerate: string or integer
+		:param string path: Path to the video directory.
+		:param list videos: List of available videos.
 		"""
+		#: The bitrate (in kbps).
 		self.bitrate = bitrate
+		#: The framerate (in fps).
 		self.framerate = framerate
+		#: Path to the video directory.
 		self.path = path
+		#: List of available videos.
 		self.videos = videos
+		#: GStreamer RTSP server instance.
 		self.server = Server()
+		#: Gstreamer loop.
 		self.loop = None
 		self.server.set_service(str(port))
+		#: List of GStreamer RTSP factories.
 		self.factory = []
 		self.__addMedia()
 	
@@ -71,9 +82,6 @@ class RTSPserver:
 		if self.server.attach():
 			self.loop = MainLoop()
 			self.loop.run()
-	
-	def stop(self):
-		self.loop.quit()
 
 class RTSPclient:
 	"""
