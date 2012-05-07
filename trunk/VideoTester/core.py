@@ -70,8 +70,8 @@ class Server(VT, SimpleXMLRPCServer):
         from VideoTester.config import SERVERIP, SERVERPORT
         VT.__init__(self)
         SimpleXMLRPCServer.__init__(self, (SERVERIP, SERVERPORT), logRequests=False)
-        #: List of available videos (complete path).
-        self.videos = [''.join([self.path, x[1]]) for x in self.videos]
+        #: List of available videos.
+        self.videos = [x[1] for x in self.videos]
         #: Dictionary of running RTSP servers.
         self.servers = dict()
         #: Next RTSP port (integer). It increases each time by one.
@@ -104,8 +104,8 @@ class Server(VT, SimpleXMLRPCServer):
         
         :raises OSError: An error ocurred while running subprocess.
         """
-        from subprocess import Popen, PIPE
-        from VideoTester.config import SERVERBIN
+        from multiprocessing import Process
+        from VideoTester.gstreamer import RTSPserver
         key = str(bitrate) + ' kbps - ' + str(framerate) + ' fps'
         if key in self.servers:
             self.servers[key]['clients'] = self.servers[key]['clients'] + 1
@@ -113,12 +113,13 @@ class Server(VT, SimpleXMLRPCServer):
             self.servers[key] = dict()
             while not self.__freePort():
                 self.port = self.port + 1
-            command = [SERVERBIN, "-p", str(self.port), "-f", str(framerate), "-b", str(bitrate), "-v"]
-            command.extend(self.videos)
+            self.servers[key]['server'] = Process(target=RTSPserver(self.port, bitrate, framerate, self.path, self.videos).run)
             try:
-                self.servers[key]['server'] = Popen(command, stdout=PIPE)
-            except OSError, e:
+                self.servers[key]['server'].start()
+            except e:
                 VTLOG.error(e)
+                self.servers[key]['server'].terminate()
+                self.servers[key]['server'].join()
                 exit()
             self.servers[key]['port'] = self.port
             self.servers[key]['clients'] = 1
@@ -143,7 +144,7 @@ class Server(VT, SimpleXMLRPCServer):
         self.servers[key]['clients'] = self.servers[key]['clients'] - 1
         if self.servers[key]['clients'] == 0:
             self.servers[key]['server'].terminate()
-            self.servers[key]['server'].wait()
+            self.servers[key]['server'].join()
             VTLOG.info(key + " server: last client disconnected and server stopped")
             self.servers.pop(key)
         else:
@@ -231,7 +232,7 @@ class Client(VT):
         from xmlrpclib import ServerProxy
         from scapy.all import rdpcap
         from multiprocessing import Process, Queue
-        from VideoTester.gstreamer import Gstreamer
+        from VideoTester.gstreamer import RTSPclient
         from VideoTester.sniffer import Sniffer
         from VideoTester.measures.qos import QoSmeter
         from VideoTester.measures.bs import BSmeter
@@ -243,13 +244,13 @@ class Client(VT):
             VTLOG.error("Bad IP or port")
             exit()
         sniffer = Sniffer(self.conf)
-        gstreamer = Gstreamer(self.conf, self.video)
+        rtspclient = RTSPclient(self.conf, self.video)
         q = Queue()
         child = Process(target=sniffer.run, args=(q,))
         try:
             child.start()
             self.__ping()
-            gstreamer.receiver()
+            rtspclient.receiver()
             sniffer.cap = rdpcap(q.get())
             child.join()
         except KeyboardInterrupt:
@@ -259,7 +260,7 @@ class Client(VT):
             child.join()
             exit()
         server.stop(self.conf['bitrate'], self.conf['framerate'])
-        videodata, size = gstreamer.reference()
+        videodata, size = rtspclient.reference()
         conf = {'codec':self.conf['codec'], 'bitrate':float(self.conf['bitrate']), 'framerate':float(self.conf['framerate']), 'size':size}
         packetdata = sniffer.parsePkts()
         codecdata, rawdata = self.__loadData(videodata, size, self.conf['codec'])
@@ -286,7 +287,7 @@ class Client(VT):
         """
         Load raw video data and coded video data.
         
-        :param videodata: (see :attr:`VideoTester.gstreamer.Gstreamer.files`)
+        :param videodata: (see :attr:`VideoTester.gstreamer.RTSPclient.files`)
         
         :returns: Coded video data object (see :class:`VideoTester.video.YUVvideo`) and raw video data object (see :class:`VideoTester.video.CodedVideo`).
         :rtype: tuple

@@ -118,8 +118,6 @@ CONF = USERPATH + '/VT.conf'
 TEMP = USERPATH + '/temp/'
 thispath = os.path.realpath(__file__)
 thispath = thispath[0:thispath.rfind('/')]
-#: Path to the RTSP server binaries.
-SERVERBIN = thispath + '/rtsp-server/' + processor() + '/server'
 #: Server interface.
 SERVERIFACE = 'eth0'
 #: Server IP address.
