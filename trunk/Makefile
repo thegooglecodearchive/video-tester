@@ -10,7 +10,9 @@ BUILDDIR = tools/sphinx/_build/doc
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
+	@echo "  doc        to make documentation"
 	@echo "  sdist      to make source distribution"
+	@echo "  clean      to clean"
 
 clean:
 	-rm -rf $(DIST)

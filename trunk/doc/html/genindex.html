@@ -7,13 +7,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Index &mdash; VideoTester v0.1 documentation</title>
+    <title>Index &mdash; VideoTester v0.2 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/VTfavicon.png"/>
-    <link rel="top" title="VideoTester v0.1 documentation" href="index.html" /> 
+    <link rel="top" title="VideoTester v0.2 documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">VideoTester v0.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">VideoTester v0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -61,7 +61,7 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
     <dt><a href="qos.html#VideoTester.measures.qos.Bandwidth">Bandwidth (class in VideoTester.measures.qos)</a></dt>
-    <dt><a href="gstreamer.html#VideoTester.gstreamer.Gstreamer.bitrate">bitrate (VideoTester.gstreamer.Gstreamer attribute)</a></dt>
+    <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPserver.bitrate">bitrate (VideoTester.gstreamer.RTSPserver attribute)</a></dt>
     <dt><a href="bs.html#VideoTester.measures.bs.BSmeasure">BSmeasure (class in VideoTester.measures.bs)</a></dt>
 </dl></td>
   <td style="width: 33%" valign="top"><dl>
@@ -87,7 +87,7 @@
     <dt><a href="config.html#VideoTester.config.CONF">CONF (in module VideoTester.config)</a></dt>
     <dt><a href="core.html#VideoTester.core.Client.conf">conf (VideoTester.core.Client attribute)</a></dt>
     <dd><dl>
-      <dt><a href="gstreamer.html#VideoTester.gstreamer.Gstreamer.conf">(VideoTester.gstreamer.Gstreamer attribute)</a></dt>
+      <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPclient.conf">(VideoTester.gstreamer.RTSPclient attribute)</a></dt>
       <dt><a href="vq.html#VideoTester.measures.vq.VQmeasure.conf">(VideoTester.measures.vq.VQmeasure attribute)</a></dt>
       <dt><a href="sniffer.html#VideoTester.sniffer.Sniffer.conf">(VideoTester.sniffer.Sniffer attribute)</a></dt>
   </dl></dd>
@@ -102,16 +102,12 @@
     <dt><a href="qos.html#VideoTester.measures.qos.Delta">Delta (class in VideoTester.measures.qos)</a></dt>
 </dl></td>
   <td style="width: 33%" valign="top"><dl>
-    <dt><a href="gstreamer.html#VideoTester.gstreamer.Gstreamer.depay">depay (VideoTester.gstreamer.Gstreamer attribute)</a></dt>
     <dt><a href="sniffer.html#VideoTester.sniffer.Sniffer.dport">dport (VideoTester.sniffer.Sniffer attribute)</a></dt>
 </dl></td>
 </tr></table>
 
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%" valign="top"><dl>
-    <dt><a href="gstreamer.html#VideoTester.gstreamer.Gstreamer.encoder">encoder (VideoTester.gstreamer.Gstreamer attribute)</a></dt>
-</dl></td>
   <td style="width: 33%" valign="top"><dl>
     <dt><a href="core.html#VideoTester.core.Server.exports">exports (VideoTester.core.Server attribute)</a></dt>
 </dl></td>
@@ -120,13 +116,15 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
-    <dt><a href="gstreamer.html#VideoTester.gstreamer.Gstreamer.files">files (VideoTester.gstreamer.Gstreamer attribute)</a></dt>
+    <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPserver.factory">factory (VideoTester.gstreamer.RTSPserver attribute)</a></dt>
+    <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPclient.files">files (VideoTester.gstreamer.RTSPclient attribute)</a></dt>
+    <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPserver.framerate">framerate (VideoTester.gstreamer.RTSPserver attribute)</a></dt>
+</dl></td>
+  <td style="width: 33%" valign="top"><dl>
     <dt><a href="video.html#VideoTester.video.CodedVideo.frames">frames (VideoTester.video.CodedVideo attribute)</a></dt>
     <dd><dl>
       <dt><a href="video.html#VideoTester.video.YUVvideo.frames">(VideoTester.video.YUVvideo attribute)</a></dt>
   </dl></dd>
-</dl></td>
-  <td style="width: 33%" valign="top"><dl>
     <dt><a href="video.html#VideoTester.video.YUVvideo.framesize">framesize (VideoTester.video.YUVvideo attribute)</a></dt>
     <dt><a href="gui.html#VideoTester.gui.FuncLog">FuncLog (class in VideoTester.gui)</a></dt>
 </dl></td>
@@ -144,7 +142,6 @@
     <dt><a href="gui.html#VideoTester.gui.VTframe.getValues">getValues() (VideoTester.gui.VTframe method)</a></dt>
     <dt><a href="bs.html#VideoTester.measures.bs.GOP">GOP (class in VideoTester.measures.bs)</a></dt>
     <dt><a href="m-core.html#VideoTester.measures.core.Measure.graph">graph() (VideoTester.measures.core.Measure method)</a></dt>
-    <dt><a href="gstreamer.html#VideoTester.gstreamer.Gstreamer">Gstreamer (class in VideoTester.gstreamer)</a></dt>
 </dl></td>
 </tr></table>
 
@@ -175,7 +172,10 @@
   </dl></dd>
 </dl></td>
   <td style="width: 33%" valign="top"><dl>
-    <dt><a href="gstreamer.html#VideoTester.gstreamer.Gstreamer.loop">loop (VideoTester.gstreamer.Gstreamer attribute)</a></dt>
+    <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPclient.loop">loop (VideoTester.gstreamer.RTSPclient attribute)</a></dt>
+    <dd><dl>
+      <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPserver.loop">(VideoTester.gstreamer.RTSPserver attribute)</a></dt>
+  </dl></dd>
 </dl></td>
 </tr></table>
 
@@ -215,13 +215,16 @@
     <dt><a href="core.html#VideoTester.core.VT.parseConf">parseConf() (VideoTester.core.VT method)</a></dt>
     <dt><a href="sniffer.html#VideoTester.sniffer.Sniffer.parsePkts">parsePkts() (VideoTester.sniffer.Sniffer method)</a></dt>
     <dt><a href="core.html#VideoTester.core.VT.path">path (VideoTester.core.VT attribute)</a></dt>
+    <dd><dl>
+      <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPserver.path">(VideoTester.gstreamer.RTSPserver attribute)</a></dt>
+  </dl></dd>
     <dt><a href="qos.html#VideoTester.measures.qos.QoSmeasure.ping">ping (VideoTester.measures.qos.QoSmeasure attribute)</a></dt>
     <dd><dl>
       <dt><a href="sniffer.html#VideoTester.sniffer.Sniffer.ping">(VideoTester.sniffer.Sniffer attribute)</a></dt>
   </dl></dd>
 </dl></td>
   <td style="width: 33%" valign="top"><dl>
-    <dt><a href="gstreamer.html#VideoTester.gstreamer.Gstreamer.pipeline">pipeline (VideoTester.gstreamer.Gstreamer attribute)</a></dt>
+    <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPclient.pipeline">pipeline (VideoTester.gstreamer.RTSPclient attribute)</a></dt>
     <dt><a href="sniffer.html#VideoTester.sniffer.Sniffer.play">play (VideoTester.sniffer.Sniffer attribute)</a></dt>
     <dt><a href="gui.html#VideoTester.gui.Plot">Plot (class in VideoTester.gui)</a></dt>
     <dt><a href="gui.html#VideoTester.gui.PlotNotebook">PlotNotebook (class in VideoTester.gui)</a></dt>
@@ -249,22 +252,25 @@
     <dd><dl>
       <dt><a href="video.html#VideoTester.video.YUVvideo.raw">(VideoTester.video.YUVvideo attribute)</a></dt>
   </dl></dd>
-    <dt><a href="gstreamer.html#VideoTester.gstreamer.Gstreamer.receiver">receiver() (VideoTester.gstreamer.Gstreamer method)</a></dt>
-    <dt><a href="gstreamer.html#VideoTester.gstreamer.Gstreamer.reference">reference() (VideoTester.gstreamer.Gstreamer method)</a></dt>
+    <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPclient.receiver">receiver() (VideoTester.gstreamer.RTSPclient method)</a></dt>
+    <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPclient.reference">reference() (VideoTester.gstreamer.RTSPclient method)</a></dt>
     <dt><a href="bs.html#VideoTester.measures.bs.RefStreamEye">RefStreamEye (class in VideoTester.measures.bs)</a></dt>
     <dt><a href="gui.html#VideoTester.gui.PlotNotebook.removePages">removePages() (VideoTester.gui.PlotNotebook method)</a></dt>
+    <dt><a href="gui.html#VideoTester.gui.VTframe.results">results() (VideoTester.gui.VTframe method)</a></dt>
 </dl></td>
   <td style="width: 33%" valign="top"><dl>
-    <dt><a href="gui.html#VideoTester.gui.VTframe.results">results() (VideoTester.gui.VTframe method)</a></dt>
     <dt>RFC</dt>
     <dd><dl>
       <dt><a href="qos.html#index-0">RFC 3550#page-94</a></dt>
   </dl></dd>
+    <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPclient">RTSPclient (class in VideoTester.gstreamer)</a></dt>
     <dt><a href="sniffer.html#VideoTester.sniffer.RTSPi">RTSPi (class in VideoTester.sniffer)</a></dt>
+    <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPserver">RTSPserver (class in VideoTester.gstreamer)</a></dt>
     <dt><a href="core.html#VideoTester.core.Client.run">run() (VideoTester.core.Client method)</a></dt>
     <dd><dl>
       <dt><a href="core.html#VideoTester.core.Server.run">(VideoTester.core.Server method)</a></dt>
       <dt><a href="core.html#VideoTester.core.VT.run">(VideoTester.core.VT method)</a></dt>
+      <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPserver.run">(VideoTester.gstreamer.RTSPserver method)</a></dt>
       <dt><a href="m-core.html#VideoTester.measures.core.Meter.run">(VideoTester.measures.core.Meter method)</a></dt>
       <dt><a href="sniffer.html#VideoTester.sniffer.Sniffer.run">(VideoTester.sniffer.Sniffer method)</a></dt>
   </dl></dd>
@@ -279,12 +285,12 @@
       <dt><a href="sniffer.html#VideoTester.sniffer.Sniffer.sequences">(VideoTester.sniffer.Sniffer attribute)</a></dt>
   </dl></dd>
     <dt><a href="core.html#VideoTester.core.Server">Server (class in VideoTester.core)</a></dt>
-    <dt><a href="config.html#VideoTester.config.SERVERBIN">SERVERBIN (in module VideoTester.config)</a></dt>
+    <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPserver.server">server (VideoTester.gstreamer.RTSPserver attribute)</a></dt>
     <dt><a href="config.html#VideoTester.config.SERVERIFACE">SERVERIFACE (in module VideoTester.config)</a></dt>
     <dt><a href="config.html#VideoTester.config.SERVERIP">SERVERIP (in module VideoTester.config)</a></dt>
     <dt><a href="config.html#VideoTester.config.SERVERPORT">SERVERPORT (in module VideoTester.config)</a></dt>
     <dt><a href="core.html#VideoTester.core.Server.servers">servers (VideoTester.core.Server attribute)</a></dt>
-    <dt><a href="gstreamer.html#VideoTester.gstreamer.Gstreamer.size">size (VideoTester.gstreamer.Gstreamer attribute)</a></dt>
+    <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPclient.size">size (VideoTester.gstreamer.RTSPclient attribute)</a></dt>
 </dl></td>
   <td style="width: 33%" valign="top"><dl>
     <dt><a href="qos.html#VideoTester.measures.qos.Skew">Skew (class in VideoTester.measures.qos)</a></dt>
@@ -317,7 +323,7 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
-    <dt><a href="gstreamer.html#VideoTester.gstreamer.Gstreamer.url">url (VideoTester.gstreamer.Gstreamer attribute)</a></dt>
+    <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPclient.url">url (VideoTester.gstreamer.RTSPclient attribute)</a></dt>
 </dl></td>
   <td style="width: 33%" valign="top"><dl>
     <dt><a href="config.html#VideoTester.config.USERPATH">USERPATH (in module VideoTester.config)</a></dt>
@@ -329,12 +335,13 @@
   <td style="width: 33%" valign="top"><dl>
     <dt><a href="core.html#VideoTester.core.Client.video">video (VideoTester.core.Client attribute)</a></dt>
     <dd><dl>
-      <dt><a href="gstreamer.html#VideoTester.gstreamer.Gstreamer.video">(VideoTester.gstreamer.Gstreamer attribute)</a></dt>
+      <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPclient.video">(VideoTester.gstreamer.RTSPclient attribute)</a></dt>
       <dt><a href="video.html#VideoTester.video.YUVvideo.video">(VideoTester.video.YUVvideo attribute)</a></dt>
   </dl></dd>
     <dt><a href="core.html#VideoTester.core.Server.videos">videos (VideoTester.core.Server attribute)</a></dt>
     <dd><dl>
       <dt><a href="core.html#VideoTester.core.VT.videos">(VideoTester.core.VT attribute)</a></dt>
+      <dt><a href="gstreamer.html#VideoTester.gstreamer.RTSPserver.videos">(VideoTester.gstreamer.RTSPserver attribute)</a></dt>
   </dl></dd>
     <dt><a href="config.html#module-VideoTester.config">VideoTester.config (module)</a></dt>
     <dt><a href="core.html#module-VideoTester.core">VideoTester.core (module)</a></dt>
@@ -383,7 +390,7 @@
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" size="18" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -406,12 +413,12 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">VideoTester v0.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">VideoTester v0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2011, Iñaki Úcar.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
     </div>
   </body>
 </html>

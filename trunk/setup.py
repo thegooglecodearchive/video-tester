@@ -13,15 +13,6 @@ from stat import ST_MODE
 class build(_build):
     def run(self):
         _build.run(self)
-        path = self.build_purelib + '/VideoTester/rtsp-server/'
-        files = (path + 'i686/server', path + 'x86_64/server')
-        for file in files:
-            oldmode = os.stat(file)[ST_MODE] & 07777
-            newmode = (oldmode | 0775) & 07777
-            if newmode != oldmode:
-                log.info("changing mode of %s from %o to %o",
-                            file, oldmode, newmode)
-                os.chmod(file, newmode)
         file = self.build_purelib + '/VideoTester/config.py'
         buffer = open(file).read()
         iface = raw_input('Select server interface [eth0]: ')
@@ -72,7 +63,7 @@ def find_data_files(base, srcdir, *wildcards, **kw):
                     [os.path.basename(f) for f in glob.glob(opj(srcdir, '*'))])
     return file_list
 
-version = "0.1"
+version = "0.2"
 files = find_data_files('share/doc/VideoTester-' + version, 'doc/', '*.*')
 
 setup(name = "VideoTester",
@@ -83,7 +74,6 @@ setup(name = "VideoTester",
     url = "http://video-tester.googlecode.com",
     #download_url = "",
     packages = ['VideoTester', 'VideoTester.measures'],
-    package_data={'VideoTester': ['rtsp-server/server.c', 'rtsp-server/i686/server', 'rtsp-server/x86_64/server']},
     scripts = ["VT"],
     data_files = files,
     long_description = """Video Tester is a framework for the video quality assessment over a real or simulated IP network.""",
