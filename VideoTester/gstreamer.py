@@ -71,7 +71,6 @@ class RTSPserver:
 					2: "/video"+str(i)+".mpeg4",
 					3: "/video"+str(i)+".theora"
 				}[j]
-				print name
 				mmap.add_factory(name, self.factory[-1])
 				self.server.set_media_mapping(mmap)
 	
