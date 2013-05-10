@@ -6,13 +6,33 @@
 Constants
 ---------
 
-.. autodata:: VTLOG
-.. autodata:: USERPATH
-.. autodata:: CONF
-.. autodata:: TEMP
-.. autodata:: SERVERIFACE
-.. autodata:: SERVERIP
-.. autodata:: SERVERPORT
+.. data:: VTLOG
+
+	VT logger.
+	
+.. data:: USERPATH
+
+	Current working path (result of :func:`os.getcwd()` function).
+	
+.. data:: CONF
+
+	Path to the default configuration file (relative to :const:`USERPATH`).
+	
+.. data:: TEMP
+
+	Path to the temporary directory (relative to :const:`USERPATH`).
+	
+.. data:: SERVERIFACE
+
+	Server interface.
+	
+.. data:: SERVERIP
+
+	Server IP address.
+	
+.. data:: SERVERPORT
+
+	Server base port.
 
 .. note::
 

@@ -3,13 +3,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>5. VideoTester.video — Raw and coded video manipulation &mdash; VideoTester v0.2 documentation</title>
+    <title>5. VideoTester.video — Raw and coded video manipulation &mdash; VideoTester 0.2 documentation</title>
+    
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
@@ -23,7 +26,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/VTfavicon.png"/>
-    <link rel="top" title="VideoTester v0.2 documentation" href="index.html" />
+    <link rel="top" title="VideoTester 0.2 documentation" href="index.html" />
     <link rel="up" title="Module Reference" href="modules.html" />
     <link rel="next" title="6. VideoTester.gui — VT Client Graphical User Interface" href="gui.html" />
     <link rel="prev" title="4. VideoTester.sniffer — Network sniffing and packet manipulation" href="sniffer.html" /> 
@@ -44,7 +47,7 @@
         <li class="right" >
           <a href="sniffer.html" title="4. VideoTester.sniffer — Network sniffing and packet manipulation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">VideoTester v0.2 documentation</a> &raquo;</li>
+        <li><a href="index.html">VideoTester 0.2 documentation</a> &raquo;</li>
           <li><a href="modules.html" accesskey="U">Module Reference</a> &raquo;</li> 
       </ul>
     </div>  
@@ -57,84 +60,49 @@
   <div class="section" id="module-VideoTester.video">
 <span id="videotester-video-raw-and-coded-video-manipulation"></span><h1>5. <tt class="docutils literal"><span class="pre">VideoTester.video</span></tt> &#8212; Raw and coded video manipulation<a class="headerlink" href="#module-VideoTester.video" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="VideoTester.video.YUVvideo">
-<em class="property">class </em><tt class="descclassname">VideoTester.video.</tt><tt class="descname">YUVvideo</tt><big>(</big><em>file</em>, <em>framesize</em>, <em>format='I420'</em><big>)</big><a class="headerlink" href="#VideoTester.video.YUVvideo" title="Permalink to this definition">¶</a></dt>
-<dd><p>YUV reader.</p>
-<p><strong>On init:</strong> Call the proper reader.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>file</strong> (<em>string</em>) &#8211; Path to the file.</li>
-<li><strong>framesize</strong> (<em>tuple</em>) &#8211; Frame size: <tt class="docutils literal"><span class="pre">(width,</span> <span class="pre">height)</span></tt>.</li>
-<li><strong>format</strong> (<em>string</em>) &#8211; YUV format.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Supported formats: I420.</p>
-</div>
+<dt id="VideoTester.video.CodedVideo">
+<em class="property">class </em><tt class="descclassname">VideoTester.video.</tt><tt class="descname">CodedVideo</tt><big>(</big><em>file</em>, <em>codec</em><big>)</big><a class="headerlink" href="#VideoTester.video.CodedVideo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coded video reader.</p>
 <dl class="attribute">
-<dt id="VideoTester.video.YUVvideo.framesize">
-<tt class="descname">framesize</tt><a class="headerlink" href="#VideoTester.video.YUVvideo.framesize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Frame size: <tt class="docutils literal"><span class="pre">(width,</span> <span class="pre">height)</span></tt>.</p>
+<dt id="VideoTester.video.CodedVideo.frames">
+<tt class="descname">frames</tt><em class="property"> = None</em><a class="headerlink" href="#VideoTester.video.CodedVideo.frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary that contains the <cite>types</cite> and the <cite>lengths</cite> for all the frames found.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="VideoTester.video.YUVvideo.frames">
-<tt class="descname">frames</tt><a class="headerlink" href="#VideoTester.video.YUVvideo.frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Number of frames in the video.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="VideoTester.video.YUVvideo.video">
-<tt class="descname">video</tt><a class="headerlink" href="#VideoTester.video.YUVvideo.video" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dictionary of lists of frames. Each list is a component (Y, U, V) and each frame is a Numpy array.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="VideoTester.video.YUVvideo.raw">
-<tt class="descname">raw</tt><a class="headerlink" href="#VideoTester.video.YUVvideo.raw" title="Permalink to this definition">¶</a></dt>
-<dd><p>RAW data.</p>
+<dt id="VideoTester.video.CodedVideo.raw">
+<tt class="descname">raw</tt><em class="property"> = None</em><a class="headerlink" href="#VideoTester.video.CodedVideo.raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Numpy array with all the data.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="VideoTester.video.CodedVideo">
-<em class="property">class </em><tt class="descclassname">VideoTester.video.</tt><tt class="descname">CodedVideo</tt><big>(</big><em>file</em>, <em>codec</em><big>)</big><a class="headerlink" href="#VideoTester.video.CodedVideo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Coded video reader.</p>
-<p><strong>On init:</strong> Call the proper reader.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>file</strong> (<em>string</em>) &#8211; Path to the file.</li>
-<li><strong>codec</strong> (<em>string</em>) &#8211; Codec type.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Supported formats: H263, H264, MPEG4 and Theora.</p>
-</div>
+<dt id="VideoTester.video.YUVvideo">
+<em class="property">class </em><tt class="descclassname">VideoTester.video.</tt><tt class="descname">YUVvideo</tt><big>(</big><em>file</em>, <em>framesize</em>, <em>format='I420'</em><big>)</big><a class="headerlink" href="#VideoTester.video.YUVvideo" title="Permalink to this definition">¶</a></dt>
+<dd><p>YUV reader.</p>
 <dl class="attribute">
-<dt id="VideoTester.video.CodedVideo.raw">
-<tt class="descname">raw</tt><a class="headerlink" href="#VideoTester.video.CodedVideo.raw" title="Permalink to this definition">¶</a></dt>
-<dd><p>Numpy array with all the data.</p>
+<dt id="VideoTester.video.YUVvideo.frames">
+<tt class="descname">frames</tt><em class="property"> = None</em><a class="headerlink" href="#VideoTester.video.YUVvideo.frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of frames in the video.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="VideoTester.video.CodedVideo.frames">
-<tt class="descname">frames</tt><a class="headerlink" href="#VideoTester.video.CodedVideo.frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dictionary that contains the <cite>types</cite> and the <cite>lengths</cite> for all the frames found.</p>
+<dt id="VideoTester.video.YUVvideo.framesize">
+<tt class="descname">framesize</tt><em class="property"> = None</em><a class="headerlink" href="#VideoTester.video.YUVvideo.framesize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frame size: <tt class="docutils literal"><span class="pre">(width,</span> <span class="pre">height)</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.video.YUVvideo.raw">
+<tt class="descname">raw</tt><em class="property"> = None</em><a class="headerlink" href="#VideoTester.video.YUVvideo.raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>RAW data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="VideoTester.video.YUVvideo.video">
+<tt class="descname">video</tt><em class="property"> = None</em><a class="headerlink" href="#VideoTester.video.YUVvideo.video" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of lists of frames. Each list is a component (Y, U, V) and each frame is a Numpy array.</p>
 </dd></dl>
 
 </dd></dl>
@@ -193,13 +161,13 @@
         <li class="right" >
           <a href="sniffer.html" title="4. VideoTester.sniffer — Network sniffing and packet manipulation"
              >previous</a> |</li>
-        <li><a href="index.html">VideoTester v0.2 documentation</a> &raquo;</li>
+        <li><a href="index.html">VideoTester 0.2 documentation</a> &raquo;</li>
           <li><a href="modules.html" >Module Reference</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2011, Iñaki Úcar.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
+        &copy; Copyright 2013, Iñaki Úcar.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>
