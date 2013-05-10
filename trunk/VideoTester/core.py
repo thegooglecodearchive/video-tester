@@ -255,7 +255,7 @@ class Client(VT):
             child.join()
         except KeyboardInterrupt:
             VTLOG.warning("Keyboard interrupt!")
-            server.stop(self.conf['bitrate'], self.conf['framerate'])
+            #server.stop(self.conf['bitrate'], self.conf['framerate'])
             child.terminate()
             child.join()
             exit()
