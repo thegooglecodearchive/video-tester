@@ -4,7 +4,7 @@ Configuration
 Videos
 ------
 
-It's essential that the client and the server have a local repository with the same video files. Video Tester is designed to use lossless-coded video files. For example, EvalVid project has YUV CIF samples compressed with lossless H.264 at <http://www.tkn.tu-berlin.de/research/evalvid/cif.html>.
+It's essential that the client and the server have a local repository with the same video files. Video Tester is designed to use lossless-coded video files. For example, EvalVid project has `YUV CIF samples compressed with lossless H.264 <http://www.tkn.tu-berlin.de/research/evalvid/cif.html>`_.
 
 
 Configuration files
